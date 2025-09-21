@@ -1,5 +1,8 @@
 class Solution {
     public int jobScheduling(int[] startTime, int[] endTime, int[] profit) {// O(nlogn)
+
+    // 题目给的是 starttime， duration 和 volume
+    // 其实 endtime = starttime + duration，这边需要小小改动
         List<int[]> intervals = new ArrayList<>();
         for (int i = 0; i < startTime.length; i++) {
             intervals.add(new int[]{startTime[i], endTime[i], profit[i]});
