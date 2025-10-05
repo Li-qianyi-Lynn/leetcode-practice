@@ -13,7 +13,6 @@ class Solution {
             if (target < matrix[row][col]) {
                 r = m -1;
 
-
             } else if (target > matrix[row][col]) {
                 l = m +1;
 
