@@ -20,11 +20,8 @@ class Solution {
 
             pre = cur;
             cur = temp;
-        
-
 
         }
-
         return pre;
         
     }
