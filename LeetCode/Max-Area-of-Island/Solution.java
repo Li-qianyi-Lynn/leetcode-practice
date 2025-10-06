@@ -3,36 +3,34 @@ class Solution {
         int rows = grid.length;
         int cols = grid[0].length;
 
-        int maxIsland = 0;
-        for (int i = 0; i < rows; i++) {
-            int temp = 0;
-            for (int j = 0; j < cols; j++) {
-                if (grid[i][j] == 1) {
-                    temp = dfs(grid, i, j);
-                    maxIsland = Math.max(temp, maxIsland);
-
-                }
-
-            }
-
-        }
-        return maxIsland;
-
-    }
-    private int dfs(int[][] grid, int i, int j) {
-        int area = 0;
-        if (i < 0 || i >= grid.length || j < 0 || j >=grid[0].length || grid[i][j] == 0) {
-            return area;
-
-        }
-
-        grid[i][j] = 0;
-        area++;
-        area += dfs(grid, i+1, j); //down
-        area += dfs(grid, i, j+1); //right
-        area += dfs(grid, i-1, j); //up
-        area += dfs(grid, i, j-1); //left
+        int max = 0;
         
-        return area;
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                int curArea = dfs(grid, i, j);
+                max = Math.max(max, curArea);
+            }
+        }
+        return max;
     }
+
+    private int dfs(int[][] grid, int row, int col) {
+        if (row < 0 || row >= grid.length 
+        || col < 0 || col >= grid[0].length
+        || grid[row][col] == 0) {
+            return 0;
+
+        }
+        grid[row][col] = 0;
+        int area = 1;
+        // explore other directions by dfs and calculate the area
+        area += dfs(grid, row+1, col); //down
+        area += dfs(grid, row-1, col); // up
+        area += dfs(grid, row, col+1); // right
+        area += dfs(grid, row, col-1); // left
+        return area;
+
+
+    }
+
 }
