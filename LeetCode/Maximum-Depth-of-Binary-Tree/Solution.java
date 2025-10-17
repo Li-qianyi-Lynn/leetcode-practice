@@ -25,6 +25,8 @@ class Solution {
         deque.addLast(root);
         while (!deque.isEmpty()) {
             int levelNodes = deque.size();
+            depth++;
+
             for (int i = 1;i <= levelNodes;i++) {
                 TreeNode poll = deque.pollFirst();
                 if (poll.left != null) {
@@ -34,7 +36,6 @@ class Solution {
                     deque.addLast(poll.right);
                 }
             }
-            depth++;
     
         }
         return depth; 
