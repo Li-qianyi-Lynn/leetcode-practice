@@ -1,62 +1,15 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public int minDepth(TreeNode root) {
-        int depth = 0;
-        Deque<TreeNode> deque = new LinkedList<>();
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        queue = deque([(root, 1)])
+        if not root: return 0
 
-        if (root == null) {
-            return depth;
-        }
+        while queue:
+            node, level = queue.popleft()
 
-        deque.addLast(root);
-        while (!deque.isEmpty()) {
-            int levelNodes = deque.size();
-            depth++;
-            for (int i = 1;i <= levelNodes;i++) {
-                TreeNode poll = deque.pollFirst();
-                if (poll.left == null && poll.right == null) {
-                    return depth;
+            if not node.left and not node.right:
+                return level
 
-                }
-
-                if (poll.left != null) {
-                    deque.addLast(poll.left);
-                }
-                if (poll.right != null) {
-                    deque.addLast(poll.right);
-                }
-            }
-    
-        }
-        return depth; 
-    }
-}
+            if node.left:
+                queue.append((node.left, level+1))
+            if node.right:
+                queue.append((node.right, level+1))
