@@ -1,28 +1,18 @@
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode reverseList(ListNode head) {
-        ListNode pre = null;
-        ListNode cur = head;
-
-        while (cur != null) {
-            ListNode temp = cur.next;
-
-            cur.next = pre;
-            pre = cur;
-            cur = temp;
-
-
-        }
-        return pre;
-    }
+class Solution(object):        
+    def reverseList(self, head):  # Iterative
+        prev, curr = None, head
+        while curr:
+            curr.next, prev, curr = prev, curr, curr.next
+        return prev
         
-}
+    def reverseList_v1(self, head):  # Recursive
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """     
+        if not head or not head.next:
+            return head
+        p = self.reverseList(head.next)
+        head.next.next = head
+        head.next = None
+        return p 
