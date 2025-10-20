@@ -24,11 +24,11 @@ class Solution {
 
         deque.addLast(root);
 
-        while (!deque.isEmpty()) {
+        while (!deque.isEmpty()) { // iterate all levels
             int levelNodes = deque.size();
             int max = Integer.MIN_VALUE;
-
-            for (int i = 1;i <= levelNodes;i++) {
+            
+            for (int i = 1;i <= levelNodes;i++) { // iterate each level nodes
                 TreeNode poll = deque.pollFirst();
                 max = Math.max(max, poll.val);
                 if (poll.left != null) {
