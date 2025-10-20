@@ -18,25 +18,21 @@ class Solution {
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> deque = new LinkedList<>();
 
-        if (root == null) {
-            return res;
-        }
+        if (root == null)  return res;
 
-        deque.addLast(root);
+        deque.offerLast(root);
 
-        while (!deque.isEmpty()) { // iterate all levels
-            int levelNodes = deque.size();
+        while (!deque.isEmpty()) {
+            int levelNodes = deque.size(); // get the nodes amount in each level
             int max = Integer.MIN_VALUE;
-            
-            for (int i = 1;i <= levelNodes;i++) { // iterate each level nodes
+
+            for (int i = 1; i <= levelNodes; i++) {
                 TreeNode poll = deque.pollFirst();
+                if (poll.left != null) deque.offerLast(poll.left);
+                if (poll.right != null) deque.offerLast(poll.right);
+
                 max = Math.max(max, poll.val);
-                if (poll.left != null) {
-                    deque.addLast(poll.left);
-                }
-                if (poll.right != null) {
-                    deque.addLast(poll.right);
-                }
+
             }
             res.add(max);
 
