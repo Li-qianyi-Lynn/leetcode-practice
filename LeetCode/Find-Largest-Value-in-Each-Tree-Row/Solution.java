@@ -22,7 +22,7 @@ class Solution {
             return res;
         }
 
-        deque.offerLast(root);
+        deque.addLast(root);
 
         while (!deque.isEmpty()) { // iterate all levels
             int levelNodes = deque.size();
