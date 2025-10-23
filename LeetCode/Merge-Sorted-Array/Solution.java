@@ -17,14 +17,11 @@ class Solution {
             last--;
 
         }
-
+       // while all elements in nums2 are smaller than those in nums1
         while (n > 0) {
             nums1[last] = nums2[n-1];
             n--;
             last--;
-        }
-
-
-        
+        }   
     }
 }
