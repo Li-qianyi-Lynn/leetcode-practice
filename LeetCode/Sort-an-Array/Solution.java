@@ -1,26 +1,38 @@
-    private void merge(int[] nums, int low, int mid, int high, int[] temp) {
-        for(int i = low; i <= mid; i++) {
-            temp[i] = nums[i];
-        }
-
-        for(int i = mid + 1; i <= high; i++) {
-            temp[i] = nums[i];
-        }
-
-        int i = low, j = mid + 1;
-        while(i <= mid && j <= high) {
-            if(temp[i] < temp[j]) {
-                nums[low++] = temp[i++];
-            } else {
-                nums[low++] = temp[j++];
+class Solution {
+    public int[] sortArray(int[] nums) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+    
+    private void quickSort(int[] nums, int left, int right) {
+        if (left >= right) return;
+        
+        int pivotIndex = partition(nums, left, right);
+        quickSort(nums, left, pivotIndex - 1);
+        quickSort(nums, pivotIndex + 1, right);
+    }
+    
+    private int partition(int[] nums, int left, int right) {
+        // 随机选择 pivot 避免最坏情况
+        int randomIndex = left + (int)(Math.random() * (right - left + 1));
+        swap(nums, randomIndex, right);
+        
+        int pivot = nums[right];
+        int i = left;
+        
+        for (int j = left; j < right; j++) {
+            if (nums[j] < pivot) {
+                swap(nums, i, j);
+                i++;
             }
         }
-
-        while(i <= mid) {
-            nums[low++] = temp[i++];
-        }
-
-        while(j <= high) {
-            nums[low++] = temp[j++];
-        }   
+        swap(nums, i, right);
+        return i;
     }
+    
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
