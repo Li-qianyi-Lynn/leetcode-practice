@@ -23,9 +23,10 @@ class Solution {
             int size = deque.size();
             for (int i = 1; i <=size; i++) {
                 TreeNode cur = deque.pollFirst();
-                swap(cur);
+                
                 if (cur.left != null) {deque.offerLast(cur.left);}
                 if (cur.right != null) {deque.offerLast(cur.right);}
+                swap(cur);
             }
 
         }
