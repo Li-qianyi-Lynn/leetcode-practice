@@ -1,31 +1,39 @@
 class Solution {
     public int[] twoSum(int[] numbers, int target) {
+        // use two pointers (l & r) 
+        /**
+        if nums[l] + nums[r] < target
+        l ++;
+        if res > target
+        r --;
+        else return their index;
 
-        int[] ans = new int[2];
-
-        int r = numbers.length -1;
-        int l = 0;
-        while (l < r) {
+        [2,7,11,15]
+        |   |     
         
-
-            if ( numbers[l] + numbers[r] < target) {
-                l ++;
+         */
 
 
-            } else if ( numbers[l] + numbers[r] > target) {
-                r --;
+        int l = 0;
+        int r = numbers.length -1;
+        int[] res = new int[2];
+
+        while (l < r) {
+            int sum = numbers[l] + numbers[r];
+            if (sum < target) {
+                l++;
+            } else if (sum > target) {
+                r--;
             } else {
-                ans[0] = l +1;
-                ans[1] = r +1;
-                break;
+                res[0] = l+1;
+                res[1] = r+1;
+                return res;
 
             }
+            
 
-        }
-
-        return ans;
-
-
+        } 
+        return res;
         
     }
 }
