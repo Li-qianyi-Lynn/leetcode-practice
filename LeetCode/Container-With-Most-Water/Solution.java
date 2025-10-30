@@ -1,20 +1,30 @@
 class Solution {
     public int maxArea(int[] height) {
-        
-        int right = height.length-1; 
-        int left = 0; 
-        int maxA = 0; 
-        while (left < right) {
-            int area = (right - left) * Math.min(height[right], height[left]);
-            maxA = Math.max(area, maxA); 
+
+    /**
+    high level idea: two pointers: l r
+    condition: if height[l] <= height[r],l++;
+    else r--;
+
+    area = (r - l) * Min(height[r],height[l])
+    
+     */
+
+     //step1: initiate variables
+     
+    int l = 0;
+    int r = height.length -1;
+    int max = Integer.MIN_VALUE;
+
+    //step2: use while loop to calculate the area
+        while (l < r) {
+            int area = (r - l) * Math.min(height[r], height[l]);
+            max = Math.max(area, max);
             
-            if (height[right] < height[left]) {
-                right --;             
-            } else {
-                left ++; 
-            }     
+            if (height[r] > height[l]) l++;
+            else r--;
         }
-        return maxA; // 1
-        
+        return max;
     }
+
 }
