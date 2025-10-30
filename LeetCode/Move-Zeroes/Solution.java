@@ -1,16 +1,20 @@
 class Solution {
     public void moveZeroes(int[] nums) {
-        int fast, slow;
-        for (fast = 0, slow = 0; fast < nums.length; fast++) {
-            if (nums[fast] != 0) {
-                nums[slow] = nums[fast];
-                slow++;
+        Deque<Integer> deque = new ArrayDeque<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != 0) {
+                deque.addFirst(nums[i]);
 
             }
 
         }
-        for (int i = slow; i < nums.length; i++) {
-            nums[i] = 0;
+        for (int j = 0; j < nums.length;j++) {
+            if (!deque.isEmpty()) {
+                nums[j] = deque.removeLast();
+            } else {
+                nums[j] = 0;
+            }
+            
 
         }
         
