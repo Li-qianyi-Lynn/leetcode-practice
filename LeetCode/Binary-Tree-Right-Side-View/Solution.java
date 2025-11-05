@@ -15,38 +15,27 @@
  */
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
+        // edge case
         List<Integer> res = new ArrayList<>();
+        if (root == null) return res;
         Deque<TreeNode> deque = new LinkedList<>();
-
-        if (root == null) {
-            return res;
-
-        }
-        deque.addLast(root);
-
+        deque.offerLast(root);
         while (!deque.isEmpty()) {
-            int levelNodes = deque.size();
-            for (int i = 1;i <= levelNodes;i++) {
+            int size = deque.size();
+
+            for (int i = 1; i <= size; i++) {
                 TreeNode poll = deque.pollFirst();
                 if (poll.left != null) {
-                    deque.addLast(poll.left);
-
+                    deque.offerLast(poll.left);
                 }
                 if (poll.right != null) {
-                    deque.addLast(poll.right);
-
+                    deque.offerLast(poll.right);
                 }
-
-                if (i == levelNodes) {
+                if (i == size) {
                     res.add(poll.val);
-
                 }
-
-            }   
-
+            }
         }
-        return res;
-
-        
+        return res;     
     }
 }
