@@ -1,43 +1,20 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
 class Solution {
     public int maxDepth(TreeNode root) {
-        int depth = 0;
-        Deque<TreeNode> deque = new LinkedList<>();
-
-        if (root == null) {
-            return depth;
-        }
-
-        deque.addLast(root);
-        while (!deque.isEmpty()) {
-            int levelNodes = deque.size();
+        if (root == null) return 0;
+	Deque<TreeNode> dq = new ArrayDeque<>();
+        int depth = 0, next = 0;
+        TreeNode cur;
+        dq.offer(root);
+        
+        while (!dq.isEmpty()) {
             depth++;
-
-            for (int i = 1;i <= levelNodes;i++) {
-                TreeNode poll = deque.pollFirst();
-                if (poll.left != null) {
-                    deque.addLast(poll.left);
-                }
-                if (poll.right != null) {
-                    deque.addLast(poll.right);
-                }
+            next = dq.size();
+            for (int i = 0; i < next; ++i) {
+                cur = dq.poll();
+                if (cur.left != null) dq.offer(cur.left);
+                if (cur.right != null) dq.offer(cur.right);
             }
-    
         }
-        return depth; 
+        return depth;
     }
 }
