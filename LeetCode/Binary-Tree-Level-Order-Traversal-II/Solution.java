@@ -14,31 +14,40 @@
  * }
  */
 class Solution {
-    public List<List<Integer>> list = new ArrayList<List<Integer>>();
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-        bfs(root, 0);
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        for (int i = list.size()-1; i >= 0; i--) {
-            res.add(list.get(i));
-
+        LinkedList<List<Integer>> res = new LinkedList<>();
+        if (root == null) {
+            return res;
         }
+        bfs(root, res);
         return res;
-
-
         
     }
 
-    private void bfs(TreeNode node, Integer deep) {
-        if (node == null) return;
-        deep++;
+    private void bfs(TreeNode root, LinkedList<List<Integer>>res) {
+        if (root == null) return;
+        Deque<TreeNode> deque = new LinkedList<>();
+        deque.offerLast(root);
 
-        if (list.size() < deep) {
-            List<Integer> item = new ArrayList<Integer>();
-            list.add(item);
+        while (!deque.isEmpty()) { // traversel level
+            int size = deque.size();
+            List<Integer> levelNode = new ArrayList<>();
+
+            for (int i = 1; i <=size; i++) {
+                TreeNode poll = deque.pollFirst();
+                if (poll.left != null) {
+                    deque.offerLast(poll.left);
+
+                }
+
+                if (poll.right != null) {
+                    deque.offerLast(poll.right);
+                }
+                levelNode.add(poll.val);
+            }
+            res.offerFirst(levelNode);
+        
         }
-        list.get(deep - 1).add(node.val);
 
-        bfs(node.left, deep);
-        bfs(node.right, deep);
     }
 }
