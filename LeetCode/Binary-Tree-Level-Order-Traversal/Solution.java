@@ -14,27 +14,40 @@
  * }
  */
 class Solution {
-    public List<List<Integer>> resList = new ArrayList<List<Integer>>();
     public List<List<Integer>> levelOrder(TreeNode root) {
-        bfs(root, 0);
-        return resList;   
+        List<List<Integer>> res = new ArrayList<>();
+        if (root == null) {
+            return res;
+
+        }
+        bfs(root,res);
+        return res;
+        
     }
 
-    private void bfs(TreeNode node, Integer deep) {
-        if (node == null) {
+    private void bfs(TreeNode root, List<List<Integer>> res) {
+        Deque<TreeNode> deque = new LinkedList<>();
+        if (root == null) {
             return;
+        }
+        deque.offerLast(root);
+        while (!deque.isEmpty()) {
+            int size = deque.size();
+            List<Integer> levelList = new ArrayList<>();
+            for (int i = 1; i <= size; i++) {
+                TreeNode poll = deque.pollFirst();
+                levelList.add(poll.val);
+                if (poll.left != null) {
+                    deque.offerLast(poll.left);
+                }
+
+                if (poll.right != null) {
+                    deque.offerLast(poll.right);
+                }
+    
+            }
+            res.add(levelList);
 
         }
-
-        deep++;
-        if (resList.size() < deep) {
-            List<Integer> item = new ArrayList<Integer>();
-            resList.add(item);
-
-        }
-        resList.get(deep-1).add(node.val);
-        bfs(node.left, deep);
-        bfs(node.right, deep);
-
     }
 }
