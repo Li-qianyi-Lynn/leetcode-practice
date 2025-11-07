@@ -1,34 +1,12 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode(int x) { val = x; }
- * }
- */
-class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        // Base case
-        if (root == null) {
-            return null;
-        }
+class Solution(object):
+    def lowestCommonAncestor(self, root, p, q):
+        if root is None:
+            return None
         
-        if (root == p || root == q) {
-            return root;
-        }
+        left_res = self.lowestCommonAncestor(root.left, p, q)
+        right_res = self.lowestCommonAncestor(root.right, p, q)
         
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        
-        if (left != null && right != null) {
-            return root;
-        }
-        
-        if (left != null) {
-            return left;
-        }
-        
-        return right;
-    }
-}
+        if (left_res and right_res) or (root in [p, q]):
+            return root
+        else:
+            return left_res or right_res
