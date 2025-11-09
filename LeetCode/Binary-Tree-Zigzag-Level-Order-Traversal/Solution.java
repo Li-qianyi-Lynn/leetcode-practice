@@ -13,6 +13,8 @@
  *     }
  * }
  */
+
+
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
@@ -29,25 +31,31 @@ class Solution {
         deque.offerLast(root);
         while(!deque.isEmpty()) {
             int size = deque.size();
-            LinkedList<Integer> levelNode = new LinkedList<>(); // 双端O（1）插入
 
-            for (int i = 1; i <= size; i++) {
-                TreeNode poll = deque.pollFirst();
-                if (leftToRight == true) {
-                    levelNode.offerLast(poll.val);
+            List<Integer> temp = new ArrayList<>();
 
-                } else {
-                    levelNode.offerFirst(poll.val);
-                }
-                if (poll.left != null) {
+            for (int i = 0; i < size; i++) {
+                if (leftToRight) {
+                    TreeNode poll = deque.pollFirst();
+                    if (poll.left != null) {
                         deque.offerLast(poll.left);
-                    } 
+                    }
                     if (poll.right != null) {
                         deque.offerLast(poll.right);
                     }
-                
+                    temp.add(poll.val);
+                    continue;
+                }
+                TreeNode poll = deque.pollLast();
+                if (poll.right != null) {
+                    deque.offerFirst(poll.right);
+                }
+                if (poll.left != null) {
+                    deque.offerFirst(poll.left);
+                }
+                temp.add(poll.val);
             }
-            res.add(levelNode);
+            res.add(temp);
             leftToRight = !leftToRight;
         }
     }
