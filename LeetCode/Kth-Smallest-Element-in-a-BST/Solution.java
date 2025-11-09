@@ -15,17 +15,21 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> res = new ArrayList<>();
-        inorder(root, res);
-        return res.get(k-1);
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+        inorder(root, minheap);
+        for (int i = 1; i < k; i++) {
+            minheap.poll();
+
+        }
+        return minheap.poll();
         
     }
-    private void inorder(TreeNode root, List<Integer>res) {
+    private void inorder(TreeNode root, PriorityQueue<Integer> minheap) {
         if (root == null) return;
 
-        inorder(root.left, res);
-        res.add(root.val);
-        inorder(root.right, res);
+        inorder(root.left, minheap);
+        minheap.offer(root.val);
+        inorder(root.right, minheap);
 
     }
 }
