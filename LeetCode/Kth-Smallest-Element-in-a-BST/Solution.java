@@ -14,21 +14,28 @@
  * }
  */
 class Solution {
+    private int count = 0;
+    private int res = 0;
+
     public int kthSmallest(TreeNode root, int k) {
-        List<Integer> arr = new ArrayList<>();
-        dfs(root,arr);
-        return arr.get(k-1);
+        inorder(root, k);
+        return res;
         
     }
+    private void inorder(TreeNode root, int k) {
+        if (root == null) return;
 
-    private void dfs(TreeNode node, List<Integer> arr) {
-        if (node == null) {
+        inorder(root.left, k);
+        count ++;
+        if (count == k) {
+            res = root.val;
             return;
 
         }
-        dfs(node.left, arr);
-        arr.add(node.val);
-        dfs(node.right, arr);
+        inorder(root.right, k);
+
     }
-    
 }
+
+// time complexity: O(h+k) h: height of the tree
+// space complexity: O(h) depth of the stack
