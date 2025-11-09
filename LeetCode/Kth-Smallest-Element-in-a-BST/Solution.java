@@ -15,21 +15,20 @@
  */
 class Solution {
     public int kthSmallest(TreeNode root, int k) {
-        PriorityQueue<Integer> minheap = new PriorityQueue<>();
-        inorder(root, minheap);
-        for (int i = 1; i < k; i++) {
-            minheap.poll();
-
-        }
-        return minheap.poll();
+        List<Integer> arr = new ArrayList<>();
+        dfs(root,arr);
+        return arr.get(k-1);
         
     }
-    private void inorder(TreeNode root, PriorityQueue<Integer> minheap) {
-        if (root == null) return;
 
-        inorder(root.left, minheap);
-        minheap.offer(root.val);
-        inorder(root.right, minheap);
+    private void dfs(TreeNode node, List<Integer> arr) {
+        if (node == null) {
+            return;
 
+        }
+        dfs(node.left, arr);
+        arr.add(node.val);
+        dfs(node.right, arr);
     }
+    
 }
