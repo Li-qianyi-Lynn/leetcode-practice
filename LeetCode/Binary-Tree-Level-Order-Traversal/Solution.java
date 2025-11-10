@@ -13,6 +13,19 @@
  *     }
  * }
  */
+
+ /**
+ 
+ BFS(root, res) to update res
+ - deque to store the treenode of each level FIFO
+ - List<Integer> to store the cur level node 
+ - int size of deque means how many nodes in this level
+
+ step1: put the cur level node(if root is not null) to the deque;
+ step2: iterate current level nodes, check if it has children nodes (if it has , add to the deque);
+ step3: add current level nodes to the res;
+ 
+  */
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
@@ -20,34 +33,28 @@ class Solution {
             return res;
 
         }
-        bfs(root,res);
+        bfs(root, res);
         return res;
         
     }
 
-    private void bfs(TreeNode root, List<List<Integer>> res) {
+    private void bfs(TreeNode root, List<List<Integer>>res) {
         Deque<TreeNode> deque = new LinkedList<>();
-        if (root == null) {
-            return;
-        }
         deque.offerLast(root);
         while (!deque.isEmpty()) {
             int size = deque.size();
-            List<Integer> levelList = new ArrayList<>();
+            List<Integer> cur = new ArrayList<>();
             for (int i = 1; i <= size; i++) {
                 TreeNode poll = deque.pollFirst();
-                levelList.add(poll.val);
                 if (poll.left != null) {
                     deque.offerLast(poll.left);
                 }
-
                 if (poll.right != null) {
                     deque.offerLast(poll.right);
                 }
-    
+                cur.add(poll.val);
             }
-            res.add(levelList);
-
+            res.add(cur);
         }
     }
 }
