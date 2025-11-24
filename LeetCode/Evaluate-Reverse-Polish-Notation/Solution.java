@@ -1,3 +1,36 @@
-6 / 2 = 3 (3.0)
-11 / 5 = 2 (2.2)
-9 / 5 = 1 (1.8)
+class Solution {
+    public int evalRPN(String[] tokens) {
+        Deque<Integer> deque = new ArrayDeque<>();
+
+        for (String token : tokens) {
+            if (!"+-*/".contains(token)) {
+                deque.offerLast(Integer.valueOf(token));
+                continue;
+            }
+
+            int number2 = deque.pollLast();
+            int number1 = deque.pollLast();
+
+            int result = 0;
+
+            switch (token) {
+                case "+":
+                    result = number1 + number2;
+                    break;
+                case "-":
+                    result = number1 - number2;
+                    break;
+                case "*":
+                    result = number1 * number2;
+                    break;
+                case "/":
+                    result = number1 / number2;
+                    break;
+            }
+
+            deque.offerLast(result);
+        }
+
+        return deque.pollLast();
+    }
+}
