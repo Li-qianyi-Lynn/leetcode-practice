@@ -1,34 +1,41 @@
-class Solution {
-   
-    int[][] dirs= new int[][]{{1,0},{0,1},{-1,0},{0,-1}};
-    public int numDistinctIslands(int[][] grid) {
-         Set<String> set= new HashSet<>();
-        int res=0;
-        
-        for(int i=0;i<grid.length;i++){
-            for(int j=0;j<grid[0].length;j++){
-                if(grid[i][j]==1) {
-                    StringBuilder sb= new StringBuilder();
-                    helper(grid,i,j,0,0, sb);
-                    String s=sb.toString();
-                    if(!set.contains(s)){
-                    res++;
-                    set.add(s);
-}
-                }
-            }
-        }
-            return res;
-    }
-    
-    public  void helper(int[][] grid,int i,int j, int xpos, int ypos,StringBuilder sb){
-        grid[i][j]=0;
-        sb.append(xpos+""+ypos);
-        for(int[] dir : dirs){
-            int x=i+dir[0];
-            int y=j+dir[1];
-            if(x<0 || y<0 || x>=grid.length || y>=grid[0].length || grid[x][y]==0) continue;
-            helper(grid,x,y,xpos+dir[0],ypos+dir[1],sb);
-        }
-    }
-}
+1class Solution {
+2    public int numDistinctIslands(int[][] grid) {
+3      Set<String> shapes = new HashSet<>();
+4      int row = grid.length;
+5      int col = grid[0].length;
+6
+7      for (int i = 0; i < row; i++) {
+8        for (int j = 0; j < col; j++) {
+9            if (grid[i][j] == 1) {
+10                StringBuilder currentShape = new StringBuilder();
+11                dfs(grid, i, j, currentShape, 's');
+12                shapes.add(currentShape.toString());
+13            }
+14        }
+15      }  
+16      return shapes.size();
+17    }
+18
+19    private void dfs(int[][] grid, int i, int j, StringBuilder currentShape, char dir) {
+20        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] != 1) return;
+21
+22        grid[i][j] = 2;
+23        currentShape.append(dir);
+24
+25        dfs(grid, i, j - 1, currentShape, 'l');
+26        dfs(grid, i, j + 1, currentShape, 'r');
+27        dfs(grid, i + 1, j, currentShape, 'd');
+28        dfs(grid, i - 1, j, currentShape, 'u');
+29
+30        currentShape.append('b');
+31    }
+32}
+33
+34/**
+35
+36rules：
+371）路径一样
+382）结束的位置一样
+39
+40
+41 */
