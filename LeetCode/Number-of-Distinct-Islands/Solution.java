@@ -8,7 +8,7 @@
 8        for (int j = 0; j < col; j++) {
 9            if (grid[i][j] == 1) {
 10                StringBuilder currentShape = new StringBuilder();
-11                dfs(grid, i, j, currentShape, 's');
+11                dfs(grid, i, j, currentShape, 'o');
 12                shapes.add(currentShape.toString());
 13            }
 14        }
@@ -23,19 +23,11 @@
 23        currentShape.append(dir);
 24
 25        dfs(grid, i, j - 1, currentShape, 'l');
-26        dfs(grid, i, j + 1, currentShape, 'r');
-27        dfs(grid, i + 1, j, currentShape, 'd');
+26        dfs(grid, i + 1, j, currentShape, 'd');
+27        dfs(grid, i, j + 1, currentShape, 'r');
 28        dfs(grid, i - 1, j, currentShape, 'u');
 29
 30        currentShape.append('b');
 31    }
 32}
 33
-34/**
-35
-36rules：
-371）路径一样
-382）结束的位置一样
-39
-40
-41 */
