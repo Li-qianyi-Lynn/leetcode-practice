@@ -1,45 +1,35 @@
 1class Solution {
 2    public int minMeetingRooms(int[][] intervals) {
-3        int room = 0;
-4        int len = intervals.length;
-5        int[] start = new int[len];
-6        int[] end = new int[len];
-7
-8        for (int i = 0; i < len; i++) {
-9            start[i] = intervals[i][0];
-10            end[i] = intervals[i][1];
-11
-12        }
-13
-14        Arrays.sort(start);
-15        Arrays.sort(end);
+3        int n = intervals.length;
+4        int room = 0;
+5
+6        // 存开始时间和结束时间
+7        int[] starts = new int[n];
+8        int[] ends = new int[n];
+9
+10        for (int i = 0; i < n; i++) {
+11            starts[i] = intervals[i][0];
+12            ends[i] = intervals[i][1];
+13        }
+14        Arrays.sort(starts);
+15        Arrays.sort(ends);
 16
-17        int endidx = 0;
-18
-19        for (int i = 0; i < len; i++) {
-20            if (start[i] < end[endidx]) { // the event starts much early, need one moreroom
-21                room++;
-22            } else {
-23                endidx++;
-24            }
-25        }
-26        return room;   
+17        int endIndex = 0;
+18        for (int j = 0; j < n; j++) {
+19            if (starts[j] < ends[endIndex]) {
+20                room++;
+21            } else {
+22                endIndex++;
+23            }
+24        }
+25        return room;
+26        
 27    }
 28}
 29
 30/**
-31线性扫描
-32start int[]
-33end int[]
+31开始时间 结束时间都记录下来 做个排序
+32比较在开始的时候有没有会议能结束，如果不能结束的话，room++
+33
 34
-35把时间放进对应的event 里
-36sort
-37endindex
-38
-39判断if start < end time
-40-yes room++
-41-no endindex++
-42
-43
-44
-45 */
+35 */
