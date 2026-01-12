@@ -5,22 +5,22 @@
 5        for (int i = words.length-1; i >= 0; i--) {
 6            if (i == 0) {
 7                sb.append(words[i]);
-8
-9            } else {
-10                sb.append(words[i]).append(" ");
+8            } else {
+9                sb.append(words[i]).append(" ");
+10            }
 11
-12            }
-13           
-14        }
-15        return sb.toString();
-16        
-17
-18    }
-19}
-20
-21/***
-221. split space
-232. for loop：把string + space 加到stringbuilder 里，删去最后一个space
+12        }
+13        return sb.toString();
+14        
+15        
+16    }
+17}
+18
+19/**
+20step1 : delete all space trim()+split String[]
+21step2: use for loop to iterate String[] in reverse older, 
+22-append the last word
+23-others: word + [' '] 
 24
 25
 26
