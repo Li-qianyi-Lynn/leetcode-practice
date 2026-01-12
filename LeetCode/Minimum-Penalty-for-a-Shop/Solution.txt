@@ -1,0 +1,21 @@
+1class Solution {
+2    public int bestClosingTime(String customers) {
+3        int minScore = 0;
+4        int curScore = 0;
+5        int bestHour = 0;
+6        
+7        for (int i = 0; i < customers.length(); i++) {
+8            if (customers.charAt(i) == 'Y') {
+9                curScore--;
+10            } else {
+11                curScore++;
+12            }
+13            
+14            if (curScore < minScore) {
+15                minScore = curScore;
+16                bestHour = i + 1;
+17            }
+18        }
+19        return bestHour;
+20    }
+21}
