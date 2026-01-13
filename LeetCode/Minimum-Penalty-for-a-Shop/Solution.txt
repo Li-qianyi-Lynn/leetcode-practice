@@ -1,21 +1,67 @@
 1class Solution {
 2    public int bestClosingTime(String customers) {
-3        int minScore = 0;
-4        int curScore = 0;
-5        int bestHour = 0;
-6        
-7        for (int i = 0; i < customers.length(); i++) {
-8            if (customers.charAt(i) == 'Y') {
-9                curScore--;
-10            } else {
-11                curScore++;
-12            }
-13            
-14            if (curScore < minScore) {
-15                minScore = curScore;
-16                bestHour = i + 1;
-17            }
-18        }
-19        return bestHour;
-20    }
-21}
+3        int minPenalty = 0;
+4        int res = 0;
+5        int cur = 0;
+6        // 获得y 的num 
+7        for (int i = 0; i < customers.length();i++) {
+8            char c = customers.charAt(i);
+9            if (c == 'Y') {
+10                cur++;
+11            }
+12
+13        }
+14        minPenalty = cur;
+15        // 某个时候开门
+16        
+17        for (int i = 0; i < customers.length(); i++) {
+18            char c = customers.charAt(i);
+19            if (c == 'Y') {
+20                cur--;
+21
+22            } else {
+23                cur++;
+24            }
+25            
+26            if (cur < minPenalty) {
+27                res = i+1;
+28                minPenalty = cur;
+29
+30            }
+31        }
+32        return res;
+33
+34    
+35        
+36    }
+37}
+38/**
+39int minPenalty = 0;
+40找到一个时间点让shop 在该时间点关门的时候penalty 最少 
+41
+42
+431. 0th hour 就关门了， 我们能够得到一个初始的penalty c in customers == Y penalty++
+442. 遍历customer，根据rules 去对penalty 做++--
+45
+46- c == Y, penalty--
+47- c == N, penalty++
+48
+49维护 minPenalty 
+50
+51
+52NYNY 
+53最初的值： shop 今天不开门，我会有多少个penalty 
+54cur = 2
+55
+56nnyyn
+57
+58yynn
+59
+60
+612
+62
+63
+64
+65
+66
+67 */
