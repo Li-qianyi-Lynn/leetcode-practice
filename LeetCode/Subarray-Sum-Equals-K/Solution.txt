@@ -1,0 +1,39 @@
+1class Solution {
+2    public int subarraySum(int[] nums, int k) {
+3        int res = 0;
+4        // prefix[] 
+5        // int[] prefix = new int[nums.length];
+6        int pre = 0;
+7        // for (int i = 0; i < nums.length;i++) {
+8        //     pre += nums[i];
+9        // }
+10
+11        // hashmap<Integer(sum), Integer(count)>
+12        Map<Integer, Integer> map = new HashMap<>();
+13        map.put(0,1);
+14        for (int i = 0; i < nums.length; i++) {
+15            // k = prefix[i] - prefix[j]
+16            pre += nums[i];
+17            // prefix[i] = prefix[i-1] + nums[i];
+18            
+19            int target = pre - k; //prefix[j];
+20            if (map.containsKey(target)) {
+21                res += map.get(target);
+22
+23            }
+24            map.put(pre,map.getOrDefault(pre,0)+1);
+25        }
+26        return res;
+27        
+28    }
+29}
+30
+31/**
+32k = prefix[i] - prefix[j]
+33
+34if sum == k, count ++
+35
+36Hashmap(sum, times)
+37res += map.get(sum);
+38
+39 */
