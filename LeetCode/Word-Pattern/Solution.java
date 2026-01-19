@@ -10,9 +10,9 @@
 10        Map<String, Integer> sMap = new HashMap<>();
 11        for (int i = 0; i < split.length; i++) {
 12            char c = pattern.charAt(i);
-13            int val1 = map.getOrDefault(c, 0);
-14            int val2 = sMap.getOrDefault(split[i], 0);
-15            if (val1 != val2) {
+13            // int val1 = map.getOrDefault(c, 0);
+14            // int val2 = sMap.getOrDefault(split[i], 0);
+15            if (!map.getOrDefault(c,0).equals(sMap.getOrDefault(split[i],0))) {
 16            
 17                return false;
 18
