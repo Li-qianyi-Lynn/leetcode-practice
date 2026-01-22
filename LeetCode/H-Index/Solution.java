@@ -5,46 +5,49 @@
 5        int res= 0;
 6
 7        while (l <= r) {
-8            int mid = l + (r-l) /2; // temp h
+8            int mid = l + (r-l) / 2;
 9
 10            int count = 0;
 11            for (int c : citations) {
-12                if (c >= mid) count++;
-13            }
+12                if (c >= mid) {
+13                    count++;
 14
-15            if (count < mid) {
-16                r = mid-1;
-17            } else {
+15                }
+16            }
+17            if (count >= mid) {
 18                res = mid;
-19                l = mid+1;
-20            }
-21        }
-22        return res;   
-23    }
-24}
-25/**
-26input int[] 
-27index: ith paper ;
-28citation[i]:  the number of citations a researcher received for their ith paper (likes for the paper i)
-29
-30
-31output: int h: 
-321) must have h paper
-332) each paper has citations larger than k
-34
-35 0<= h <= citations.length
-36 binary search
+19                l = mid +1;   
+20
+21            } else {
+22                r = mid-1;
+23            }
+24        }
+25        return res;     
+26    }
+27}
+28/**
+29input int[] 
+30index: ith paper ;
+31citation[i]:  the number of citations a researcher received for their ith paper (likes for the paper i)
+32
+33
+34output: int h: 
+351) must have h paper
+362) each paper has citations larger than k
 37
-38citations[m]
-390 1 2 3 4 5 6 
-40      |
-41 check if citations[i-1] >= 3 find three  ,l = mid, r = len 
-42 return l
-43
-44
-45 
+38 0<= h <= citations.length
+39 binary search
+40
+41citations[m]
+420 1 2 3 4 5 6 
+43      |
+44 check if count of citations[i] >= 3 find three update res ,l = mid+1, 
+45 return res
 46
 47
-48
+48 
 49
-50 */
+50
+51
+52
+53 */
