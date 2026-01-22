@@ -14,36 +14,48 @@
 14 * }
 15 */
 16class Solution {
-17    int postIdx;
-18    Map<Integer, Integer> inorderMap = new HashMap<>();
-19
-20    public TreeNode buildTree(int[] inorder, int[] postorder) {
-21        // 1. 将中序数值与索引映射，方便快速定位根节点
-22        for (int i = 0; i < inorder.length; i++) {
-23            inorderMap.put(inorder[i], i);
-24        }
-25        // 2. 后序遍历是从后往前找根
-26        postIdx = postorder.length - 1;
-27        
-28        return helper(postorder, 0, inorder.length - 1);
-29    }
-30
-31    private TreeNode helper(int[] postorder, int inLeft, int inRight) {
-32        // 递归终止条件
-33        if (inLeft > inRight) return null;
-34
-35        // 3. 获取当前根节点的值
-36        int rootVal = postorder[postIdx--];
-37        TreeNode root = new TreeNode(rootVal);
-38
-39        // 4. 获取根节点在中序中的位置，从而划分左右
-40        int index = inorderMap.get(rootVal);
-41
-42        // 【关键点】：必须先建右子树，再建左子树
-43        // 因为在后序数组中，根节点前一个紧接着的是右子树的根
-44        root.right = helper(postorder, index + 1, inRight);
-45        root.left = helper(postorder, inLeft, index - 1);
-46
-47        return root;
-48    }
-49}
+17    private int rootidx;
+18    public TreeNode buildTree(int[] inorder, int[] postorder) {
+19        // map: inorder[i] -> index
+20        Map<Integer, Integer> map = new HashMap<>();
+21        for (int i = 0; i < inorder.length;i++) {
+22            map.put(inorder[i],i);
+23        }
+24
+25        rootidx = postorder.length-1;
+26        
+27        return helper(map, 0, inorder.length-1, postorder);  
+28    }
+29
+30    private TreeNode helper(Map<Integer, Integer> map, int leftStart, int rightEnd, int[] postorder) {
+31        //base case
+32    
+33        if (rightEnd < leftStart) {
+34            return null;
+35
+36        }
+37        int rootval = postorder[rootidx--];
+38        TreeNode root = new TreeNode(rootval);
+39
+40        int split = map.get(rootval);
+41        root.right = helper(map, split+1, rightEnd, postorder);
+42        root.left = helper(map, leftStart, split - 1, postorder);
+43
+44        return root;
+45
+46    }
+47}
+48
+49
+50/**
+51inorder : left root right -> find treenode in left side and right side
+52postorder: left right root -> find root node
+53
+54find the root in an range and its child nodes
+55map: inorder[i] -> index
+56
+57
+58
+59
+60
+61 */
