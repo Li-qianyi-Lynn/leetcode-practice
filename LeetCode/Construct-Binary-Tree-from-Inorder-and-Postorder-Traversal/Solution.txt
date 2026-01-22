@@ -1,0 +1,49 @@
+1/**
+2 * Definition for a binary tree node.
+3 * public class TreeNode {
+4 *     int val;
+5 *     TreeNode left;
+6 *     TreeNode right;
+7 *     TreeNode() {}
+8 *     TreeNode(int val) { this.val = val; }
+9 *     TreeNode(int val, TreeNode left, TreeNode right) {
+10 *         this.val = val;
+11 *         this.left = left;
+12 *         this.right = right;
+13 *     }
+14 * }
+15 */
+16class Solution {
+17    int postIdx;
+18    Map<Integer, Integer> inorderMap = new HashMap<>();
+19
+20    public TreeNode buildTree(int[] inorder, int[] postorder) {
+21        // 1. 将中序数值与索引映射，方便快速定位根节点
+22        for (int i = 0; i < inorder.length; i++) {
+23            inorderMap.put(inorder[i], i);
+24        }
+25        // 2. 后序遍历是从后往前找根
+26        postIdx = postorder.length - 1;
+27        
+28        return helper(postorder, 0, inorder.length - 1);
+29    }
+30
+31    private TreeNode helper(int[] postorder, int inLeft, int inRight) {
+32        // 递归终止条件
+33        if (inLeft > inRight) return null;
+34
+35        // 3. 获取当前根节点的值
+36        int rootVal = postorder[postIdx--];
+37        TreeNode root = new TreeNode(rootVal);
+38
+39        // 4. 获取根节点在中序中的位置，从而划分左右
+40        int index = inorderMap.get(rootVal);
+41
+42        // 【关键点】：必须先建右子树，再建左子树
+43        // 因为在后序数组中，根节点前一个紧接着的是右子树的根
+44        root.right = helper(postorder, index + 1, inRight);
+45        root.left = helper(postorder, inLeft, index - 1);
+46
+47        return root;
+48    }
+49}
