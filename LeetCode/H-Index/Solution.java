@@ -1,56 +1,53 @@
-1import java.util.Arrays;
-2
-3class Solution {
-4    public int hIndex(int[] citations) {
-5        int r = citations.length;
-6        int l = 0;
-7        int res = 0;
-8        while (l <= r) {
-9            int mid = l + (r-l)/2;
-10            int count = 0; // 多少paper citations >= mid
-11            for (int i = 0; i < citations.length; i++) {
-12                if (citations[i] >= mid) {
-13                    count ++;
-14                }
-15            }
-16            if (mid <= count) {
-17                res = Math.max(res, mid);
-18                l = mid+1;
-19            } else {
-20                r = mid-1;
-21            }
-22
-23        }
-24        return res;   
-25    }
-26}
-27
+1class Solution {
+2    public int hIndex(int[] citations) {
+3        int l = 0;
+4        int r = citations.length;
+5        int res= 0;
+6
+7        while (l <= r) {
+8            int mid = l + (r-l) / 2;
+9
+10            int count = 0;
+11            for (int c : citations) {
+12                if (c >= mid) {
+13                    count++;
+14
+15                }
+16            }
+17            if (count >= mid) {
+18                res = mid;
+19                l = mid +1;   
+20
+21            } else {
+22                r = mid-1;
+23            }
+24        }
+25        return res;     
+26    }
+27}
 28/**
-29
-30[1,1,3]
-31   |
-32input: citations[]
-33citations:[3, 0,6,1,5] 5
-34paper id  0. 1. 2 3 4
-35
-36h: this researcher must have h papers: h <= length.citations
+29input int[] 
+30index: ith paper ;
+31citation[i]:  the number of citations a researcher received for their ith paper (likes for the paper i)
+32
+33
+34output: int h: 
+351) must have h paper
+362) each paper has citations larger than k
 37
-38h - index: 3
-391. researcher has published at least h papers: min paper nums 0-5
-402. citation: at least h papers that each has h or more citations
-41
-42h: [0,len of citations] 0,1,2,3,4,5 
-43citations[i] >= mid count ++;
-44
-45[65310]
-461. sorted citations
-472. iterate []
-48
+38 0<= h <= citations.length
+39 binary search
+40
+41citations[m]
+420 1 2 3 4 5 6 
+43      |
+44 check if count of citations[i] >= 3 find three update res ,l = mid+1, 
+45 return res
+46
+47
+48 
 49
 50
 51
 52
-53
-54
-55
-56 */
+53 */
