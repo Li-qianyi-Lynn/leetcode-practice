@@ -1,50 +1,56 @@
-1class Solution {
-2    public int hIndex(int[] citations) {
-3        int l = 0;
-4        int r = citations.length;
-5        int res= 0;
-6
-7        while (l <= r) {
-8            int mid = l + (r-l) /2; // temp h
-9
-10            int count = 0;
-11            for (int c : citations) {
-12                if (c >= mid) count++;
-13            }
-14
-15            if (count < mid) {
-16                r = mid-1;
-17            } else {
-18                res = mid;
-19                l = mid+1;
-20            }
-21        }
-22        return res;   
-23    }
-24}
-25/**
-26input int[] 
-27index: ith paper ;
-28citation[i]:  the number of citations a researcher received for their ith paper (likes for the paper i)
+1import java.util.Arrays;
+2
+3class Solution {
+4    public int hIndex(int[] citations) {
+5        int r = citations.length;
+6        int l = 0;
+7        int res = 0;
+8        while (l <= r) {
+9            int mid = l + (r-l)/2;
+10            int count = 0; // 多少paper citations >= mid
+11            for (int i = 0; i < citations.length; i++) {
+12                if (citations[i] >= mid) {
+13                    count ++;
+14                }
+15            }
+16            if (mid <= count) {
+17                res = Math.max(res, mid);
+18                l = mid+1;
+19            } else {
+20                r = mid-1;
+21            }
+22
+23        }
+24        return res;   
+25    }
+26}
+27
+28/**
 29
-30
-31output: int h: 
-321) must have h paper
-332) each paper has citations larger than k
-34
-35 0<= h <= citations.length
-36 binary search
+30[1,1,3]
+31   |
+32input: citations[]
+33citations:[3, 0,6,1,5] 5
+34paper id  0. 1. 2 3 4
+35
+36h: this researcher must have h papers: h <= length.citations
 37
-38citations[m]
-390 1 2 3 4 5 6 
-40      |
-41 check if citations[i-1] >= 3 find three  ,l = mid, r = len 
-42 return l
-43
+38h - index: 3
+391. researcher has published at least h papers: min paper nums 0-5
+402. citation: at least h papers that each has h or more citations
+41
+42h: [0,len of citations] 0,1,2,3,4,5 
+43citations[i] >= mid count ++;
 44
-45 
-46
-47
+45[65310]
+461. sorted citations
+472. iterate []
 48
 49
-50 */
+50
+51
+52
+53
+54
+55
+56 */
