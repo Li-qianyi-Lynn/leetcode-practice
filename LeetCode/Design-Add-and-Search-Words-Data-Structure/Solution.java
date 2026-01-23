@@ -26,44 +26,43 @@
 26    }
 27    
 28    public boolean search(String word) {
-29        TrieNode node = root;
-30        return helper(root, word, 0);
-31    
-32        
-33    }
-34
-35    private boolean helper(TrieNode root, String word, int index) {
-36        // base case
-37        if (index >= word.length()) {
-38            return root.isEnd;
-39
-40        }
-41        if (word.charAt(index) == '.') {
-42            for (int i = 0; i < 26; i++) {
-43                if (root.children[i] != null) {
-44                    if (helper(root.children[i], word, index+1)) {
-45                        return true; //只要有一条通了
-46                    }
-47                }
-48            }
-49            return false;
-50        } else {
-51            int n = word.charAt(index) - 'a';
-52            if (root.children[n] != null) {
-53                return helper(root.children[n], word, index+1);
-54
-55            } 
-56            return false; // 没路就false
-57        }
-58       
+29        return helper(root, word, 0);
+30    
+31        
+32    }
+33
+34    private boolean helper(TrieNode node, String word, int index) {
+35        // base case
+36        if (index == word.length()) {
+37            return node.isEnd;
+38
+39        }
+40        if (word.charAt(index) == '.') {
+41            for (int i = 0; i < 26; i++) {
+42                if (node.children[i] != null) {
+43                    if (helper(node.children[i], word, index+1)) {
+44                        return true; //只要有一条通了
+45                    }
+46                }
+47            }
+48            return false;
+49        } else {
+50            int n = word.charAt(index) - 'a';
+51            if (node.children[n] != null) {
+52                return helper(node.children[n], word, index+1);
+53
+54            } 
+55            return false; // 没路就false
+56        }
+57       
+58
 59
-60
-61    }
-62}
-63
-64/**
-65 * Your WordDictionary object will be instantiated and called as such:
-66 * WordDictionary obj = new WordDictionary();
-67 * obj.addWord(word);
-68 * boolean param_2 = obj.search(word);
-69 */
+60    }
+61}
+62
+63/**
+64 * Your WordDictionary object will be instantiated and called as such:
+65 * WordDictionary obj = new WordDictionary();
+66 * obj.addWord(word);
+67 * boolean param_2 = obj.search(word);
+68 */
