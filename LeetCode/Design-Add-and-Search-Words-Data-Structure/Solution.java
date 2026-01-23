@@ -56,13 +56,12 @@
 56        }
 57       
 58
-59
-60    }
-61}
-62
-63/**
-64 * Your WordDictionary object will be instantiated and called as such:
-65 * WordDictionary obj = new WordDictionary();
-66 * obj.addWord(word);
-67 * boolean param_2 = obj.search(word);
-68 */
+59    }
+60}
+61
+62/**
+63 * Your WordDictionary object will be instantiated and called as such:
+64 * WordDictionary obj = new WordDictionary();
+65 * obj.addWord(word);
+66 * boolean param_2 = obj.search(word);
+67 */
