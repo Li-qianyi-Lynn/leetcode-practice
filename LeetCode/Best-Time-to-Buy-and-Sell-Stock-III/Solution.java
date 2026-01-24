@@ -1,0 +1,1 @@
+mostMoneyInPocket = max(mostMoneyInPocket, firstTransactionProfit - currentPrice)
