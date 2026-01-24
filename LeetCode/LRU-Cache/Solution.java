@@ -9,107 +9,108 @@
 9head.                          tail
 10 */
 11
-12class LRUCache {
-13    class Node {
-14        int key, val;
-15        Node prev, next;
-16        Node(int key, int val) {
-17            this.key = key;
-18            this.val = val;
-19
-20        }
-21    }
-22
-23    private int capacity;
-24    private Map<Integer, Node> map;
-25    private Node head;
-26    private Node tail;
-27
-28    public LRUCache(int capacity) {
-29        this.capacity = capacity;
-30        this.map = new HashMap<>();
-31        head = new Node(-1,-1);
-32        tail = new Node(-1,-1);
-33        head.next = tail;
-34        tail.prev = head;
-35            
-36    }
-37    // remove add
-38    /**
-39    
-40    (-1) <->(1) <-> (2) <->(3) <-> (-1)
-41    |                               |
-42    head.                       tail
-43    
+12class Node {
+13        int key, val;
+14        Node prev, next;
+15        Node(int key, int val) {
+16            this.key = key;
+17            this.val = val;
+18
+19        }
+20    }
+21class LRUCache {
+22    
+23
+24    private int capacity;
+25    private Map<Integer, Node> map;
+26    private Node head;
+27    private Node tail;
+28
+29    public LRUCache(int capacity) {
+30        this.capacity = capacity;
+31        this.map = new HashMap<>();
+32        head = new Node(-1,-1);
+33        tail = new Node(-1,-1);
+34        head.next = tail;
+35        tail.prev = head;
+36            
+37    }
+38    // remove add
+39    /**
+40    
+41    (-1) <->(1) <-> (2) <->(3) <-> (-1)
+42    |                               |
+43    head.                       tail
 44    
-45     */
-46
-47    private void detach(Node node) {
-48        Node preNode = node.prev;
-49        Node nexNode = node.next;
-50
-51        preNode.next = nexNode;
-52        nexNode.prev = preNode;
-53
-54        // node.prev.next = node.next;
-55        // node.next.prev = node.prev;
-56    }
-57
-58// 先插再改
-59    private void add(Node node) {
-60        node.prev = tail.prev;
-61        node.next = tail;
-62
-63        tail.prev.next = node;
-64        tail.prev = node;
-65
-66    }
-67
-68    public int get(int key) {
-69        // not exist
-70        if (!map.containsKey(key)) {
-71            return -1;
-72
-73        }
-74        // get the node 
-75        Node node = map.get(key);
-76        
-77        detach(node);
-78        add(node);
-79        return node.val;
-80        
-81    }
-82    
-83    public void put(int key, int value) {
-84        
-85
-86        if (map.containsKey(key)) {
-87            Node node = map.get(key);
-88            detach(node);
-89            node.val = value;
-90            add(node);
-91           
-92        } else {
-93            
-94            if (map.size() >= capacity) {
-95                Node lru = head.next;
-96                detach(lru);
-97                map.remove(lru.key);
-98
-99            }
-100             
-101            Node newN = new Node(key, value);
-102            map.put(key,newN);
-103            add(newN);
-104
-105        }
-106        
-107    }
-108}
-109
-110/**
-111 * Your LRUCache object will be instantiated and called as such:
-112 * LRUCache obj = new LRUCache(capacity);
-113 * int param_1 = obj.get(key);
-114 * obj.put(key,value);
-115 */
+45    
+46     */
+47
+48    private void detach(Node node) {
+49        Node preNode = node.prev;
+50        Node nexNode = node.next;
+51
+52        preNode.next = nexNode;
+53        nexNode.prev = preNode;
+54
+55        // node.prev.next = node.next;
+56        // node.next.prev = node.prev;
+57    }
+58
+59// 先插再改
+60    private void add(Node node) {
+61        node.prev = tail.prev;
+62        node.next = tail;
+63
+64        tail.prev.next = node;
+65        tail.prev = node;
+66
+67    }
+68
+69    public int get(int key) {
+70        // not exist
+71        if (!map.containsKey(key)) {
+72            return -1;
+73
+74        }
+75        // get the node 
+76        Node node = map.get(key);
+77        
+78        detach(node);
+79        add(node);
+80        return node.val;
+81        
+82    }
+83    
+84    public void put(int key, int value) {
+85        
+86
+87        if (map.containsKey(key)) {
+88            Node node = map.get(key);
+89            detach(node);
+90            node.val = value;
+91            add(node);
+92           
+93        } else {
+94            
+95            if (map.size() >= capacity) {
+96                Node lru = head.next;
+97                detach(lru);
+98                map.remove(lru.key);
+99
+100            }
+101             
+102            Node newN = new Node(key, value);
+103            map.put(key,newN);
+104            add(newN);
+105
+106        }
+107        
+108    }
+109}
+110
+111/**
+112 * Your LRUCache object will be instantiated and called as such:
+113 * LRUCache obj = new LRUCache(capacity);
+114 * int param_1 = obj.get(key);
+115 * obj.put(key,value);
+116 */
