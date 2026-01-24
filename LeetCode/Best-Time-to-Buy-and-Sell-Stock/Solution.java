@@ -11,12 +11,12 @@
 11        while (sell < prices.length) { // diff day
 12            if (prices[buy] >= prices[sell]) {
 13                buy = sell;
-14                sell++;
-15
-16            } else {
-17                profit = Math.max(profit, prices[sell]-prices[buy]);
-18                sell++;
-19            }
+14
+15            } else {
+16                profit = Math.max(profit, prices[sell]-prices[buy]);
+17            }
+18            sell++;
+19
 20
 21        }
 22        return profit == Integer.MIN_VALUE ? 0 : profit;
