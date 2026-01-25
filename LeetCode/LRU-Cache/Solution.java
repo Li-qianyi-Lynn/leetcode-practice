@@ -1,95 +1,96 @@
-1class Node { // doubly linked List
-2    int key;
-3    int value;
-4    Node prev;
-5    Node next;
-6    Node (int key, int value) {
-7        this.key = key;
-8        this.value = value;
-9
-10    }
-11}
-12
-13class LRUCache {
-14
-15    private int capacity;
-16    private Map<Integer, Node> map; // key -> node
-17    private Node head;
-18    private Node tail;
-19
-20    public LRUCache(int capacity) {
-21        this.capacity = capacity;
-22        this.map = new HashMap<>(); // map 初始化yaozhuyi
-23        head = new Node(-1,-1);
-24        tail = new Node(-1,-1);
-25        head.next = tail;
-26        tail.prev = head;
-27
-28        
-29    }
-30    
-31    public int get(int key) {
-32        // check if the map contains key, if no ,return -1; if yes ,we need return the value, and update the linkedList
-33        // -get the node,return node.val
-34        // -detach the node, and then add it to the end of the linkedList
-35        if (!map.containsKey(key)) {
-36            return -1;
-37
-38        }
-39
-40        Node node = map.get(key);
-41        detach(node);
-42        addtoEnd(node);
-43
-44        return node.value;
-45        
-46    }
-47    
-48    public void put(int key, int value) {
-49        // check if the map contains key, if yes, update the node.value, detach the node; if no, put a new pair into the map, add the new node to the end of the linkedlist; if size > capacity, detach the first node 
-50        if (map.containsKey(key)) {
-51            Node node = map.get(key);
-52            node.value = value;
-53            detach(node);
-54            addtoEnd(node);
+1class Node {
+2    int key, val;
+3    Node prev, next; // why
+4    Node (int key, int val) {
+5        this.key = key;
+6        this.val = val;
+7    }
+8}
+9class LRUCache {
+10    private int capacity;
+11    private Map<Integer, Node> map;
+12    private Node head;
+13    private Node tail;
+14  
+15    public LRUCache(int capacity) {
+16        this.capacity = capacity;
+17        this.map = new HashMap<>();
+18        head = new Node(-1,-1);
+19        tail = new Node(-1,-1);
+20
+21        head.next = tail;
+22        tail.prev = head;
+23        
+24    }
+25    
+26    public int get(int key) {
+27        if (!map.containsKey(key)) {
+28            return -1;
+29
+30        } else {
+31            Node node = map.get(key);
+32            detach(node);
+33            addToEnd(node);
+34
+35            return node.val;
+36        }
+37        
+38    }
+39    
+40    public void put(int key, int value) {
+41        if (map.containsKey(key)) {
+42            Node node = map.get(key);
+43            node.val = value;
+44            detach(node);
+45            addToEnd(node);
+46
+47        } else {
+48            Node newNode = new Node(key,value);
+49            map.put(key,newNode);
+50            addToEnd(newNode);
+51            if (map.size() > capacity) {
+52                Node lru = head.next;
+53                detach(lru);
+54                map.remove(lru.key);
 55
-56        } else {
-57            Node newNode = new Node(key,value);
-58            map.put(key,newNode);
-59            addtoEnd(newNode);
-60            if (map.size() > capacity) {
-61                Node lru = head.next;
-62                detach(lru);
-63                map.remove(lru.key);
-64            }
-65        }
-66        
-67    }
-68
-69    private void detach(Node node) { // detach this node
-70        Node preN = node.prev;
-71        Node nextN = node.next;
+56            }
+57        }
+58        
+59    }
+60
+61    private void detach(Node node) {
+62        Node preNode = node.prev;
+63        Node nextNode = node.next;
+64
+65        preNode.next =nextNode;
+66        nextNode.prev = preNode;
+67
+68    }
+69
+70    private void addToEnd(Node node) {
+71        Node tailPre = tail.prev;
 72
-73        preN.next = nextN;
-74        nextN.prev = preN;
-75
-76    }
+73        node.prev = tailPre;
+74        node.next = tail;
+75        tailPre.next = node;
+76        tail.prev = node;
 77
-78    private void addtoEnd(Node node) {
-79        Node tailPre = tail.prev;
-80        
-81        node.prev = tailPre;
-82        node.next = tail;
-83        tail.prev = node;
-84        tailPre.next = node;
+78    }
+79}
+80
+81/**
+82doubly linked list : node - > key,val prev next
+83Map: Integer, Node key -> Node
+84dummy head: head, tail
 85
-86
-87    }
-88}
+86addToEnd
+87detach
+88
 89
-90/**
-91 * Your LRUCache object will be instantiated and called as such:
-92 * LRUCache obj = new LRUCache(capacity);
-93 * int param_1 = obj.get(key);
-94 * obj.put(key,value);
-95 */
+90 */
+91/**
+92 * Your LRUCache object will be instantiated and called as such:
+93 * LRUCache obj = new LRUCache(capacity);
+94 * int param_1 = obj.get(key);
+95 * obj.put(key,value);
+96 */
