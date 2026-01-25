@@ -1,35 +1,46 @@
 1class Solution {
 2    public int maxProfit(int[] prices) {
-3        if (prices.length == 1) {
-4            return 0;
-5        }
-6        int buy = 0;
-7        int sell = 1;
-8        int profit = 0;
-9        while (sell < prices.length) {
-10            if (prices[sell] > prices[buy]) {
-11                profit = Math.max(prices[sell]- prices[buy], profit);
-12            } else {
+3        // edge case
+4        if (prices.length == 1) {
+5            return 0;
+6        }
+7
+8        int profit = Integer.MIN_VALUE;
+9        int buy = 0;
+10        int sell = 1;
+11        while (sell < prices.length) { // diff day
+12            if (prices[buy] >= prices[sell]) {
 13                buy = sell;
-14            }
-15            sell++;
-16
-17        }
-18        return profit;
-19
-20        
-21        
-22    }
-23}
-24
-25
-26/*
-27buy:0
-28sell:1
-29if prices[sell] > prices[buy] update profit, sell ++
-30else sell = buy
-31*/
+14                sell++;
+15
+16            } else {
+17                profit = Math.max(profit, prices[sell]-prices[buy]);
+18                sell++;
+19            }
+20
+21        }
+22        return profit == Integer.MIN_VALUE ? 0 : profit;
+23        
+24        
+25    }
+26}
+27
+28/**
+29
+30input: int[] prices 
+31output: int  maximum profit  or 0
 32
-33
-34
-35
+33two pointer
+34[7,6,4,3,1]
+35l
+36          r
+37if prices[l] >= prices[r];
+38move left pointer
+39else update profit, move right pointer
+40
+41[2,1,4]
+42l
+43     r
+44
+452
+46 */
