@@ -1,33 +1,27 @@
 1class Solution {
 2    public int maxProfit(int[] prices) {
-3        if (prices.length == 1) {
+3        if (prices.length == 0) {
 4            return 0;
 5
 6        }
-7        int total = 0;
-8        for (int i = 1; i < prices.length; i++) {
-9            if (prices[i]> prices[i-1]) {
-10                int diff = prices[i]- prices[i-1];
-11                total += diff;
-12
+7        int res = 0;
+8        int buy = 0;
+9        int sell = 1;
+10        while (sell < prices.length) {
+11            if (prices[sell] > prices[buy]) {
+12                res += prices[sell] - prices[buy];
 13            }
-14
-15        }
-16        return total;
-17    
-18
-19    }
-20}
-21
-22/**
-23buy and sell multiple times
-24[7,1,5,3,6,4]
-25
-26[1,2,2,4,5]
-27total += diff 
-28
-29
-30
-31
-32
-33 */
+14            buy++;
+15            sell++;
+16            
+17
+18        }
+19        return res;
+20        
+21    }
+22}
+23
+24/**
+25profit  += prices[sell] - prices[buy]
+26
+27 */
