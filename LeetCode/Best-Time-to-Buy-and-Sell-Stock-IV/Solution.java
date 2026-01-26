@@ -1,51 +1,41 @@
 1class Solution {
 2    public int maxProfit(int k, int[] prices) {
-3        int len = prices.length;
-4        
-5        int[][][] dp = new int[len][k+1][2]; //days | times | status
-6
-7        //pruning
-8        if (k > len/2) { //limited times, use greedy
-9            int total = 0;
-10            for (int i = 1; i < len; i++) {
-11                if (prices[i] > prices[i-1]) { // can make a profit
-12                    total += prices[i] - prices[i-1];
+3        int n = prices.length;
+4        if (n <= 1 || k <= 0) return 0;
+5
+6        // 特殊情况优化：如果 k 很大（超过天数的一半），
+7        // 那么就退化成了“不限次数交易”（122题），可以直接用贪心。
+8        if (k >= n / 2) {
+9            int maxProfit = 0;
+10            for (int i = 1; i < n; i++) {
+11                if (prices[i] > prices[i - 1]) {
+12                    maxProfit += prices[i] - prices[i - 1];
 13                }
 14            }
-15            return total;
-16
-17        }
-18        
-19        
-20        // day0 
-21
-22        for (int i = 0; i < k+1; i++) {
-23            dp[0][i][0] = -prices[0]; // after bought what i have
-24            dp[0][i][1] = 0;  // sold
-25        }
-26
-27        for (int i = 1; i< len; i++) { // for days
-28            for (int j = 1; j < k+1; j++) { // for transactions
-29                dp[i][j][0] = Math.max(dp[i-1][j][0], dp[i-1][j-1][1]-prices[i]);
-30                dp[i][j][1] = Math.max(dp[i-1][j][1], dp[i][j][0]+prices[i]);
-31            }
-32
-33        }
-34        return dp[len-1][k][1];
-35
-36        
-37    }
-38}
-39
-40/**
-41input:
-42-k: only k transactions
-43-int[] prices
-44
-45output: 
-46int: max profit
-47
-48dp: status change, profit is only depends on the previous status
-49
-50
-51 */
+15            return maxProfit;
+16        }
+17
+18        // 定义状态数组
+19        // buy[j] 表示第 j 次买入后的最大收益
+20        // sell[j] 表示第 j 次卖出后的最大收益
+21        int[] buy = new int[k + 1];
+22        int[] sell = new int[k + 1];
+23
+24        // 初始化：买入状态初始化为负无穷或第一天的负股价
+25        for (int j = 0; j <= k; j++) {
+26            buy[j] = -prices[0];
+27            sell[j] = 0;
+28        }
+29
+30        for (int i = 1; i < n; i++) {
+31            for (int j = 1; j <= k; j++) {
+32                // 更新第 j 次买入：取“保持现状”或“在上次卖出的基础上买入”
+33                buy[j] = Math.max(buy[j], sell[j - 1] - prices[i]);
+34                // 更新第 j 次卖出：取“保持现状”或“在这次买入的基础上卖出”
+35                sell[j] = Math.max(sell[j], buy[j] + prices[i]);
+36            }
+37        }
+38
+39        return sell[k];
+40    }
+41}
