@@ -5,21 +5,21 @@
 5
 6        // day 0:
 7        for (int i = 1; i <= 2; i++) {
-8            dp[0][i][0] = -prices[0]; // buy
-9            dp[0][i][1] = 0;// sell
+8            dp[0][i][0] = 0; // unhold
+9            dp[0][i][1] = -prices[0];// hold
 10        }
 11
 12        for (int i = 1; i < n; i++) {
 13            // 1st time
-14            dp[i][1][0] = Math.max(dp[i-1][1][0], -prices[i]);
-15            dp[i][1][1] = Math.max(dp[i-1][1][1], dp[i][1][0]+prices[i]);
+14            dp[i][1][1] = Math.max(dp[i-1][1][1], -prices[i]);
+15            dp[i][1][0] = Math.max(dp[i-1][1][0], dp[i][1][1]+prices[i]);
 16
 17            //2nd time
-18            dp[i][2][0] = Math.max(dp[i-1][2][0],dp[i][1][1]-prices[i]);
-19            dp[i][2][1] = Math.max(dp[i-1][2][1],dp[i][2][0]+ prices[i]);
+18            dp[i][2][1] = Math.max(dp[i-1][2][1],dp[i][1][0]-prices[i]);
+19            dp[i][2][0] = Math.max(dp[i-1][2][0],dp[i][2][1]+ prices[i]);
 20
 21        }
-22        return dp[n-1][2][1];
+22        return dp[n-1][2][0];
 23        
 24    }
 25}
