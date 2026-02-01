@@ -1,66 +1,102 @@
 1class Solution {
-2    // use trie
-3    class TrieNode {
-4        TrieNode[] children = new TrieNode[26];
-5        String target = null; 
-6    }
+2    class TrieNode {
+3        TrieNode[] children = new TrieNode[26];
+4        String word = null;
+5    }
+6
 7
 8    public List<String> findWords(char[][] board, String[] words) {
-9        List<String> res = new ArrayList<>();
-10        TrieNode root = buildTrie(words);
-11
-12        for (int i = 0; i < board.length; i++) {
-13            for (int j = 0; j < board[0].length; j++) {
-14                dfs(board, i, j, root, res);
-15            }
+9        TrieNode trie = new TrieNode();
+10
+11        List<String> res = new ArrayList<>(); // use dfs to update res
+12        int m = board.length;
+13        int n = board[0].length;
+14        for (String word : words) {
+15            trieBuilder(word,trie);
 16        }
-17        return res;
-18    }
-19
-20    private void dfs(char[][] board, int i, int j, TrieNode p, List<String> res) {
-21        char c = board[i][j];
-22        if (c == '#') return; 
-23        
-24        if (p.children[c - 'a'] == null) return; 
-25        
-26        p = p.children[c - 'a'];
-27            
-28        if (p.target != null) {   // 找到了一个单词,add to res
-29            res.add(p.target);
-30            p.target = null;     // 去重：防止同一个单词被多次添加
-31        }
-32
-33        board[i][j] = '#'; // 标记已访问
-34        
-35        // 上下左右探索
-36        if (i > 0) dfs(board, i - 1, j, p, res);
-37        if (j > 0) dfs(board, i, j - 1, p, res);
-38        if (i < board.length - 1) dfs(board, i + 1, j, p, res);
-39        if (j < board[0].length - 1) dfs(board, i, j + 1, p, res);
-40
-41        board[i][j] = c; // 恢复现场, 其他路径可能要用
-42    }
-43
-44    private TrieNode buildTrie(String[] words) {
-45        TrieNode root = new TrieNode();
-46        for (String word : words) {
-47            TrieNode p = root;
-48            for (char c : word.toCharArray()) {
-49                int i = c - 'a';
-50                if (p.children[i] == null) {
-51                    p.children[i] = new TrieNode();
-52                }
-53                p = p.children[i];
-54            }
-55            p.target = word;
-56        }
-57        return root;
-58    }
-59}
-60
-61/**
-62iterate board, check if trie has the certain word
-631. build trie
-642. dfs
+17
+18
+19        for (int i = 0; i < m; i++) {
+20            for (int j = 0; j < n;j++) {
+21                dfs(board,i,j, res,trie); 
+22            }
+23
+24        }
+25        return res;   
+26    }
+27
+28    private void dfs(char[][] board, int i, int j, List<String> res, TrieNode trie) {
+29        // base case '#'
+30        char c = board[i][j];
+31        int index = c - 'a';
+32        if (c == '#' || trie.children[c - 'a'] == null) {
+33            return;
+34        }
+35
+36        // 1. 核心修改：移动到子节点
+37        TrieNode nextNode = trie.children[c - 'a'];
+38
+39        // 2. 核心修改：从子节点中提取单词
+40        if (nextNode.word != null) {
+41            res.add(nextNode.word);
+42            nextNode.word = null; // 找到后置空，防止重复添加
+43        }
+44
+45
+46        char temp = board[i][j];
+47        board[i][j] = '#';
+48
+49        if (i > 0) {
+50            dfs(board, i-1,j,res,nextNode);
+51        }
+52        if (i < board.length-1) {
+53            dfs(board, i+1, j,res,nextNode);
+54        }
+55
+56        if (j > 0) {
+57            dfs(board,i,j-1,res,nextNode);
+58        }
+59
+60        if (j < board[0].length-1) {
+61            dfs(board,i,j+1,res,nextNode);
+62
+63        }
+64        board[i][j] = temp;
 65
-66 */
+66    }
+67
+68    private void trieBuilder(String word, TrieNode trie) { // 遍历char in words , put chars in the trieNode
+69        TrieNode cur = trie;
+70        for (char c : word.toCharArray()) {
+71            int index = c - 'a';
+72            if (index >= 26 || index < 0) {
+73                return;
+74            }
+75
+76            if (cur.children[index] == null) {
+77                cur.children[index] = new TrieNode();
+78            }
+79            cur = cur.children[index];
+80        }
+81        cur.word = word;
+82
+83    }
+84}
+85/**
+86trienode class
+87{
+88children: TrieNode[26]
+89String word
+90}
+91
+92triebuilder: init trie based on the words
+93
+94dfs: iterate board 去判断board【i】【j】 char 有没有符合trie
+954 directions
+96
+97
+98root
+990 1 2 ...18. 25
+100           0 ....25 
+101           0 .. 25
+102 */
