@@ -1,0 +1,1 @@
+ - if you can't place a queen on a row (meaning that every col position was attacked) the backtrack
