@@ -9,7 +9,7 @@
 9        // break point
 10        int left = 0;
 11        int right = m;
-12        int totalLeft = (m+ n+1)/2;
+12        int totalLeft = (m+n+1)/2;
 13
 14        while (left <= right) {
 15            int i = left + (right - left)/2;
@@ -17,7 +17,7 @@
 17
 18            if (i > 0 && nums1[i-1] > nums2[j]) {
 19                right = i -1;
-20            } else if (i < m && nums1[i] < nums2[j-1] ) {
+20            } else if (i < m && j > 1 && nums1[i] < nums2[j-1] ) {
 21                left = i+1;
 22            } else {
 23                // 找到分割点了。要找最大值
@@ -46,39 +46,38 @@
 46                    rightMin = Math.min(nums1[i], nums2[j]);
 47                }
 48                
-49                return (rightMin + leftMax) / 2.0;
-50               
-51            }
-52
-53        }
-54        return 0.0;   
-55    }
-56}
-57
-58/**
-59[1 | 3].  [2]|
-60在两个数组里切分，i，j使得
-61if j < n && num1[i-1] <= nums2[j]
-62
-63or i < m && nums2[j-1] < nums1[i]
-64
-65【1 2 ｜ 3】
-66
-67找到切分点之后，如果m+n 是奇数，中位数就是切分后左边的最大值；偶数，是左边最大值+ 右边最小值取平均数
-68
-691. 找切分点： j = totalleft - i >= 0 所以我们会希望i 在短数组里取，binary search 来做
-70left = 0;
-71right = m;
-72i = left + (right - left)/2
-73j = （m+ n +1）/ 2 - i
-74num1[i-1] > nums2[j]
-75right = i -1;
-76
-77nums1[i] <  nums2[j-1] 
-78left = i+1
+49                return (rightMin + leftMax) / 2.0; 
+50            }
+51
+52        }
+53        return 0.0;   
+54    }
+55}
+56
+57/**
+58[1 | 3].  [2]|
+59在两个数组里切分，i，j使得
+60if j < n && num1[i-1] <= nums2[j]
+61
+62or i < m && nums2[j-1] < nums1[i]
+63
+64【1 2 ｜ 3】
+65
+66找到切分点之后，如果m+n 是奇数，中位数就是切分后左边的最大值；偶数，是左边最大值+ 右边最小值取平均数
+67
+681. 找切分点： j = totalleft - i >= 0 所以我们会希望i 在短数组里取，binary search 来做
+69left = 0;
+70right = m;
+71i = left + (right - left)/2
+72j = （m+ n +1）/ 2 - i
+73num1[i-1] > nums2[j]
+74right = i -1;
+75
+76nums1[i] <  nums2[j-1] 
+77left = i+1
+78
 79
-80
-812. 找左右边最大值
+802. 找左右边最大值
+81
 82
-83
-84 */
+83 */
