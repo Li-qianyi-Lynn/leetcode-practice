@@ -13,10 +13,10 @@
 13    public ListNode detectCycle(ListNode head) {
 14        if (head == null || head.next == null) return null;
 15
-16        ListNode slow = head;
-17        ListNode fast = head;
+16        ListNode fast = head;
+17        ListNode slow = head;
 18
-19        while (fast!= null && fast.next != null ) {
+19        while (fast != null && fast.next != null) {
 20            slow = slow.next;
 21            fast = fast.next.next;
 22
@@ -28,10 +28,8 @@
 28
 29                }
 30                return slow;
-31
-32            }
-33
-34        }
-35        return null;  
-36    }
-37}
+31            }
+32        }
+33        return null;
+34    }
+35}
