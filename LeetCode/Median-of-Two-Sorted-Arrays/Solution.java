@@ -2,82 +2,91 @@
 2    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
 3        int m = nums1.length;
 4        int n = nums2.length;
-5        if (n < m) {
-6            return findMedianSortedArrays(nums2, nums1);
-7        }
-8
-9        // break point
-10        int left = 0;
-11        int right = m;
+5
+6        if (m > n) {
+7            return findMedianSortedArrays(nums2, nums1);
+8        }
+9
+10        int l = 0;
+11        int r = m;
 12        int totalLeft = (m+n+1)/2;
 13
-14        while (left <= right) {
-15            int i = left + (right - left)/2;
+14        while (l <= r) {
+15            int i = l + (r - l)/2;
 16            int j = totalLeft - i;
 17
-18            if (i > 0 && nums1[i-1] > nums2[j]) {
-19                right = i -1;
-20            } else if (i < m && j > 1 && nums1[i] < nums2[j-1] ) {
-21                left = i+1;
-22            } else {
-23                // 找到分割点了。要找最大值
-24                //left max
-25                int leftMax = Integer.MIN_VALUE;
-26                if (i == 0) {
-27                    leftMax = nums2[j-1];
-28                } else if (j == 0) {
-29                    leftMax = nums1[i-1];
-30                } else {
-31                    leftMax = Math.max(nums1[i-1], nums2[j-1]);
-32                }
-33                
-34                if ((m+ n) % 2 == 1) {
-35                    return leftMax;  
-36                }
-37
-38                int rightMin = Integer.MAX_VALUE;
-39                if (i == m) {
-40                    rightMin = nums2[j];
-41
+18    
+19            if (i >= 1 && nums1[i-1] > nums2[j]) {
+20                r = i-1;
+21
+22            } else if ( i < m && nums2[j-1] > nums1[i]) {
+23                l = i+1;
+24            } else { // find the break point
+25                // leftmax rightmin
+26                double leftMax = Integer.MIN_VALUE;
+27                if (i == 0) {
+28                    leftMax = nums2[j-1];
+29                } else if (j == 0) {
+30                    leftMax = nums1[i-1];
+31
+32                } else {
+33                    leftMax = Math.max(nums1[i-1], nums2[j-1]);
+34                }
+35                if ((m+n) % 2 == 1) {
+36                    return leftMax;
+37                }
+38
+39                double rightMin = Integer.MAX_VALUE;
+40                if (i == m) {
+41                    rightMin = nums2[j];
 42                } else if (j == n) {
 43                    rightMin = nums1[i];
-44
-45                } else {
-46                    rightMin = Math.min(nums1[i], nums2[j]);
-47                }
-48                
-49                return (rightMin + leftMax) / 2.0; 
-50            }
-51
-52        }
-53        return 0.0;   
-54    }
-55}
-56
-57/**
-58[1 | 3].  [2]|
-59在两个数组里切分，i，j使得
-60if j < n && num1[i-1] <= nums2[j]
-61
-62or i < m && nums2[j-1] < nums1[i]
-63
-64【1 2 ｜ 3】
-65
-66找到切分点之后，如果m+n 是奇数，中位数就是切分后左边的最大值；偶数，是左边最大值+ 右边最小值取平均数
-67
-681. 找切分点： j = totalleft - i >= 0 所以我们会希望i 在短数组里取，binary search 来做
-69left = 0;
-70right = m;
-71i = left + (right - left)/2
-72j = （m+ n +1）/ 2 - i
-73num1[i-1] > nums2[j]
-74right = i -1;
+44                } else {
+45                    rightMin = Math.min(nums1[i], nums2[j]);
+46                }
+47
+48                return (rightMin + leftMax) / 2.0;
+49            }
+50
+51        }
+52        return 0.0;    
+53    }
+54}
+55
+56/**
+57
+58input：nums1[] nums2[] sorted ascend
+59output: double
+60
+61binary search
+62|1  3  4.     2. | 5
+63  i-1. i      j-1.  j
+64left: 123
+65right: 56
+66
+671. break point 
+68left = 0;
+69right = m;
+70
+71nums1: i 取了 i 个数字
+72nums2: j 
+73nums1[i-1] <= nums2[j]
+74nums2[j-1] <= nums1[i]
 75
-76nums1[i] <  nums2[j-1] 
-77left = i+1
-78
-79
-802. 找左右边最大值
-81
-82
-83 */
+76以nums1 为定位
+77
+78left = 0;
+79right = m;
+80
+81i = left + (right - left)/2
+82j = totalLeft - i；
+83
+84while (left <= right) 
+85condition1 nums1[i-1] > nums2[j] i-1>= 0 ;right = i-1;
+86condition2 nums2[j-1] > nums1[i] j-1 >= 0; left = i+1;
+87
+88
+892. maxLeft. minRight -> median
+90edge cases
+91
+92 */
