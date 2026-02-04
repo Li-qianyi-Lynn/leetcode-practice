@@ -25,10 +25,13 @@
 25                while (slow != fast) {
 26                    slow = slow.next;
 27                    fast = fast.next;
-28                }
-29                return slow;
-30            }
-31        }
-32        return null;  
-33    }
-34}
+28
+29                }
+30                return slow;
+31
+32            }
+33
+34        }
+35        return null;  
+36    }
+37}
