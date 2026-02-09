@@ -15,38 +15,27 @@
 15 */
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
-18        List<Integer> res = new ArrayList<>();
-19        Deque<TreeNode> deque = new LinkedList<>();
-20
-21        if (root == null) {
-22            return res;
-23
-24        }
-25        deque.addLast(root);
-26
-27        while (!deque.isEmpty()) {
-28            int levelNodes = deque.size();
-29            for (int i = 1;i <= levelNodes;i++) {
-30                TreeNode poll = deque.pollFirst();
-31                if (poll.left != null) {
-32                    deque.addLast(poll.left);
-33
-34                }
-35                if (poll.right != null) {
-36                    deque.addLast(poll.right);
-37
-38                }
-39
-40                if (i == levelNodes) {
-41                    res.add(poll.val);
-42
-43                }
-44
-45            }   
-46
-47        }
-48        return res;
-49
-50        
-51    }
-52}
+18        // edge case
+19        List<Integer> res = new ArrayList<>();
+20        if (root == null) return res;
+21        Deque<TreeNode> deque = new LinkedList<>();
+22        deque.offerLast(root);
+23        while (!deque.isEmpty()) {
+24            int size = deque.size();
+25
+26            for (int i = 1; i <= size; i++) {
+27                TreeNode poll = deque.pollFirst();
+28                if (poll.left != null) {
+29                    deque.offerLast(poll.left);
+30                }
+31                if (poll.right != null) {
+32                    deque.offerLast(poll.right);
+33                }
+34                if (i == size) {
+35                    res.add(poll.val);
+36                }
+37            }
+38        }
+39        return res;     
+40    }
+41}
