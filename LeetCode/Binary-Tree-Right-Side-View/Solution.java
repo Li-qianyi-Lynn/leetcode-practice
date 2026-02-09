@@ -16,26 +16,26 @@
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
 18        // edge case
-19        List<Integer> res = new ArrayList<>();
-20        if (root == null) return res;
-21        Deque<TreeNode> deque = new LinkedList<>();
-22        deque.offerLast(root);
-23        while (!deque.isEmpty()) {
-24            int size = deque.size();
-25
-26            for (int i = 1; i <= size; i++) {
-27                TreeNode poll = deque.pollFirst();
-28                if (poll.left != null) {
-29                    deque.offerLast(poll.left);
-30                }
-31                if (poll.right != null) {
-32                    deque.offerLast(poll.right);
+19        if (root == null) return new ArrayList<>();
+20
+21        List<Integer> result = new ArrayList<>();
+22        Queue<TreeNode> queue = new LinkedList<>();
+23        queue.offer(root);// first level
+24
+25        while (!queue.isEmpty()) {
+26            int levelSize = queue.size(); // Number of nodes at the current level
+27            for (int i = 0; i < levelSize; i++) {
+28                TreeNode currentNode = queue.poll();
+29                
+30                // If it's the last element of the current level, add to result
+31                if (i == levelSize - 1) {
+32                    result.add(currentNode.val);
 33                }
-34                if (i == size) {
-35                    res.add(poll.val);
-36                }
+34                
+35                if (currentNode.left != null) queue.offer(currentNode.left);
+36                if (currentNode.right != null) queue.offer(currentNode.right);
 37            }
 38        }
-39        return res;     
+39        return result;
 40    }
 41}
