@@ -15,27 +15,21 @@
 15 */
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
-18        // edge case
-19        if (root == null) return new ArrayList<>();
-20
-21        List<Integer> result = new ArrayList<>();
-22        Queue<TreeNode> queue = new LinkedList<>();
-23        queue.offer(root);// first level
-24
-25        while (!queue.isEmpty()) {
-26            int levelSize = queue.size(); // Number of nodes at the current level
-27            for (int i = 0; i < levelSize; i++) {
-28                TreeNode currentNode = queue.poll();
-29                
-30                // If it's the last element of the current level, add to result
-31                if (i == levelSize - 1) {
-32                    result.add(currentNode.val);
-33                }
-34                
-35                if (currentNode.left != null) queue.offer(currentNode.left);
-36                if (currentNode.right != null) queue.offer(currentNode.right);
-37            }
-38        }
-39        return result;
-40    }
-41}
+18    List<Integer> result = new ArrayList<>();
+19    dfs(root, 0, result);
+20    return result;
+21}
+22
+23    private void dfs(TreeNode node, int depth, List<Integer> result) {
+24        if (node == null) return;
+25
+26        // If depth matches result size, this is the first (rightmost) node at this level
+27        if (depth == result.size()) {
+28            result.add(node.val);
+29        }
+30
+31        // Prioritize Right child to ensure it's processed first at each depth
+32        dfs(node.right, depth + 1, result);
+33        dfs(node.left, depth + 1, result);
+34    }
+35}
