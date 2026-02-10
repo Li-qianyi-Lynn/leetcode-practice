@@ -2,11 +2,11 @@
 2    public int removeElement(int[] nums, int val) {
 3        if (nums.length == 0) {
 4            return 0;
-5
-6        }
-7
-8        int l = 0;
-9        int r = nums.length-1;
+5        }
+6
+7        int l = 0; // count
+8        int r = nums.length-1;
+9
 10        while (l <= r) {
 11            if (nums[l] == val) {
 12                nums[l] = nums[r];
@@ -14,18 +14,20 @@
 14            } else {
 15                l++;
 16            }
-17
-18        }
-19        return l;
-20        
-21    }
-22}
-23
-24/**
-25two pointer
-26
-27l: if == val, swap
-28
-29
-30
-31 */
+17        }
+18        return l;
+19
+20
+21        
+22    }
+23}
+24
+25/**
+26[5,4,3] 5
+27return k
+28not equal.   equal
+29valid.      invalid
+30l            r
+31
+32
+33 */
