@@ -1,33 +1,22 @@
 1class Solution {
 2    public int majorityElement(int[] nums) {
-3        if (nums.length == 1) {
-4            return nums[0];
-5
+3        Map<Integer, Integer> map = new HashMap<>();
+4        for (int num : nums) {
+5            map.put(num, map.getOrDefault(num,0)+1);
 6        }
 7
-8        Map<Integer, Integer> map = new HashMap<>();
-9        for (int i = 0; i < nums.length; i++) {
-10            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
-11        }
+8        int target = nums.length / 2;
+9        for (var entry : map.entrySet()) {
+10            if (entry.getValue() > target) {
+11                return entry.getKey();
 12
-13        int target = nums.length/2;
+13            }
 14
-15        for (var entry : map.entrySet()) {
-16            if (entry.getValue() > target) {
-17                return entry.getKey();
-18            }
-19        }
-20        return 0;
-21
-22        
-23    }
-24}
-25
-26/**
-27nums[i] -> count
-28
-29if value > n/2
-30return key
-31
-32
-33 */
+15        }
+16        return 0;
+17        
+18
+19
+20        
+21    }
+22}
