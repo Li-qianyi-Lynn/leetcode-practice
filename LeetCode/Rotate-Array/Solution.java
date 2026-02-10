@@ -1,39 +1,35 @@
 1class Solution {
-2
-3
-4    public void rotate(int[] nums, int k) {
-5        int[] copy = nums.clone();
-6        int len = nums.length;
-7        
-8        if (len == 1 || len == k) {
-9            return;
-10        }
-11
-12        if (len > k) {
-13            changeInt(k, nums, copy);
-14            
-15
-16        } else if (len < k) {
-17            int times = k % len; 
-18            changeInt(times, nums, copy);
-19
+2    public void rotate(int[] nums, int k) {
+3        if (nums.length == 1 || k == 0) {
+4            return;   
+5        }
+6
+7        // get times
+8        int len = nums.length;
+9        int times = k % len;
+10        if (times == 0) {
+11            return;
+12
+13        }
+14
+15        int[] copy = new int[len];
+16        for (int i = 0; i < len; i++) {
+17            copy[i] = nums[i];
+18
+19        }
 20
-21        }
-22        
-23        
-24    }
+21        int start = len - times;
+22        for (int i = 0; i < times; i++) {
+23            nums[i] = copy[start];
+24            start++;
 25
-26    private void changeInt(int times, int[] nums, int[] copy) {
-27        for (int i = 0; i < nums.length; i++) {
-28                if ( i < times) {
-29                    nums[i] = copy[i+ nums.length - times];
-30
-31                } else {
-32                    nums[i] = copy[i - times];
-33
-34                }   
-35
-36            }
-37
-38    }
-39}
+26        }
+27        int j = 0;
+28        for (int i = times; i < len; i++) {
+29            nums[i] = copy[j];
+30            j++;
+31
+32        }
+33        
+34    }
+35}
