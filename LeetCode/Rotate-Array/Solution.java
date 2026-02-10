@@ -19,28 +19,26 @@
 19    }
 20
 21    private void reverse(int[] nums, int start, int end) {
-22        int n = nums.length;
-23        int l = start;
-24
-25        int r = end;
-26        while (l < r) {
-27            int temp = nums[l];
-28            nums[l] = nums[r];
-29            nums[r] = temp;
-30            l++;
-31            r--;
-32        }
-33
-34    }
-35}
-36
-37
-38/**
-39[1,2,3,4,｜ 5,6,7]
-40
-41reverse: 7 6 5 4 3 2 1
-42reverse first k 0 - k-1
-43reverse after k k - n-1
-44
-45
-46 */
+22        int l = start;
+23        int r = end;
+24        while (l < r) {
+25            int temp = nums[l];
+26            nums[l] = nums[r];
+27            nums[r] = temp;
+28            l++;
+29            r--;
+30        }
+31
+32    }
+33}
+34
+35
+36/**
+37[1,2,3,4,｜ 5,6,7]
+38
+39reverse: 7 6 5 4 3 2 1
+40reverse first k 0 - k-1
+41reverse after k k - n-1
+42
+43
+44 */
