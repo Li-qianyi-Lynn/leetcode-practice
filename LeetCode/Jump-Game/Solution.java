@@ -1,21 +1,20 @@
 1class Solution {
 2    public boolean canJump(int[] nums) {
-3        int maxReach = 0; // index
-4        int target = nums.length - 1;
-5
-6        for (int i = 0; i < nums.length; i++) {
-7            if (i > maxReach) {
-8                return false;
-9            }
-10
-11            maxReach = Math.max(maxReach,i+ nums[i]);
-12            if (maxReach >= target) {
-13                return true;
-14
-15            }
-16
-17        }
-18        return maxReach >= target;
+3        int max = 0;
+4        int n = nums.length;
+5        for (int i = 0; i < n; i++) {
+6            if (i > max) {
+7                break;
+8            }
+9            max = Math.max(max, i+ nums[i]);
+10            if (max >= n-1) {
+11                return true;
+12            }
+13        }
+14        return false;
+15    }
+16}
+17/**
+18maxi + nums[i]
 19
-20    }
-21}
+20 */
