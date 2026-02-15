@@ -15,27 +15,37 @@
 15 */
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
-18        // edge case
-19        if (root == null) return new ArrayList<>();
-20
-21        List<Integer> result = new ArrayList<>();
-22        Queue<TreeNode> queue = new LinkedList<>();
-23        queue.offer(root);// first level
-24
-25        while (!queue.isEmpty()) {
-26            int levelSize = queue.size(); // Number of nodes at the current level
-27            for (int i = 0; i < levelSize; i++) {
-28                TreeNode currentNode = queue.poll();
-29                
-30                // If it's the last element of the current level, add to result
-31                if (i == levelSize - 1) {
-32                    result.add(currentNode.val);
-33                }
-34                
-35                if (currentNode.left != null) queue.offer(currentNode.left);
-36                if (currentNode.right != null) queue.offer(currentNode.right);
-37            }
-38        }
-39        return result;
-40    }
-41}
+18        List<Integer> res = new ArrayList<>();
+19        if (root == null) {
+20            return res;
+21        }
+22        bfs(root,res);
+23        return res;
+24        
+25    }
+26    private void bfs(TreeNode root, List<Integer> res) {
+27        Deque<TreeNode> deque = new LinkedList<>();
+28        deque.offerLast(root);
+29        while (!deque.isEmpty()) {
+30            int size = deque.size();
+31            for (int i = 1; i <= size; i++) {
+32                TreeNode poll = deque.pollFirst();
+33                if (poll.left != null) {
+34                    deque.offerLast(poll.left);
+35
+36                }
+37                if (poll.right != null) {
+38                    deque.offerLast(poll.right);
+39
+40                }
+41                if (i == size) {
+42                    res.add(poll.val);
+43
+44                }
+45
+46            }
+47
+48        }
+49
+50    }
+51}
