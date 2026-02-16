@@ -15,37 +15,44 @@
 15 */
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
-18        List<Integer> res = new ArrayList<>();
-19        if (root == null) {
-20            return res;
-21        }
-22        bfs(root,res);
-23        return res;
-24        
-25    }
-26    private void bfs(TreeNode root, List<Integer> res) {
-27        Deque<TreeNode> deque = new LinkedList<>();
-28        deque.offerLast(root);
-29        while (!deque.isEmpty()) {
-30            int size = deque.size();
-31            for (int i = 1; i <= size; i++) {
-32                TreeNode poll = deque.pollFirst();
-33                if (poll.left != null) {
-34                    deque.offerLast(poll.left);
-35
-36                }
-37                if (poll.right != null) {
-38                    deque.offerLast(poll.right);
-39
-40                }
-41                if (i == size) {
-42                    res.add(poll.val);
-43
-44                }
-45
+18        List<Integer> result = new ArrayList<>();
+19        
+20        // if the tree is empty, return an empty list
+21        if (root == null) {
+22            return result;
+23        }
+24
+25        // Initialize the current level with the root node
+26        List<TreeNode> currentLevel = new ArrayList<>();
+27        currentLevel.add(root);
+28
+29        // Continue as long as there are nodes to process in the current level
+30        while (!currentLevel.isEmpty()) {
+31            int currentVal = 101;
+32            List<TreeNode> nextLevel = new ArrayList<>();
+33
+34            // Iterate through every node in the current level list
+35            for (TreeNode node : currentLevel) {
+36                // Add the node's value to the current level's result list
+37                currentVal = node.val;
+38
+39                // If children exist, add them to the next level list
+40                if (node.left != null) {
+41                    nextLevel.add(node.left);
+42                }
+43                if (node.right != null) {
+44                    nextLevel.add(node.right);
+45                }
 46            }
 47
-48        }
-49
-50    }
-51}
+48            // Append the finished level to the final result
+49            result.add(currentVal);
+50            
+51            // Move to the next level (the "Two-Lists" swap)
+52            currentLevel = nextLevel;
+53        }
+54
+55        return result;
+56    }
+57}
+58
