@@ -28,31 +28,20 @@
 28
 29        // Continue as long as there are nodes to process in the current level
 30        while (!currentLevel.isEmpty()) {
-31            int currentVal = 101;
-32            List<TreeNode> nextLevel = new ArrayList<>();
-33
-34            // Iterate through every node in the current level list
-35            for (TreeNode node : currentLevel) {
-36                // Add the node's value to the current level's result list
-37                currentVal = node.val;
-38
-39                // If children exist, add them to the next level list
-40                if (node.left != null) {
-41                    nextLevel.add(node.left);
-42                }
-43                if (node.right != null) {
-44                    nextLevel.add(node.right);
-45                }
-46            }
+31            // The right-side view is just the last element of each level
+32            TreeNode lastNode = currentLevel.get(currentLevel.size() - 1);
+33            result.add(lastNode.val);
+34
+35            List<TreeNode> nextLevel = new ArrayList<>();
+36            for (TreeNode node : currentLevel) {
+37                if (node.left != null) nextLevel.add(node.left);
+38                if (node.right != null) nextLevel.add(node.right);
+39            }
+40            currentLevel = nextLevel;
+41        }
+42
+43
+44        return result;
+45    }
+46}
 47
-48            // Append the finished level to the final result
-49            result.add(currentVal);
-50            
-51            // Move to the next level (the "Two-Lists" swap)
-52            currentLevel = nextLevel;
-53        }
-54
-55        return result;
-56    }
-57}
-58
