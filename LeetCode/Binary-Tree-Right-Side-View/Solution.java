@@ -15,33 +15,27 @@
 15 */
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
-18        List<Integer> result = new ArrayList<>();
-19        
-20        // if the tree is empty, return an empty list
-21        if (root == null) {
-22            return result;
-23        }
+18        // edge case
+19        if (root == null) return new ArrayList<>();
+20
+21        List<Integer> result = new ArrayList<>();
+22        Queue<TreeNode> queue = new ArrayDeque<>();
+23        queue.offer(root);// first level
 24
-25        // Initialize the current level with the root node
-26        List<TreeNode> currentLevel = new ArrayList<>();
-27        currentLevel.add(root);
-28
-29        // Continue as long as there are nodes to process in the current level
-30        while (!currentLevel.isEmpty()) {
-31            // The right-side view is just the last element of each level
-32            TreeNode lastNode = currentLevel.get(currentLevel.size() - 1);
-33            result.add(lastNode.val);
-34
-35            List<TreeNode> nextLevel = new ArrayList<>();
-36            for (TreeNode node : currentLevel) {
-37                if (node.left != null) nextLevel.add(node.left);
-38                if (node.right != null) nextLevel.add(node.right);
-39            }
-40            currentLevel = nextLevel;
-41        }
-42
-43
-44        return result;
-45    }
-46}
-47
+25        while (!queue.isEmpty()) {
+26            int levelSize = queue.size(); // Number of nodes at the current level
+27            for (int i = 0; i < levelSize; i++) {
+28                TreeNode currentNode = queue.poll();
+29                
+30                // If it's the last element of the current level, add to result
+31                if (i == levelSize - 1) {
+32                    result.add(currentNode.val);
+33                }
+34                
+35                if (currentNode.left != null) queue.offer(currentNode.left);
+36                if (currentNode.right != null) queue.offer(currentNode.right);
+37            }
+38        }
+39        return result;
+40    }
+41}
