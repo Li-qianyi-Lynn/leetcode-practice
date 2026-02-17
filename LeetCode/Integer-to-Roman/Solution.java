@@ -5,16 +5,20 @@
 5        int[] values = {1000,900,500,400,100,90,50,40,10,9,5,4,1 };
 6        String[] symbols = {"M", "CM", "D", "CD", "C", "XC","L", "XL", "X", "IX", "V", "IV", "I"};
 7
-8        for (int i =0; i < values.length; i++) {
+8        for (int i = 0; i < values.length; i++) {
 9            while (num >= values[i]) {
 10                sb.append(symbols[i]);
 11                num -= values[i];
 12
 13            }
-14        }
-15        return sb.toString();
-16
+14
+15        }
+16        return sb.toString();
 17
 18        
-19    }
-20}
+19        
+20
+21
+22        
+23    }
+24}
