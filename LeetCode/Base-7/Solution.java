@@ -1,0 +1,1 @@
+   if(str.charAt(str.length()-2) == '-'){
