@@ -1,29 +1,25 @@
 1class Solution {
 2    public int maxArea(int[] height) {
-3        int n = height.length-1;
-4        int r = n;
-5        int l = 0;
-6        int res = 0;
+3        int r = height.length-1;
+4        int l = 0;
+5        int res = 0;
+6
 7        while (l < r) {
-8            int area = Math.min(height[l], height[r]) * (r-l);
-9            res = Math.max(area, res);
-10            if (height[l] < height[r]) {
-11                l++;
+8            int cur =  (r-l) * Math.min(height[r],height[l]);
+9            res = Math.max(cur,res);
+10            if (height[r] < height[l]) {
+11                r--;
 12
 13            } else {
-14                r--;
+14                l++;
 15            }
-16
-17        }
-18        return res;
+16        }
+17        return res;
+18
 19        
 20    }
 21}
-22
-23/**
-24two pointer 维护 height
-25area = Math.min(height[l], height[r]) * (r-l);
-26维护lr
-27math.max(area,curarea)
-28 */
-29
+22/**
+23r-l
+24max(height[r],height[l])
+25 */
