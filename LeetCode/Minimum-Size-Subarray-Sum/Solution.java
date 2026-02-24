@@ -5,10 +5,10 @@
 5        int slow = 0;
 6        int fast;
 7        for (fast =0; fast < nums.length; fast++) {
-8            if (nums[fast]== target) {
-9                return 1;
+8            // if (nums[fast]== target) {
+9            //     return 1;
 10
-11            }
+11            // }
 12            curSum += nums[fast];
 13
 14            while (curSum >= target) {
