@@ -10,30 +10,66 @@
 10 */
 11class Solution {
 12    public ListNode sortList(ListNode head) {
-13        if (head == null) {
-14            return null;
+13        if (head == null || head.next == null) {
+14            return head;
 15
 16        }
-17        ListNode cur = head;
-18
-19        PriorityQueue <ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
-20        while (cur != null) {
-21            pq.offer(cur);
-22            cur = cur.next;
-23
-24        }
+17
+18        ListNode pre = new ListNode();
+19        ListNode slow = head;
+20        ListNode fast = head;
+21        while (fast != null && fast.next != null) {
+22            pre = slow;
+23            slow = slow.next;
+24            fast = fast.next.next;
 25
-26        ListNode dummy = new ListNode(-1);
-27        ListNode tail = dummy;
-28        while (!pq.isEmpty()) {
-29            ListNode poll = pq.poll();
-30            tail.next = poll;
-31            tail = tail.next;
+26        }
+27        // head->...pre | slow -> null
+28        pre.next = null;
+29
+30        ListNode l1 = sortList(head);
+31        ListNode l2 = sortList(slow);
 32
-33        }
-34        tail.next = null;
-35        return dummy.next;
-36        
-37        
-38    }
-39}
+33        return merge(l1,l2);
+34        
+35    }
+36
+37    private ListNode merge(ListNode l1, ListNode l2) {
+38        ListNode dummy = new ListNode(0);
+39        ListNode cur = dummy;
+40
+41        while (l1 != null && l2 != null) {
+42            if (l1.val > l2.val) {
+43                cur.next = l2;
+44                l2 = l2.next;
+45
+46            } else {
+47                cur.next = l1;
+48                l1 = l1.next;
+49            }
+50            cur = cur.next;
+51
+52        }
+53
+54        if (l1 != null) {
+55            cur.next = l1;
+56
+57        }
+58        if (l2 != null) {
+59            cur.next = l2;
+60
+61        }
+62
+63        return dummy.next;
+64    }
+65}
+66
+67/**
+68recursion sort
+69找到终点分割
+70断开next
+71递归排序
+72merge
+73
+74
+75 */
