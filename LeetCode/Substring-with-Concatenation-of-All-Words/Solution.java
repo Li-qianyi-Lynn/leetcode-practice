@@ -1,39 +1,64 @@
-class Solution:
-    def findSubstring(self, s: str, words: List[str]) -> List[int]:
-        ans = []
-        s_size = len(s)
-        word_len = len(words[0])
-        word_count = collections.Counter(words)
-
-        def sliding_window(left):
-            found_count = collections.defaultdict(lambda: 0)
-            total_matched = 0
-
-            for right in range(left, len(s), word_len):
-                if right + word_len > s_size:
-                    break
-                
-                new_word = s[right: right + word_len]
-                if new_word not in word_count:
-                    found_count = collections.defaultdict(lambda: 0)
-                    total_matched = 0
-                    left = right + word_len
-                else:
-                    found_count[new_word] += 1
-                    if found_count[new_word] > word_count[new_word]:
-                        while found_count[new_word] > word_count[new_word]:
-                            left_most = s[left: left + word_len]
-                            found_count[left_most] -= 1
-                            left += word_len
-                            if left_most != new_word:
-                                total_matched -= 1
-                    else:
-                        total_matched += 1
-
-                if total_matched == len(words):
-                    ans.append(left)
-
-        for i in range(word_len):
-            sliding_window(i)
-
-        return ans
+1class Solution {
+2    public List<Integer> findSubstring(String s, String[] words) {
+3        List<Integer> res = new ArrayList<>();
+4        Map<String, Integer> map = new HashMap<>();
+5        int n = words.length;
+6        int wordLen = words[0].length();
+7
+8        for (String word : words) {
+9            map.put(word, map.getOrDefault(word,0)+1);
+10        }
+11        
+12        for (int i = 0; i < wordLen; i++) {
+13            int l = i;
+14            int r = i;
+15            int count = 0;
+16            Map<String, Integer> windowMap = new HashMap<>();
+17
+18            while (r + wordLen <= s.length()) {
+19                String cur = s.substring(r,r+wordLen);
+20                r += wordLen; //move right pointer
+21
+22                if (map.containsKey(cur)) {
+23                    windowMap.put(cur, windowMap.getOrDefault(cur,0)+1);
+24                    count++;
+25                    while (windowMap.get(cur)> map.get(cur)) {
+26                        
+27                        String leftWord = s.substring(l, l + wordLen);
+28                        windowMap.put(leftWord, windowMap.get(leftWord)-1);
+29                        l = l+ wordLen;
+30                        count --;
+31                    }
+32
+33                    if (count == n) {
+34                        res.add(l);
+35                    }   
+36
+37
+38                } else {
+39                    count = 0;
+40                    l = r;
+41                    windowMap.clear();
+42                }
+43            }
+44
+45    
+46
+47        }
+48        return res;
+49    }
+50}
+51
+52/**
+53slide window:
+54words same
+55count same
+56Hashmap<Char -> Integer>
+57
+580,1,2 iterate word.len
+59l: r
+60
+61
+62
+63
+64 */
