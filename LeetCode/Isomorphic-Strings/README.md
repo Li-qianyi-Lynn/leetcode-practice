@@ -23,13 +23,13 @@ The strings s and t can be made identical by:
 
 Example 2:
 
-Input: s = "foo", t = "bar"
+Input: s = "f11", t = "b23"
 
 Output: false
 
 Explanation:
 
-The strings s and t can not be made identical as 'o' needs to be mapped to both 'a' and 'r'.
+The strings s and t can not be made identical as '1' needs to be mapped to both '2' and '3'.
 
 Example 3:
 
