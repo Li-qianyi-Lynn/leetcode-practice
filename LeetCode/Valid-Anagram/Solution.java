@@ -4,19 +4,20 @@
 4            return false;
 5
 6        }
-7        Map<Character, Integer> maps = new HashMap<>();
-8        Map<Character, Integer> mapt = new HashMap<>();
+7        int[] sarr = new int[26];
+8        int[] tarr = new int[26];
 9
-10        for (int i = 0; i < s.length(); i++) {
-11            char cs = s.charAt(i);
-12            char ct = t.charAt(i);
-13            maps.put(cs, maps.getOrDefault(cs,0)+1);
-14            mapt.put(ct, mapt.getOrDefault(ct,0)+1);
-15        }
-16
-17        return maps.equals(mapt);
-18
+10
+11        for (int i = 0; i < s.length(); i++) {
+12            int idx1 = s.charAt(i) - 'a';
+13            int idx2 = t.charAt(i) - 'a';
+14            sarr[idx1]++;
+15            tarr[idx2]++;
+16        }
+17
+18        return Arrays.equals(sarr,tarr);
 19
-20        
-21    }
-22}
+20
+21        
+22    }
+23}
