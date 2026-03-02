@@ -1,16 +1,22 @@
 1class Solution {
 2    public boolean isAnagram(String s, String t) {
-3        if (s.length() != t.length()) { return false; }
-4        Map<Character, Integer> mapS = new HashMap<>();
-5        Map<Character, Integer> mapT = new HashMap<>();
-6
-7        for (int i = 0; i < s.length(); i++) {
-8            mapS.put(s.charAt(i), mapS.getOrDefault(s.charAt(i),0)+1);
-9            mapT.put(t.charAt(i), mapT.getOrDefault(t.charAt(i),0)+1);
-10
-11        }
-12
-13        return mapS.equals(mapT);
-14        
-15    }
-16}
+3        if (s.length() != t.length()) {
+4            return false;
+5
+6        }
+7        Map<Character, Integer> maps = new HashMap<>();
+8        Map<Character, Integer> mapt = new HashMap<>();
+9
+10        for (int i = 0; i < s.length(); i++) {
+11            char cs = s.charAt(i);
+12            char ct = t.charAt(i);
+13            maps.put(cs, maps.getOrDefault(cs,0)+1);
+14            mapt.put(ct, mapt.getOrDefault(ct,0)+1);
+15        }
+16
+17        return maps.equals(mapt);
+18
+19
+20        
+21    }
+22}
