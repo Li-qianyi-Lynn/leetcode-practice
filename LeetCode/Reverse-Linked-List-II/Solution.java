@@ -8,39 +8,28 @@
 8 *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
 9 * }
 10 */
-11class Solution {
+11public class Solution {
 12    public ListNode reverseBetween(ListNode head, int left, int right) {
 13        ListNode dummy = new ListNode(0);
 14        dummy.next = head;
-15        ListNode pre = dummy;
+15        ListNode leftPrev = dummy, cur = head;
 16
-17
-18        // check pre
-19        for (int i = 0; i < left-1; i++) {
-20            pre = pre.next;
-21        }
-22        //reverse
-23        ListNode end = pre.next;
-24        for (int i = 0; i < right - left;i++) {
-25            
-26            ListNode next = end.next;
-27            end.next = next.next;
-28            next.next = pre.next;
-29            pre.next = next;
-30
-31        }
-32        return dummy.next;
-33        
+17        for (int i = 0; i < left - 1; i++) {
+18            leftPrev = cur;
+19            cur = cur.next;
+20        }
+21
+22        ListNode prev = null;
+23        for (int i = 0; i < right - left + 1; i++) {
+24            ListNode tmpNext = cur.next;
+25            cur.next = prev;
+26            prev = cur;
+27            cur = tmpNext;
+28        }
+29
+30        leftPrev.next.next = cur;
+31        leftPrev.next = prev;
+32
+33        return dummy.next;
 34    }
 35}
-36
-37/**
-38dumy[1,  2,  3, 4 , 5]
-39     pre end next
-40
-41cur: reversed tail
-42next -> pre.next
-43
-44
-45
-46 */
