@@ -15,38 +15,29 @@
 15
 16class Solution {
 17    public Node copyRandomList(Node head) {
-18        Node cur = head;
-19
-20        Map<Node, Node> map = new HashMap<>();
-21        while (cur != null) {
-22            map.put(cur, new Node(cur.val));
-23            cur = cur.next;
+18        Map<Node, Node> map = new HashMap<>();
+19        Node cur = head;
+20        while (cur != null) {
+21            map.put(cur, new Node(cur.val));
+22            cur = cur.next;
+23        }
 24
-25        }
-26
-27        cur = head;
-28        while(cur != null) {
-29            map.get(cur).next = map.get(cur.next);
-30            map.get(cur).random = map.get(cur.random);
-31            cur = cur.next;
-32        }
-33        return map.get(head);
-34        
-35        
-36    }
-37}
-38
-39/**
-40copy the original list, we have the random pointer
-41we can not link directly (not build it)
+25        cur = head;
+26        while (cur != null) {
+27            map.get(cur).next = map.get(cur.next);
+28            map.get(cur).random = map.get(cur.random);
+29            cur = cur.next;
+30        }
+31        return map.get(head);
+32        
+33    }
+34}
+35
+36/**
+37map:
+381. copy: old node -> new node
+39
+402. set the connection
+41
 42
-43use map
-44oldNode -> newNode getthe val to build new node
-45
-46map.get(oldNode).next/random
-47
-48
-49
-50
-51
-52 */
+43 */
