@@ -10,64 +10,55 @@
 10 */
 11class Solution {
 12    public ListNode reverseKGroup(ListNode head, int k) {
-13        if (head == null || k == 1) {
-14            return head;
-15
-16        }
+13        ListNode dummy = new ListNode(0);
+14        dummy.next = head;
+15        ListNode cur = dummy;
+16        ListNode pre = dummy;
 17
-18        ListNode dummy = new ListNode(0);
-19        dummy.next = head;
-20        
-21        // prev 始终指向每一组待翻转节点的前驱
-22        ListNode prev = dummy;
-23        ListNode end = dummy;
-24        
-25        while (end.next != null) {
-26            // 1. 找到当前组的末尾
-27            for (int i = 0; i < k && end != null; i++) end = end.next;
-28            if (end == null) break; // 不足 k 个，跳出循环
-29            
-30            // 2. 记录当前组的起始和下一组的开头
-31            ListNode start = prev.next;
-32            ListNode next = end.next;
-33            
-34            // 3. 断开连接并翻转该小组
-35            end.next = null;
-36            prev.next = reverse(start);
-37            
-38            // 4. 将翻转后的尾部与后面接上
-39            start.next = next;
-40            
-41            // 5. 移动指针，准备处理下一组
-42            prev = start;
-43            end = prev;
-44        }
-45        
-46        return dummy.next;
-47        
-48    }
-49
-50    private ListNode reverse(ListNode head) {
-51        ListNode pre = null;
-52        ListNode cur = head;
-53        while (cur != null) {
-54            ListNode next = cur.next;
-55            cur.next = pre;
-56            pre = cur;
-57            cur = next;
-58        }
-59        return pre;
-60    }
-61}
-62/**
-63null <-1 -> 2 -> 3 
-64               next
-65       pre. cur.
-661 -> null 
-67cur.next -> pre 
-68pre = cur;
-69cur = next;
-70
-71 */
-72
-73
+18        while (cur != null) {
+19            for (int i = 0; i < k && cur != null; i++ ) {
+20                cur = cur.next;
+21            }
+22            if (cur == null) {
+23                break;
+24            }
+25            ListNode curHead = pre.next;
+26            ListNode newFir = cur.next;
+27            cur.next = null; // cut off
+28            pre.next = reverse(curHead);
+29
+30            curHead.next = newFir;
+31            pre = curHead;
+32            cur = curHead;
+33        }
+34        return dummy.next;
+35        
+36    }
+37    private ListNode reverse(ListNode head) {
+38        
+39        ListNode cur = head;
+40        ListNode pre = null;
+41
+42        while (cur != null) {
+43            ListNode next = cur.next;
+44            cur.next = pre;
+45            pre = cur;
+46            cur = next;
+47
+48        }
+49        return pre;
+50    }
+51}
+52/**
+53divided into diff parts len= k
+54
+55reverse the range
+56reconnect
+57
+58 dmy [1,2,3,4,5]
+59  pre 
+60         newFir
+61        cur
+62
+63
+64 */
