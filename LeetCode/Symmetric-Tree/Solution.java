@@ -15,19 +15,25 @@
 15 */
 16class Solution {
 17    public boolean isSymmetric(TreeNode root) {
-18        return compare(root.left, root.right);
-19        
-20    }
-21
-22    private boolean compare(TreeNode left, TreeNode right) {
-23        if (left == null && right != null) { return false;} 
-24        if (right == null && left != null) { return false;}
-25        if (left == null && right == null ) { return true;}
-26        if (left.val != right.val) { return false;}
-27
-28        boolean outside = compare(left.left, right.right);
-29        boolean inside = compare(left.right, right.left);
-30
-31        return outside && inside;
-32    }
-33}
+18        // base case
+19        if (root== null) {
+20            return true;
+21        }
+22        return helper(root.left, root.right);
+23    }
+24    private boolean helper(TreeNode nodel, TreeNode noder) {
+25        // base case
+26        if (nodel == null && noder == null) {
+27            return true;
+28        }
+29        if (nodel == null || noder == null) {
+30            return false;
+31        }
+32        if (nodel.val != noder.val) {
+33            return false;
+34        }
+35
+36        return helper(nodel.left,noder.right) && helper(nodel.right,noder.left);
+37
+38    }
+39}
