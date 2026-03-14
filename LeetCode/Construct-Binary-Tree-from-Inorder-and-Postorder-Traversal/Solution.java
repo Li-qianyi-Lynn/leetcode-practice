@@ -14,53 +14,43 @@
 14 * }
 15 */
 16class Solution {
-17    private int rootidx;
-18    public TreeNode buildTree(int[] inorder, int[] postorder) {
-19        //node val -> index
-20        Map<Integer, Integer> map = new HashMap<>();
-21        for (int i = 0; i < inorder.length; i++) {
-22            map.put(inorder[i], i);
+17    Map<Integer, Integer> map = new HashMap<>(); // inorder val-> indices
+18    int c;
+19    public TreeNode buildTree(int[] inorder, int[] postorder) {
+20        if (inorder.length == 1) {
+21            return new TreeNode(inorder[0]);
+22
 23        }
-24
-25        rootidx = postorder.length-1; 
-26        //contruct trees
-27
-28        return helper(map, 0, inorder.length-1, postorder);     // todo
-29    }
-30
-31    private TreeNode helper(Map<Integer, Integer> map, int leftStart, int rightStart, int[] postorder) { //?
-32        //base case
-33        if (leftStart > rightStart) {
-34            return null;
-35        }
+24        c = postorder.length-1;
+25        for (int i = 0; i < inorder.length; i++) {
+26            map.put(inorder[i],i);
+27        }
+28        return dfs(postorder, 0,c);
+29        
+30    }
+31
+32    private TreeNode dfs(int[] postorder, int l, int r) {
+33        // base case
+34        if (l > r || c < 0) {
+35            return null;
 36
-37        int rootVal = postorder[rootidx];
-38        TreeNode root = new TreeNode(rootVal);
-39        rootidx --; //processed this root
-40
-41        // get root idx in inorder
-42        int split = map.get(rootVal);
-43        root.right = helper(map, split+1, rightStart, postorder);
-44        root.left = helper(map, leftStart, split-1, postorder);
-45
-46        return root;
-47    }
-48}
-49/**
-50input:
-51inorder[] the inorder traversal of a binary tree: left root right; to find the right side and left side
-52postorder[]: left right root; last index in the int[] is the root.val
-53
-54root - index
-55map: node val -> index
-56
-57use recursion to construct the binary tree
-58 [9 , 3, 15, 20, 7]
-59     root.   
-60 lp             
-61                rp
-621. base case: lp > rp return 
-632. root: postorder[]
-64root.right 
-65root.left
-66 */
+37        }
+38
+39        // get the root
+40        int val = postorder[c];
+41        int mid = map.get(val);
+42        c--;
+43        TreeNode root = new TreeNode(val);
+44        root.right = dfs(postorder, mid+1,r);
+45        root.left = dfs(postorder, l, mid-1);
+46        
+47        return root;
+48
+49
+50    }
+51}
+52/**
+53inorder: left root right
+54postorder: left right root
+55
+56 */
