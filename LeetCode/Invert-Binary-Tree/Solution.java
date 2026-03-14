@@ -15,38 +15,23 @@
 15 */
 16class Solution {
 17    public TreeNode invertTree(TreeNode root) {
-18        if (root == null) {
-19            return root;
-20        }
-21
-22        Deque<TreeNode> dq = new ArrayDeque<>();
-23        dq.offerLast(root);
-24        while (!dq.isEmpty()) {
-25            int size = dq.size();
-26            for (int i = 0; i < size; i++) {
-27                TreeNode cur = dq.pollFirst();
-28                if (cur.left != null) {
-29                    dq.offerLast(cur.left);
-30                }
-31
-32                if (cur.right != null) {
-33                    dq.offerLast(cur.right);
-34                }
-35                swap(cur);
+18        // base case
+19
+20        if (root == null) {
+21            return root;
+22
+23        }
+24        if (root.left == null && root.right == null) {
+25            return root;
+26
+27        }
+28        TreeNode ri = invertTree(root.right);
+29        TreeNode le = invertTree(root.left);
+30        root.right = le;
+31        root.left = ri;
+32        return root;
+33         
+34        
+35    }
 36
-37
-38            }
-39
-40
-41        }
-42        return root;
-43        
-44    }
-45    private TreeNode swap(TreeNode node) {
-46        TreeNode temp = node.left;
-47        node.left = node.right;
-48        node.right = temp;
-49        return node;
-50
-51    }
-52}
+37}
