@@ -14,43 +14,47 @@
 14 * }
 15 */
 16class Solution {
-17    Map<Integer, Integer> map = new HashMap<>(); // inorder val-> indices
-18    int c;
+17    private Map<Integer, Integer> map = new HashMap<>();
+18    private int index;// for postorder root locate
 19    public TreeNode buildTree(int[] inorder, int[] postorder) {
-20        if (inorder.length == 1) {
-21            return new TreeNode(inorder[0]);
-22
+20        //one case 
+21        if (inorder.length == 1) {
+22            return new TreeNode(inorder[0]);  
 23        }
-24        c = postorder.length-1;
-25        for (int i = 0; i < inorder.length; i++) {
-26            map.put(inorder[i],i);
-27        }
-28        return dfs(postorder, 0,c);
-29        
-30    }
-31
-32    private TreeNode dfs(int[] postorder, int l, int r) {
-33        // base case
-34        if (l > r || c < 0) {
-35            return null;
-36
+24        
+25        // init the map
+26        index = postorder.length-1;
+27        for (int i = 0; i < inorder.length; i++) {
+28            map.put(inorder[i], i);    
+29        }
+30        return dfs(postorder,0,inorder.length-1); // ?
+31       
+32    }
+33    private TreeNode dfs(int[] postorder, int l, int r) {
+34        // base case
+35        if (l > r) {
+36            return null;   
 37        }
-38
-39        // get the root
-40        int val = postorder[c];
-41        int mid = map.get(val);
-42        c--;
-43        TreeNode root = new TreeNode(val);
-44        root.right = dfs(postorder, mid+1,r);
-45        root.left = dfs(postorder, l, mid-1);
-46        
-47        return root;
-48
-49
-50    }
-51}
-52/**
-53inorder: left root right
-54postorder: left right root
-55
-56 */
+38        
+39        // rules
+40        // get the root
+41        int rootval = postorder[index];
+42        index--;
+43        int mididx = map.get(rootval);
+44        TreeNode root = new TreeNode(rootval);
+45        
+46        // divide
+47        TreeNode ritree = dfs(postorder,mididx+1, r);
+48        TreeNode letree = dfs(postorder, l, mididx-1);
+49        root.right = ritree;
+50        root.left = letree;
+51        return root;    
+52        
+53    }
+54    
+55}
+56/**
+57inorder: left root right
+58postorder: left right root
+59
+60 */
