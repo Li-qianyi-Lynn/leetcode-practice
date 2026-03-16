@@ -23,33 +23,31 @@
 23
 24class Solution {
 25    public Node connect(Node root) {
-26        if (root == null) {
-27            return root;
-28
+26        // edge case
+27        if (root == null) {
+28            return root;
 29        }
-30        Node cur = root;
-31        while (cur != null) {
-32            Node dummy = new Node(0);
-33            Node p = dummy;
-34
-35            while (cur != null) {
-36                if (cur.left != null) {
-37                    p.next = cur.left;
-38                    p = p.next;
-39                }
-40                if (cur.right != null) {
-41                    p.next = cur.right;
-42                    p = p.next;
-43                }
-44               
-45                cur = cur.next;
-46            }
-47            
-48            cur = dummy.next;
-49
-50        }
-51        return root;
-52        
-53        
-54    }
-55}
+30        Deque<Node> dq = new ArrayDeque<>();
+31        
+32        dq.offerLast(root);
+33        while (!dq.isEmpty()) {
+34            int size = dq.size();
+35            Node pre = null; // to store the node proceed in previous round
+36            for (int i= 0; i < size; i++) {
+37                Node cur = dq.pollFirst();
+38                if (pre != null) {
+39                    pre.next = cur;
+40                }
+41                pre = cur;
+42                if (cur.left != null) {
+43                    dq.offerLast(cur.left);   
+44                }
+45                if (cur.right != null) {
+46                    dq.offerLast(cur.right);   
+47                }
+48            }   
+49        }
+50        return root;
+51        
+52    }
+53}
