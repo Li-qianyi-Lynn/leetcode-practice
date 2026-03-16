@@ -23,26 +23,33 @@
 23
 24class Solution {
 25    public Node connect(Node root) {
-26        if (root == null) {return root;}
-27        Deque<Node> deque = new LinkedList<>();
+26        if (root == null) {
+27            return root;
 28
-29        deque.offerLast(root);
-30        while (!deque.isEmpty()) {
-31            int size = deque.size();
-32            Node pre = null;
-33            for (int i = 1; i <= size; i++) {
-34                Node cur = deque.pollFirst();
-35                if (cur.left != null) {deque.offerLast(cur.left);}
-36                if (cur.right != null) {deque.offerLast(cur.right);}
-37
-38                if (pre != null) {pre.next = cur;}
-39                pre = cur;
-40
-41            }
-42
-43        }
-44        return root;
-45
-46        
-47    }
-48}
+29        }
+30        Node cur = root;
+31        while (cur != null) {
+32            Node dummy = new Node(0);
+33            Node p = dummy;
+34
+35            while (cur != null) {
+36                if (cur.left != null) {
+37                    p.next = cur.left;
+38                    p = p.next;
+39                }
+40                if (cur.right != null) {
+41                    p.next = cur.right;
+42                    p = p.next;
+43                }
+44               
+45                cur = cur.next;
+46            }
+47            
+48            cur = dummy.next;
+49
+50        }
+51        return root;
+52        
+53        
+54    }
+55}
