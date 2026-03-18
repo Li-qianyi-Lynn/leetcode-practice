@@ -11,7 +11,7 @@
 11            if (start == len) {
 12                return true;
 13            }
-14            for (int i = start; i <= len; i++) {
+14            for (int i = start+1; i <= len; i++) {
 15                if (isVisited[i]== true) {
 16                    continue;
 17                }
