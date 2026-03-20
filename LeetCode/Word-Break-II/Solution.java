@@ -1,50 +1,54 @@
 1class Solution {
-2    Map<Integer, List<String>> map = new HashMap<>();// start index 
-3    public List<String> wordBreak(String s, List<String> wordDict) {
-4        Set<String> set = new HashSet<>(wordDict);
-5        return dfs(s,set,0);
-6        
-7    }
-8    private List<String> dfs(String s, Set<String> set, int i) {
-9        List<String> res = new ArrayList<>();
-10        // base case
-11        if (map.containsKey(i)) {
-12            return map.get(i);
-13        }
-14
-15        int len = s.length();
-16        if (i == len) {
-17            res.add("");
-18            return res;
-19        }
-20
-21        for (int end = i+1; end <= len; end++) {
-22            String cur = s.substring(i,end);
-23            if (set.contains(cur)) {
-24
-25                List<String> next = dfs(s,set,end);
-26                for (String nex : next) {
-27                    if (nex.isEmpty()) {
-28                        res.add(cur);
-29
-30                    } else {
-31                        res.add(cur + " " + nex);
-32                    }  
-33                }
-34            }
-35        }
-36        map.put(i, res);
-37        return res;
-38
-39    }
-40}
-41/**
-42cut dicts
-43start index end index
-44
-45memo = m
-46dfs: 重复的字问题
-47
-48
+2    Map<Integer, List<String>> map = new HashMap<>();
+3
+4    public List<String> wordBreak(String s, List<String> wordDict) {
+5        Set<String> set = new HashSet<>(wordDict);
+6        return dfs(s,set,0); //
+7        
+8    }
+9
+10    private List<String> dfs (String s, Set<String> set, int start) {
+11        List<String> res = new ArrayList<>();
+12
+13        // base case
+14        if (map.containsKey(start)) {
+15            return map.get(start);
+16        }
+17        int len = s.length();
+18
+19        if (start == len) {
+20            res.add(""); //success signal
+21            return res;
+22        }
+23
+24        for (int end = start+1; end <= len; end++) {
+25            String cur = s.substring(start,end);
+26            if (set.contains(cur)) {
+27                List<String> next = dfs(s,set,end);
+28                
+29                for (String ne : next) {
+30                    if (ne.isEmpty()) {
+31                        res.add(cur);
+32
+33                    } else {
+34                        res.add(cur + " " + ne);
+35                    }
+36                
+37                }
+38            }
+39
+40        }
+41        map.put(start,res);
+42        return res;
+43
+44    }
+45}
+46/**
+47left s can be divided or not
+48memo  start -> list<String>
 49
-50 */
+50dfs
+51
+52
+53 */
+54
