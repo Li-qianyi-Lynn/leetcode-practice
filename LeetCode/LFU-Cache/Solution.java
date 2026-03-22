@@ -1,104 +1,106 @@
-1class LFUCache {
-2    class Node {
-3        int key, val, freq;
-4        Node prev, next;
-5        Node(int k, int v) {
-6            this.key = k;
-7            this.val = v;
-8            this.freq = 1;
-9        }
-10    }
-11
-12    class DoubleLinkedList {
-13        Node head, tail;
-14        DoubleLinkedList() {
-15            head = new Node(-1, -1);
-16            tail = new Node(-1, -1);
-17            head.next = tail;
-18            tail.prev = head;
-19        }
+1class Node {
+2    int key, val, freq; // 1. 增加了 freq
+3    Node pre, next;
+4    Node(int key, int val) {
+5        this.key = key;
+6        this.val = val;
+7        this.freq = 1; // 新节点初始频率为 1
+8    }
+9}
+10
+11// 把你原来的 head/tail 逻辑封装成一个内部类，方便管理不同频率的桶
+12class DoubleLinkedList {
+13    Node head = new Node(-1, -1);
+14    Node tail = new Node(-1, -1);
+15    
+16    DoubleLinkedList() {
+17        head.next = tail;
+18        tail.pre = head;
+19    }
 20
-21        void addFirst(Node node) {
-22            node.next = head.next;
-23            node.prev = head;
-24            head.next.prev = node;
-25            head.next = node;
-26        }
-27
-28        void remove(Node node) {
-29            node.prev.next = node.next;
-30            node.next.prev = node.prev;
-31        }
-32
-33        Node removeLast() {
-34            if (isEmpty()) return null;
-35            Node res = tail.prev;
-36            remove(res);
-37            return res;
-38        }
-39
-40        // 核心替代逻辑：通过判断哨兵节点连接情况来确定是否为空
-41        boolean isEmpty() {
-42            return head.next == tail;
-43        }
-44    }
-45
-46    Map<Integer, Node> cache;
-47    Map<Integer, DoubleLinkedList> freqMap;
-48    int capacity;
-49    int minFreq;
-50
-51    public LFUCache(int capacity) {
-52        this.capacity = capacity;
-53        this.cache = new HashMap<>();
-54        this.freqMap = new HashMap<>();
-55        this.minFreq = 0;
-56    }
-57
-58    public int get(int key) {
-59        if (!cache.containsKey(key)) return -1;
-60        Node node = cache.get(key);
-61        updateFreq(node);
-62        return node.val;
-63    }
-64
-65    public void put(int key, int value) {
-66        if (capacity == 0) return;
-67        if (cache.containsKey(key)) {
-68            Node node = cache.get(key);
-69            node.val = value;
-70            updateFreq(node);
-71        } else {
-72            if (cache.size() == capacity) {
-73                // 利用 isEmpty() 逻辑找到 minFreq 对应的桶并删除末尾
-74                Node toRemove = freqMap.get(minFreq).removeLast();
-75                cache.remove(toRemove.key);
-76            }
+21    void addtoEnd(Node node) {
+22        Node preTail = tail.pre;
+23        preTail.next = node;
+24        node.next = tail;
+25        node.pre = preTail;
+26        tail.pre = node;
+27    }
+28
+29    void detach(Node node) {
+30        node.pre.next = node.next;
+31        node.next.pre = node.pre;
+32    }
+33
+34    boolean isEmpty() {
+35        return head.next == tail; // 当这个fre bucket 空的时候，更新minFreq
+36    }
+37}
+38
+39class LFUCache {
+40    int capacity;
+41    int minFreq; // 记录当前最小频率
+42    Map<Integer, Node> map; //cache
+43    Map<Integer, DoubleLinkedList> freqMap; // 频率 -> 该频率下的双向链表
+44
+45    public LFUCache(int capacity) {
+46        this.capacity = capacity;
+47        this.minFreq = 0;
+48        this.map = new HashMap<>();
+49        this.freqMap = new HashMap<>();
+50    }
+51
+52    public int get(int key) {
+53        if (!map.containsKey(key)) return -1;
+54        Node cur = map.get(key);
+55        updateFreq(cur); // 频率升级逻辑
+56        return cur.val;
+57    }
+58
+59    public void put(int key, int value) {
+60        if (capacity == 0) return;
+61
+62        if (map.containsKey(key)) {
+63            Node cur = map.get(key);
+64            cur.val = value;
+65            updateFreq(cur);
+66        } else {
+67            // 如果满了，先淘汰
+68            if (map.size() >= capacity) {
+69                DoubleLinkedList minList = freqMap.get(minFreq);
+70                Node toRemove = minList.head.next; // LFU 规则：踢掉最小频率桶里最旧的（head.next）
+71                minList.detach(toRemove);
+72                map.remove(toRemove.key);
+73                // 注意：这里不需要判断 minList 是否为空，因为马上就要加新节点，minFreq 会重置为 1
+74            }
+75            
+76            // 插入新节点
 77            Node newNode = new Node(key, value);
-78            cache.put(key, newNode);
-79            minFreq = 1;
-80            freqMap.computeIfAbsent(1, k -> new DoubleLinkedList()).addFirst(newNode);
+78            map.put(key, newNode);
+79            minFreq = 1; // 新人进来，最小频率肯定是 1
+80            freqMap.computeIfAbsent(1, k -> new DoubleLinkedList()).addtoEnd(newNode);
 81        }
 82    }
 83
-84    private void updateFreq(Node node) {
-85        int oldFreq = node.freq;
-86        DoubleLinkedList oldList = freqMap.get(oldFreq);
-87        oldList.remove(node);
-88        
-89        // 关键变化：直接检查 oldList 是否为空
-90        if (oldFreq == minFreq && oldList.isEmpty()) {
-91            minFreq++;
-92        }
-93
-94        node.freq++;
-95        freqMap.computeIfAbsent(node.freq, k -> new DoubleLinkedList()).addFirst(node);
-96    }
-97}
-98
-99/**
-100 * Your LFUCache object will be instantiated and called as such:
-101 * LFUCache obj = new LFUCache(capacity);
-102 * int param_1 = obj.get(key);
-103 * obj.put(key,value);
-104 */
+84    // 这是 LFU 的核心：把节点从旧频率桶挪到新频率桶
+85    private void updateFreq(Node node) {
+86        int oldFreq = node.freq;
+87        DoubleLinkedList oldList = freqMap.get(oldFreq);
+88        oldList.detach(node);
+89
+90        node.freq++;
+91        // 如果当前桶是最小频率桶且空了，minFreq 增加
+92        if (oldFreq == minFreq && oldList.isEmpty()) {
+93            minFreq++;
+94        }
+95
+96        
+97        freqMap.computeIfAbsent(node.freq, k -> new DoubleLinkedList()).addtoEnd(node);
+98    }
+99}
+100
+101/**
+102 * Your LFUCache object will be instantiated and called as such:
+103 * LFUCache obj = new LFUCache(capacity);
+104 * int param_1 = obj.get(key);
+105 * obj.put(key,value);
+106 */
