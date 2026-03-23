@@ -4,7 +4,7 @@ Can you solve this real interview question? Surrounded Regions - You are given a
 
  * Connect: A cell is connected to adjacent cells horizontally or vertically.
  * Region: To form a region connect every 'O' cell.
- * Surround: The region is surrounded with 'X' cells if you can connect the region with 'X' cells and none of the region cells are on the edge of the board.
+ * Surround: A region is surrounded if none of the 'O' cells in that region are on the edge of the board. Such regions are completely enclosed by 'X' cells.
 
 To capture a surrounded region, replace all 'O's with 'X's in-place within the original board. You do not need to return anything.
 
