@@ -15,40 +15,44 @@
 15 */
 16class Solution {
 17    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-18        List<List<Integer>> res = new ArrayList<>();
-19        if (root == null) return res;
-20        bfs(root, res);
-21        return res;   
-22    }
-23
-24    private void bfs(TreeNode root, List<List<Integer>>res) {
-25        if (root == null) return;
-26        Deque<TreeNode> deque = new LinkedList<>();
-27        boolean leftToRight = true;
-28
-29        deque.offerLast(root);
-30        while(!deque.isEmpty()) {
-31            int size = deque.size();
-32            List<Integer> levelNode= new LinkedList<>();
-33
-34            for (int i = 1; i <= size; i++) {
-35                TreeNode poll = deque.pollFirst();
-36                levelNode.add(poll.val);
-37                if (poll.left != null) {
-38                        deque.offerLast(poll.left);
-39                    } 
-40                    if (poll.right != null) {
-41                        deque.offerLast(poll.right);
-42                    }
-43                
+18        if (root == null) {
+19            return new ArrayList<>();
+20        }
+21
+22        Deque<TreeNode> dq = new ArrayDeque<>();
+23        List<List<Integer>> res = new ArrayList<>();
+24        boolean leftToRight = true;
+25
+26        dq.offerLast(root);
+27        while (!dq.isEmpty()) { // tree
+28            int size = dq.size();
+29            List<Integer> cur = new ArrayList<>();
+30            for (int i = 0; i < size; i++) { // level
+31                TreeNode poll = dq.pollFirst();
+32                if (poll.left != null) {
+33                    dq.offerLast(poll.left);
+34                }
+35                if (poll.right != null) {
+36                    dq.offerLast(poll.right);
+37                }
+38
+39                if (leftToRight) {
+40                    cur.add(poll.val);
+41                } else {
+42                    cur.addFirst(poll.val);
+43                }
 44            }
-45            if (!leftToRight) {
-46                Collections.reverse(levelNode);
-47            }
-48            res.add(levelNode);
-49            leftToRight = !leftToRight;
-50        }
-51        
-52    
-53    }
-54}
+45            res.add(cur);
+46            leftToRight = !leftToRight;
+47
+48        }
+49        return res;    
+50    }
+51}
+52
+53/**
+54use bfs, traversal level by level
+55boolean leftToRight = true offerLast, pollFirst; if no ,  offerFirst, pollLast
+56
+57
+58 */
