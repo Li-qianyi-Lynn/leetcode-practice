@@ -1,0 +1,74 @@
+1class UnionFind {
+2    int[] parents;
+3
+4    UnionFind (int n) {
+5        parents = new int[n];
+6            for (int i = 0; i < n; i++) {
+7                parents[i] = i;
+8            }
+9
+10    }
+11    public int find (int i) {
+12        if (parents[i] == i) {
+13            return i;
+14
+15        }
+16        parents[i] = find(parents[i]);
+17        return parents[i];
+18
+19    }
+20    public void union(int x, int y) {
+21        int rootX = find(x);
+22        int rootY = find(y);
+23        if (rootX != rootY) {
+24            parents[rootX] = rootY;
+25
+26        }
+27
+28    }
+29
+30}
+31
+32class Solution {
+33    public void solve(char[][] board) {
+34        if (board == null || board.length == 0) return;
+35
+36        int m = board.length;
+37        int n = board[0].length;
+38        // dummyNode 设为 m * n，代表“边界外的世界”
+39        UnionFind uf = new UnionFind(m * n + 1);
+40        int dummyNode = m * n;
+41
+42        // 方向数组
+43        int[][] directions = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+44
+45        for (int i = 0; i < m; i++) {
+46            for (int j = 0; j < n; j++) {
+47                if (board[i][j] == 'O') {
+48                    // 1. 如果是边界上的 'O'，直接连通 dummyNode
+49                    if (i == 0 || i == m - 1 || j == 0 || j == n - 1) {
+50                        uf.union(i * n + j, dummyNode);
+51                    }
+52                    
+53                    // 2. 检查四周，如果是 'O' 则合并（包含内部连通）
+54                    for (int[] dir : directions) {
+55                        int x = i + dir[0];
+56                        int y = j + dir[1];
+57                        if (x >= 0 && x < m && y >= 0 && y < n && board[x][y] == 'O') {
+58                            uf.union(i * n + j, x * n + y);
+59                        }
+60                    }
+61                }
+62            }
+63        }
+64
+65        // 3. 最后的审判：谁没和 dummyNode 连上，谁就是被包围的
+66        for (int i = 0; i < m; i++) {
+67            for (int j = 0; j < n; j++) {
+68                if (board[i][j] == 'O' && uf.find(i * n + j) != uf.find(dummyNode)) {
+69                    board[i][j] = 'X';
+70                }
+71            }
+72        }
+73    }
+74}
