@@ -1,52 +1,46 @@
 1class Solution {
 2    public boolean isValidSudoku(char[][] board) {
-3        int rows = board.length;
-4        int cols = board[0].length;
-5
-6        boolean[][] row = new boolean[9][9]; 
-7        boolean[][] col = new boolean[9][9]; 
-8        boolean[][] sq = new boolean[9][9]; 
-9
-10        for (int i = 0; i < rows; i++) {
-11            for (int j = 0; j < cols; j++) {
-12                char c = board[i][j];
-13                if (c != '.') {
-14                    int num = c - '1';
-15                    int sqidx = (i / 3) * 3 + (j/3);
-16                    if (row[i][num] || col[j][num] || sq[sqidx][num]) {
-17                        return false;
-18                    }
-19                    row[i][num] = true;
-20                    col[j][num] = true;
-21                    sq[sqidx][num] = true;
-22                }
-23
-24            }
-25
-26        }
-27        return true;
+3        Set<String> seen = new HashSet<>();
+4        int rows = board.length;
+5        int cols = board[0].length;
+6        for (int i = 0; i < rows; i++) {
+7            for (int j = 0; j < cols; j++) {
+8                char c = board[i][j];
+9                if (c != '.') {
+10                    if (!seen.add(i + "row" + c) || 
+11                    !seen.add(j + "col" + c) ||
+12                    !seen.add(i/3 + "-" + j/3 + "sq" + c)) {
+13                        return false;
+14                    }
+15                }
+16            }
+17        }
+18        return true;
+19        
+20    }
+21}
+22
+23/**
+24set(): char + row/col/sq + i/j/ box
+25row i
+26col j
+27square i/3 - j/3
 28
-29
-30        
-31        
-32    }
-33}
-34
-35/**
-36boolean[][]
-37
-381.row/col/sq
-39row : i
-40col : j
-41sq : sdidx (i/ 3) * 3 + j/3
-42
-432.char num : c - '1'-> 0-8
-44
-451. iterate board, get char and num
-46  - char:
-47     if any boolean arry is true, return false;
-48
-49  - . skip
-50
-51  update boolean arrys
-52*/
+290-0
+300-1
+310-2
+32
+331-0
+341-1
+351-2
+36
+372-0
+382-1
+392-2
+40
+41
+421. iterate
+432. check set.add(): 
+44 false :has dups, return false
+45 true: no worries
+46 */
