@@ -1,7 +1,7 @@
 1class Solution {
 2    public List<String> letterCombinations(String digits) {
-3        StringBuilder sb = new StringBuilder();
-4        List<String> res = new ArrayList<>();
+3        List<String> res = new ArrayList<>();
+4        StringBuilder sb = new StringBuilder();
 5        Map<Character, String> map = new HashMap<>();
 6        map.put('2', "abc");
 7        map.put('3', "def");
@@ -11,38 +11,41 @@
 11        map.put('7', "pqrs");
 12        map.put('8', "tuv");
 13        map.put('9', "wxyz");
-14        backtracking(digits, sb, res, 0, map);
-15        return res;
-16
+14
+15        backtracking(digits, res, sb, map, 0);
+16        return res;
 17
 18        
 19    }
 20
-21    private void backtracking(String digits, StringBuilder sb, List<String> res, int index, Map<Character, String> map) {
+21    private void backtracking(String digits, List<String> res, StringBuilder sb, Map<Character, String> map, int index) {
 22        // base case
 23        if (sb.length() == digits.length()) {
 24            res.add(sb.toString());
 25            return;
-26
-27        }
-28        String cur = map.get(digits.charAt(index));
-29        for (int i = 0; i < cur.length(); i++) { //abc
-30            sb.append(cur.charAt(i));
-31            backtracking(digits, sb, res, index+1, map); // digits 
+26        }
+27
+28        String letters = map.get(digits.charAt(index));
+29        for (int i = 0; i < letters.length(); i++) { 
+30            sb.append(letters.charAt(i));
+31            backtracking(digits, res, sb, map, index+1); // select the next char
 32            sb.deleteCharAt(sb.length()-1);
 33
 34        }
 35
 36    }
 37}
-38
-39/**
-40
-41map: char(num) -> String
-42build String: pick num in digits, get the char, add the second char 
-43backtracking
-441. base case: if sb.size() == digits.length(), return 
-452. backtracking: iterate mapping string, cur.append ; index +1
-463. remove added value, come to next round
-47
-48 */
+38/**
+392: abc
+403: def
+41
+42[String.string.string..]
+43Map: map the relationship between int and char
+44
+45find one of digit -> find the mapping char(based on the map)-> build the string (temp res.length == digits.length)
+46backtracking: same pattern to build the result
+471.  base case:  when temp.length == digits.length  return
+482.  for loop to iterate  digits mapping String
+493.  add char -> backtracking(index+1) -> remove the value we added and restart
+50
+51 */
