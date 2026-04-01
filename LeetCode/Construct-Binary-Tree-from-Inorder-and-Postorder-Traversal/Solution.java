@@ -14,47 +14,42 @@
 14 * }
 15 */
 16class Solution {
-17    private Map<Integer, Integer> map = new HashMap<>();
-18    private int index;// for postorder root locate
+17    Map<Integer, Integer> map = new HashMap<>();// int -> index for inorder
+18    int index; // for postorder
 19    public TreeNode buildTree(int[] inorder, int[] postorder) {
-20        //one case 
-21        if (inorder.length == 1) {
-22            return new TreeNode(inorder[0]);  
-23        }
-24        
-25        // init the map
+20        if (inorder.length == 1) {
+21            return new TreeNode(inorder[0]);
+22        }
+23        for (int i = 0; i < inorder.length; i++) {
+24            map.put(inorder[i],i);
+25        }
 26        index = postorder.length-1;
-27        for (int i = 0; i < inorder.length; i++) {
-28            map.put(inorder[i], i);    
-29        }
-30        return dfs(postorder,0,inorder.length-1); // ?
-31       
-32    }
-33    private TreeNode dfs(int[] postorder, int l, int r) {
-34        // base case
-35        if (l > r) {
-36            return null;   
-37        }
-38        
-39        // rules
-40        // get the root
-41        int rootval = postorder[index];
-42        index--;
-43        int mididx = map.get(rootval);
-44        TreeNode root = new TreeNode(rootval);
-45        
-46        // divide
-47        TreeNode ritree = dfs(postorder,mididx+1, r);
-48        TreeNode letree = dfs(postorder, l, mididx-1);
-49        root.right = ritree;
-50        root.left = letree;
-51        return root;    
-52        
-53    }
-54    
-55}
-56/**
-57inorder: left root right
-58postorder: left right root
-59
-60 */
+27
+28        return dfs(postorder, 0, index);
+29    }
+30    private TreeNode dfs(int[] postorder, int l, int r) {
+31        // base case
+32        if (l > r) {
+33            return null;
+34        }
+35
+36        int rootVal = postorder[index--];
+37        int rootIdx = map.get(rootVal);
+38        TreeNode root = new TreeNode(rootVal);
+39        root.right = dfs(postorder, rootIdx+1, r);
+40        root.left = dfs(postorder, l,rootIdx-1);
+41        return root;
+42
+43
+44
+45    }
+46}
+47/**
+48inorder: left root right 定位左子树和右子树-
+49postorder: left right root 去找根节点
+50
+51
+52
+53
+54
+55 */
