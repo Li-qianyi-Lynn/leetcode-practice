@@ -5,65 +5,45 @@
 5
 6        int[][] dp = new int[m+1][n+1];
 7
-8        // first row 
-9        for (int j = 0; j <= n; j++ ) {
-10            dp[0][j] = j;
-11
-12        }
-13
-14        for (int i = 0; i <= m; i++ ) {
-15            dp[i][0] = i;
-16
-17        }
-18
-19        for (int i = 1; i <= m; i++) {
-20            for (int j =1; j <= n; j++) {
-21                if (word1.charAt(i-1) == word2.charAt(j-1)) {
-22                    dp[i][j] = dp[i-1][j-1];
-23                } else {
-24                    dp[i][j] = Math.min(dp[i-1][j-1], Math.min(dp[i-1][j],dp[i][j-1])) +1;
-25                }
+8        for (int j = 0; j <= n; j++ ) {
+9            dp[0][j] = j;
+10
+11        }
+12        for (int i = 0; i <= m; i++) {
+13            dp[i][0] = i;
+14        }
+15
+16        for (int i = 1; i <= m; i++) {
+17            for (int j = 1; j <= n; j++) {
+18                char a = word1.charAt(i-1);
+19                char b = word2.charAt(j-1);
+20                if (a == b) {
+21                    dp[i][j] = dp[i-1][j-1];
+22                } else {
+23                    dp[i][j] = Math.min(dp[i-1][j-1], Math.min(dp[i-1][j],dp[i][j-1])) +1;
+24                }
+25
 26            }
-27        }
-28        return dp[m][n];
-29        
-30    }
-31}
-32/**
-33input: string word1, word2
-34output: int min 
-35
-36insert: add char
-37delete: remove char
-38replace: 用另外一个char 去换
+27
+28        }
+29        return dp[m][n];
+30        
+31    }
+32}
+33/**
+34
+35replace: dp[i][j] = dp[i-1][j-1];
+36remove: dp[i][j] = dp[i-1][j] 
+37insert: dp[i][j] = dp[i][j-1] 
+38word1 的前 i 个字符 转换成 word2 的前 j 个字符 所需的最少操作数。
 39
-40把前i 个char in word1 换成 前 j 个char in word2
-41preoperation: int[m+1][n+1] dp;
-421. 需要先比较word1.charat(i) == word2.charAt(j), dp[i][j] = dp[i-1][j-1] operation not change
-432. dp[i][j]: 把前i 个char in word1 换成 前 j 个char in word2 所需要的min operations 
-44dp[i][j] = math.min()
-45
-46return dp[m][n]
+40insert:
+41
+42
+43   h o r s e 
+44r
+45o
+46s
 47
-48   empty  r  o  s
-49em  0.    1  2.  3.     insert
-50
-51h.  1.    
-52o.  2
-53r.  3
-54s.  4
-55e   5 
-56
-57  delete
-58
-59  replace: dp[i-1][j-1] + 1
-60  delete: dp[i-1][j] + 1
-61  insert: dp[i][j-1] +1
-62
-63tc: O(m * n)
-64sc: O(m * n)
-65
-66
-67
-68
-69 */
+48
+49 */
