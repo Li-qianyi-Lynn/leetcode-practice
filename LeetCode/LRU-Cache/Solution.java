@@ -1,89 +1,85 @@
 1class Node {
-2    int key,val;
-3    Node prev, next;
+2    int val, key;
+3    Node pre, next;
 4    Node (int key, int val) {
-5        this.key = key;
-6        this.val = val;
+5        this.val = val;
+6        this.key = key;
 7
 8    }
-9}
-10
+9
+10}
 11class LRUCache {
-12    /**
-13    doubly linkedlist 
-14    map: key -> node
-15     */
-16    Map<Integer, Node> map;
-17    int capacity;
-18    Node head;
-19    Node tail;
-20
-21    public LRUCache(int capacity) {
-22        this.capacity = capacity;
-23        map= new HashMap<>();
-24        head = new Node (-1,-1);
-25        tail = new Node (-1,-1);
-26        head.next = tail;
-27        tail.prev = head;
-28        
-29    }
-30    
-31    public int get(int key) { // update linkedlist
-32        // not exist
-33        if (!map.containsKey(key)) {
-34            return -1;
-35        }
-36        Node node = map.get(key);
-37        detach(node);
-38        addToEnd(node); //刚使用了放到最后
-39
-40        return node.val;
-41        
-42    }
-43    
-44    public void put(int key, int value) { //update linkedlist, map
-45        if (!map.containsKey(key)) {
-46            if (map.size() == capacity) {
-47                Node toRemove = head.next;
-48                detach(toRemove);
-49                int removedKey = toRemove.key;
-50                map.remove(removedKey);
-51            }  
-52            Node newNode = new Node(key, value);
-53            map.put(key, newNode);
-54            addToEnd(newNode); // 新节点直接加入末尾，不需要 detach
-55        } else {
-56            Node node = map.get(key);
-57            node.val = value; 
-58            detach(node);     
-59            addToEnd(node);
+12    int capacity;
+13    Node head = new Node (-1,-1);
+14    Node tail = new Node (-1,-1);
+15    Map<Integer, Node> map;
+16
+17    public LRUCache(int capacity) {
+18        this.capacity = capacity;
+19        head.next = tail;
+20        tail.pre = head;
+21        map = new HashMap<>();    
+22    }
+23    
+24    public int get(int key) {
+25        if (!map.containsKey(key)) {
+26            return -1;
+27        }
+28        Node node = map.get(key);
+29        detach(node);
+30        addToEnd(node);
+31        return node.val;  
+32    }
+33    
+34    public void put(int key, int value) {
+35        if (map.containsKey(key)) {
+36            Node node = map.get(key);
+37            node.val = value;
+38            detach(node);
+39            addToEnd(node);
+40        } else {
+41            // check capacity, new node
+42            if (map.size() == capacity) {
+43                Node toRemove = head.next;
+44                detach(toRemove);
+45                map.remove(toRemove.key);
+46            }
+47
+48            Node newNode = new Node (key,value);
+49            addToEnd(newNode);
+50            map.put(key, newNode);
+51        }
+52        
+53    }
+54    private void addToEnd(Node node) {
+55        Node prev = tail.pre;
+56        tail.pre = node;
+57        node.next = tail;
+58        node.pre = prev;
+59        prev.next = node;
 60
-61        }
-62    
-63        
-64        
-65    }
-66
-67    private void addToEnd(Node node) {// head->node1 ->node2->node3->tail.     node4
-68        Node pre =tail.prev;
-69        node.prev = pre;
-70        pre.next = node;
-71        node.next = tail;
-72        tail.prev = node;
-73
-74    }
-75
-76    private void detach(Node node) {
-77        Node pre = node.prev;
-78        Node nex = node.next;
-79        pre.next = nex;
-80        nex.prev = pre;
-81    }
-82}
-83
-84/**
-85 * Your LRUCache object will be instantiated and called as such:
-86 * LRUCache obj = new LRUCache(capacity);
-87 * int param_1 = obj.get(key);
-88 * obj.put(key,value);
-89 */
+61
+62    }
+63
+64    private void detach(Node node) {
+65        Node prev = node.pre;
+66        Node nex = node.next;
+67        prev.next = nex;
+68        nex.pre = prev;
+69
+70    }
+71}
+72
+73/**
+74 * Your LRUCache object will be instantiated and called as such:
+75 * LRUCache obj = new LRUCache(capacity);
+76 * int param_1 = obj.get(key);
+77 * obj.put(key,value);
+78 */
+79 /**
+80 
+81 map: key -> Node
+82 doublyLinkedList: head <-> Node <-> tail
+83                             node
+84 
+85  */
