@@ -1,7 +1,7 @@
 1class Solution {
 2    public int climbStairs(int n) {
-3        if ( n == 1) {
-4            return 1;
+3        if ( n <= 2) {
+4            return n;
 5
 6        }
 7        int first = 1;
