@@ -29,7 +29,7 @@
 29        }
 30
 31        // update the res
-32        res = Math.max(curPath, res); //0
+32       
 33
 34        // how to divide
 35        // left child tree
@@ -41,21 +41,23 @@
 41            dfs(node.left, 1, false);
 42        }
 43
-44
-45    }
-46}
-47
-48/**
-49input: tree node
-50output: int longest ZigZag path 
-51
-52dfs
-532 choice:
-54curpath
-55go left -> 
-56-go right ---- curpath+1
-57-go left --- curpath == 0
-58go right -> go left ---- curpath+1
-59
-60
-61 */
+44        res = Math.max(curPath, res); //0
+45
+46
+47    }
+48}
+49
+50/**
+51input: tree node
+52output: int longest ZigZag path 
+53
+54dfs
+552 choice:
+56curpath
+57go left -> 
+58-go right ---- curpath+1
+59-go left --- curpath == 0
+60go right -> go left ---- curpath+1
+61
+62
+63 */
