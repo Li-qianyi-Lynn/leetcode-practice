@@ -16,45 +16,46 @@
 16class Solution {
 17    int res = 0;
 18    public int longestZigZag(TreeNode root) {
-19        dfs(root.left,1,false);
-20        dfs(root.right,1,true);
-21        return res;    
-22    }
-23
-24    private void dfs(TreeNode node, int curPath, boolean goLeft) {
-25        // base case
-26        if (node == null) {
-27            return;
-28        }
-29
-30        // update the res
-31        res = Math.max(curPath, res); //0
-32
-33        // how to divide
-34        // left child tree
-35        if (goLeft) {
-36            dfs(node.left, curPath+1, false);
-37            dfs(node.right, 1, true);
-38        } else { // go right
-39            dfs(node.right, curPath+1, true); //4
-40            dfs(node.left, 1, false);
-41        }
-42
+19        dfs(root.right,1,true);
+20        dfs(root.left,1,false);
+21        
+22        return res;    
+23    }
+24
+25    private void dfs(TreeNode node, int curPath, boolean goLeft) {
+26        // base case
+27        if (node == null) {
+28            return;
+29        }
+30
+31        // update the res
+32        res = Math.max(curPath, res); //0
+33
+34        // how to divide
+35        // left child tree
+36        if (goLeft) {
+37            dfs(node.left, curPath+1, false);
+38            dfs(node.right, 1, true);
+39        } else { // go right
+40            dfs(node.right, curPath+1, true); //4
+41            dfs(node.left, 1, false);
+42        }
 43
-44    }
-45}
-46
-47/**
-48input: tree node
-49output: int longest ZigZag path 
-50
-51dfs
-522 choice:
-53curpath
-54go left -> 
-55-go right ---- curpath+1
-56-go left --- curpath == 0
-57go right -> go left ---- curpath+1
-58
+44
+45    }
+46}
+47
+48/**
+49input: tree node
+50output: int longest ZigZag path 
+51
+52dfs
+532 choice:
+54curpath
+55go left -> 
+56-go right ---- curpath+1
+57-go left --- curpath == 0
+58go right -> go left ---- curpath+1
 59
-60 */
+60
+61 */
