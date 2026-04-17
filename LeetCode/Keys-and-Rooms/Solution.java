@@ -1,38 +1,41 @@
 1class Solution {
 2    public boolean canVisitAllRooms(List<List<Integer>> rooms) {
-3        int n = rooms.size();
-4        Deque<Integer> dq = new ArrayDeque<>(); // rooms we opened
-5        boolean[] visited = new boolean[n];
-6        int count = 0;
-7        visited[0] = true;
-8        dq.offerLast(0);
+3        Deque<Integer> dq = new ArrayDeque<>();
+4        Set<Integer> set = new HashSet<>();
+5        // init.
+6        dq.offerLast(0);
+7        set.add(0);
+8        int n = rooms.size();
 9
-10        while (!dq.isEmpty()) {
-11            int cur = dq.pollFirst();
-12            count++;
-13
+10        // bfs
+11        while (!dq.isEmpty()) {
+12            int cur = dq.pollFirst();
+13            // get keys;
 14            for (int key : rooms.get(cur)) {
-15                if (!visited[key]) {
-16                    visited[key] = true;
+15                if (!set.contains(key)) {
+16                    set.add(key);
 17                    dq.offerLast(key);
-18
-19                }
+18                }
+19            }
 20
-21            }
-22
-23        }
-24        return count == n;
-25
-26
-27
-28        
-29        
-30    }
-31}
-32/**
-33bfs
+21        }
+22        return n == set.size();
+23        
+24    }
+25}
+26/**
+27input: List<List<Integer>>
+28output: boolean: true if you can visit all the rooms, or false otherwise
+29
+30high level idea:
+31bfs-> dq(queue) -> store the room that we can unlock
+32
+33room num -> use rooms to get the keys -> add these keys into dq
 34
-35
+35set: dedup 
 36
 37
-38 */
+38
+39
+40
+41 */
