@@ -1,9 +1,43 @@
-[5,1,3]
-[1,2,3,4,5]
+1class Solution {
+2    public int[] successfulPairs(int[] spells, int[] potions, long success) {
+3        int n = spells.length;
+4        int m = potions.length;
+5        int[] res = new int[n];
+6        Arrays.sort(potions);// s = l
 7
-[3,1,2]
-[8,5,8]
+8        for (int i = 0; i < n; i++) {
+9            int s = spells[i];
+10            // binary search
+11            int l = 0;
+12            int r = m-1;
+13            int minPotionIdx = m;
+14            while (l <= r) {
+15                int mid = l + (r - l)/2;
 16
-[15,39,38,35,33,25,31,12,40,27,29,16,22,24,7,36,29,34,24,9,11,35,21,3,33,10,9,27,35,17,14,3,35,35,39,23,35,14,31,7]
-[25,19,30,37,14,30,38,22,38,38,26,33,34,23,40,28,15,29,36,39,39,37,32,38,8,17,39,20,4,39,39,7,30,35,29,23]
-317
+17                if ((long)s * potions[mid] >= success) {
+18                    minPotionIdx = mid;
+19                    r = mid - 1;
+20                } else {
+21                    l = mid + 1;
+22                }
+23            }
+24            // count 
+25            res[i] = m - minPotionIdx;
+26        }
+27        return res;
+28        
+29    }
+30}
+31/**
+32input: int[] spells n, int[] potions m(not sorted, one num can appear several times), int success
+33output:int[] pairs n
+34
+35product: s * p >= success
+36
+371. sort the potions
+382. we can know the minPotion index, all other index => the minpotion index  -> binary search
+393. calculate the count
+40
+41 
+42
+43 */
