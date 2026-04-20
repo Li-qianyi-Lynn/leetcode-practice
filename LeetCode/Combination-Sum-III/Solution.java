@@ -15,31 +15,32 @@
 15        int size = cur.size();
 16        if (size == k && curSum == n) {
 17            res.add(new ArrayList<>(cur));
-18        }
-19
-20        if (size > k || curSum > n || num > 9 || num < 1) {
-21            return;
-22        }
-23
-24        for (int i = num; num <= 9; num++) {
-25            cur.add(num);
-26            backtracking(k,n, curSum + num, cur ,num+1);
-27            cur.remove(cur.size()-1);
-28
+18            return;
+19        }
+20
+21        if (size > k || curSum > n || num > 9 || num < 1) {
+22            return;
+23        }
+24
+25      
+26        cur.add(num);
+27        backtracking(k,n, curSum + num, cur ,num+1);
+28        cur.remove(cur.size()-1);
 29
 30
-31        }
-32      
+31        backtracking(k,n, curSum, cur ,num+1);
+32        
 33
 34
-35    }
-36}
-37/**
-38backtracking: 
-39
-401- 9 
-41if curSum == n && size == k , add the list to the res List
-42
+35
+36    }
+37}
+38/**
+39backtracking: 
+40
+411- 9 
+42if curSum == n && size == k , add the list to the res List
 43
 44
-45 */
+45
+46 */
