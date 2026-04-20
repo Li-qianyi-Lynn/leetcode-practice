@@ -1,28 +1,45 @@
-vector<vector<int>> combinationSum3(int k, int n) {
-    if (!k || k > 9) return {};
-    const vector<vector<int>> REF{{0, 1, 3, 6, 10, 15, 21, 28, 36, 45},
-                                  {0, 9,17,24, 30, 35, 39, 42, 44, 45}};
-    vector<vector<int>> ans;
-    vector<int> buf(k, 0);
-    for (int i = 0, sum = 0; i >= 0; ) {
-        if (i == k - 1) {
-            int r = n - sum;
-            if (r > (i ? buf[i-1] : 0) && r < 10) {
-                buf[i] = r;
-                ans.push_back(buf);
-            }
-            --i;
-            continue;
-        }
-
-        sum -= buf[i]++;
-        int p = (i ? buf[i-1] : 0), r = n - sum, rc = k - i;
-        if (buf[i] <= p) buf[i] = p + 1;
-        if (buf[i] > 9 || p + rc > 9 || r < REF[0][p+rc] - REF[0][p] || r > REF[1][rc]) {
-            buf[i--] = 0;
-            continue;
-        }
-        sum += buf[i++];
-    }
-    return ans;
-}
+1class Solution {
+2    List<List<Integer>> res = new ArrayList<>();
+3    public List<List<Integer>> combinationSum3(int k, int n) {
+4        if (n ==1) {
+5            return new ArrayList<>();
+6
+7        }
+8        backtracking(k,n,0,new ArrayList<>(),1);
+9        return res;
+10        
+11    }
+12
+13    private void backtracking(int k, int n, int curSum, List<Integer> cur, int num) {
+14        // base case
+15        int size = cur.size();
+16        if (size == k && curSum == n) {
+17            res.add(new ArrayList<>(cur));
+18        }
+19
+20        if (size > k || curSum > n || num > 9 || num < 1) {
+21            return;
+22        }
+23
+24        for (int i = num; num <= 9; num++) {
+25            cur.add(num);
+26            backtracking(k,n, curSum + num, cur ,num+1);
+27            cur.remove(cur.size()-1);
+28
+29
+30
+31        }
+32      
+33
+34
+35    }
+36}
+37/**
+38backtracking: 
+39
+401- 9 
+41if curSum == n && size == k , add the list to the res List
+42
+43
+44
+45 */
