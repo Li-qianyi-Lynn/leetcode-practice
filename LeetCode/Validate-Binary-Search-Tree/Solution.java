@@ -14,24 +14,26 @@
 14 * }
 15 */
 16class Solution {
-17    long prev = Long.MIN_VALUE; // 用 long 防止节点值是 Integer.MIN_VALUE
-18
+17
+18    // inorder reversal
 19    public boolean isValidBST(TreeNode root) {
-20        if (root == null) return true;
-21
-22        // 访问左子树
-23        if (!isValidBST(root.left)) return false;
-24
-25        // 访问当前节点：必须大于前一个节点
-26        if (root.val <= prev) return false;
-27        prev = root.val;
-28
-29        // 访问右子树
-30        return isValidBST(root.right);
-31    }
-32}
-33/**
-34inorder traversal
-35
-36
-37 */
+20        List<Integer> res = new ArrayList<>();
+21        inorder(root,res);
+22        for (int i = 1; i < res.size(); i++) {
+23            if (res.get(i) <= res.get(i-1)) {
+24                return false;
+25            }
+26
+27        }
+28        return true;    
+29    }
+30
+31   private void inorder(TreeNode root, List<Integer> res) {
+32        if (root == null) return;
+33
+34        inorder(root.left, res);
+35        res.add(root.val);
+36        inorder(root.right,res);
+37
+38   }
+39}
