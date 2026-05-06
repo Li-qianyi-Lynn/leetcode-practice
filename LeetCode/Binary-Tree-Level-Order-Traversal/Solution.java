@@ -33,7 +33,7 @@
 33
 34        while (!deque.isEmpty()) {
 35            int size = deque.size();
-36            List<Integer> levelNode = new LinkedList<>();
+36            List<Integer> levelNode = new ArrayList<>();
 37            for (int i = 1; i <= size; i++) {
 38                TreeNode poll = deque.pollFirst();
 39                levelNode.add(poll.val);
