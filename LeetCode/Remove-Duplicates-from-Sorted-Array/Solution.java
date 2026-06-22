@@ -2,33 +2,30 @@
 2    public int removeDuplicates(int[] nums) {
 3        if (nums.length == 1) {
 4            return 1;
-5
-6        }
-7
-8        int valid = 1;
-9        for (int i = 1; i < nums.length; i++) {
-10            if (nums[i] != nums[i-1]) {
-11                nums[valid] = nums[i];
-12                valid++;
-13            }
-14        }
-15        return valid;
-16        
-17    }
-18}
-19
-20/**
-21input: sorted nums[]
-22output: number of unique elements in nums
-23
-24valid = 1
-25
-26[1,1,2]
-27   |
-28   i
-29if nums[i] != nums[i-1]
-30   nums[valid] = nums[i]
-31   valid++
-32
-33return valid
-34 */
+5        }
+6        int s = 0;
+7        for (int f = 1; f < nums.length; f++) {
+8            if (nums[f] != nums[s]) {
+9                s++;
+10                nums[s] = nums[f];
+11
+12            }
+13        }
+14        
+15        return s+1;
+16    }
+17}
+18/**
+19slow and fast pointers
+20
+21[0,1,2,3,4,2,2,3,3,4]
+22         s
+23                   f
+24
+25same: fast move 
+26not same : s+1, nums[s]= nums[f]
+27
+280,0
+29  
+30return s+1
+31 */
