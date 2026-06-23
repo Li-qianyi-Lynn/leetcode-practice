@@ -1,36 +1,36 @@
 1class Solution {
-2    public void rotate(int[] nums, int k) {
-3        if (nums.length == 1 || k == 0) {
-4            return;
-5        }
-6        int len = nums.length;
-7        k = k % len;
-8        if (k == 0) {
-9            return;
-10        }
-11
-12        reverse(nums, 0, len-1);
-13        reverse(nums, 0, k-1);
-14        reverse(nums, k, len-1);
-15        
-16    }
-17
-18    private void reverse(int[] nums, int start, int end) {
-19        if (nums.length == 0) {
-20            return;
-21        }
-22
-23        int temp = 0;
-24        while (start < end) {
-25            temp = nums[start];
-26            nums[start] = nums[end];
-27            nums[end] = temp;
+2    
+3    public void rotate(int[] nums, int k) {
+4        if (nums.length == 1 || k == 0) {
+5            return;
+6        }
+7        int[] res = new int[nums.length];
+8        int len = nums.length;
+9        k = k % len;
+10        if (k == 0) {
+11            return;
+12        }
+13
+14        fill(res, nums, len-k, 0, k);
+15        fill(res, nums, 0, k, len);
+16        for (int i = 0; i < len; i++) {
+17            nums[i] = res[i];
+18
+19        }
+20
+21        
+22        
+23    }
+24
+25    private void fill(int[] res, int[] nums, int start, int head, int tail) {
+26        for (int i = head; i < tail; i++) {
+27            res[i] = nums[start]; 
 28            start++;
-29            end--;
-30        }
-31
+29        }
+30
+31    }
 32
-33    }
+33    
 34}
 35/**
 36
