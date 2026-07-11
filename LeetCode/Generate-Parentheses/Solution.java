@@ -25,14 +25,14 @@
 25        if (left < n) {
 26            sb.append('(');
 27            backtracking(n, left+1, right,sb);
-28            sb.setLength(sb.length()-1);
+28            sb.deleteCharAt(sb.length()-1);
 29
 30        }
 31        // right
 32        if (right < left) {
 33            sb.append(')');
 34            backtracking(n, left, right+1,sb);
-35            sb.setLength(sb.length()-1);
+35            sb.deleteCharAt(sb.length()-1);
 36
 37        }
 38
