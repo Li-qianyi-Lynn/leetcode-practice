@@ -1,43 +1,38 @@
 1class Solution {
-2    
-3    public void rotate(int[] nums, int k) {
-4        if (nums.length == 1 || k == 0) {
-5            return;
-6        }
-7        int[] res = new int[nums.length];
-8        int len = nums.length;
-9        k = k % len;
-10        if (k == 0) {
-11            return;
-12        }
-13
-14        fill(res, nums, len-k, 0, k);
-15        fill(res, nums, 0, k, len);
-16        for (int i = 0; i < len; i++) {
-17            nums[i] = res[i];
-18
-19        }
-20
-21        
-22        
-23    }
-24
-25    private void fill(int[] res, int[] nums, int start, int head, int tail) {
-26        for (int i = head; i < tail; i++) {
-27            res[i] = nums[start]; 
-28            start++;
-29        }
+2    public void rotate(int[] nums, int k) {
+3        if (nums.length == 1) {
+4            return;
+5        }
+6        int n = nums.length;
+7        k = k % nums.length;
+8        reverse(nums, 0, n-1);
+9        reverse(nums,0, k-1);
+10        reverse(nums, k, n-1);
+11
+12
+13        
+14    }
+15
+16    private void reverse(int[] nums, int start, int end) {
+17        while (start < end ) {
+18            int temp = nums[start];
+19            nums[start] = nums[end];
+20            nums[end] = temp;
+21            start ++;
+22            end --;
+23        }
+24        
+25
+26    }
+27}
+28/**
+29reverse 3 times
 30
-31    }
+31[1,2,3,4,5,6,7]
 32
-33    
-34}
-35/**
+331. all
+342. first 3
+353. last 4
 36
-37update k 
-38
-39reverse 3 times
-40
-417654321
-42
-43 */
+37
+38 */
