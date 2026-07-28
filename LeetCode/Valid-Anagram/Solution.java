@@ -1,28 +1,33 @@
 1class Solution {
 2    public boolean isAnagram(String s, String t) {
-3        if (s.length() != t.length()) {
-4            return false;
-5
+3        // pruning 
+4        if (s.length() != t.length()) {
+5            return false;
 6        }
-7        int[] count = new int[26];
-8
-9
-10        for (int i = 0; i < s.length(); i++) {
-11            int idx1 = s.charAt(i) - 'a';
-12            int idx2 = t.charAt(i) - 'a';
-13            count[idx1]++;
-14            count[idx2]--;
+7        int n = s.length();
+8        int[] map = new int[26];
+9        for (int i = 0; i < n; i++) {
+10            int sc = s.charAt(i) - 'a';
+11            int tc = t.charAt(i) - 'a';
+12            // count chars in s and t
+13            map[sc] ++;
+14            map[tc] --;
 15        }
 16
-17        for (int i : count) {
-18            if (i != 0) {
-19                return false;
-20            }
-21
+17        // iterate to check if it has non-0
+18        for (int m : map) {
+19            if (m != 0) {
+20                return false;
+21            }
 22        }
 23        return true;
-24
-25
-26        
-27    }
-28}
+24    }
+25}
+26/**
+27
+28anagram:chars same , count same
+29input: two strings 
+30output: boolean
+31
+32int[]-> char:count
+33 */
