@@ -15,15 +15,28 @@
 15 */
 16class Solution {
 17    public int maxDepth(TreeNode root) {
-18        if (root == null) {
-19            return 0;
-20        }
-21        int lef = maxDepth(root.left);
-22        int rig = maxDepth(root.right);
-23
-24        return Math.max(lef,rig) +1;
-25        
-26    }
-27
-28    
-29}
+18        if (root == null) return 0;
+19        int depth = 0;
+20        Deque<TreeNode> deque = new LinkedList<>();
+21        deque.offerLast(root);
+22        while (!deque.isEmpty()) {
+23            depth++;
+24            int size = deque.size();
+25            for (int i =1; i <= size; i++) {
+26                TreeNode poll = deque.pollFirst();
+27                if (poll.left != null) {
+28                    deque.offerLast(poll.left);
+29                }
+30                if (poll.right != null) {
+31                    deque.offerLast(poll.right);
+32                }
+33
+34            }
+35
+36        }
+37        return depth;
+38   
+39    }
+40
+41  
+42}
