@@ -21,16 +21,16 @@
 21
 22        // check graph connectivity with bfs -> if visited nodes num == n
 23        Deque<Integer> dq = new ArrayDeque<>();
-24        List<Integer> visited = new ArrayList<>();
+24        boolean[] visited = new boolean[n];
 25        dq.offerLast(0);
-26        visited.add(0);
+26        visited[0] = true;;
 27
 28        while (!dq.isEmpty()) {
 29            int cur = dq.pollFirst();
 30            List<Integer> neis = adj.get(cur);
 31            for (int nei : neis ) {
-32                if (!visited.contains(nei)) {
-33                    visited.add(nei);
+32                if (!visited[nei]) {
+33                    visited[nei] = true;
 34                    dq.offerLast(nei);
 35
 36                }
@@ -38,10 +38,17 @@
 38            }
 39
 40        }
-41        return visited.size() == n;
-42
-43
+41        for (int i = 0; i < n; i++) {
+42            if (visited[i] == false) {
+43                return false;
 44
-45        
-46    }
-47}
+45            }
+46
+47        }
+48        return true;
+49
+50
+51
+52        
+53    }
+54}
