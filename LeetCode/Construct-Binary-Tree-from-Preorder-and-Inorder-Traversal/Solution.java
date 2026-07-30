@@ -14,49 +14,48 @@
 14 * }
 15 */
 16class Solution {
-17    HashMap<Integer,Integer> map = new HashMap<>(); // val -> indices
-18    int c = 0; // preorder pointer
-19    
-20
-21    public TreeNode buildTree(int[] preorder, int[] inorder) {
-22        if (preorder.length == 1) {
-23            return new TreeNode(preorder[0]);
-24
+17    private HashMap<Integer, Integer> map;// inorder
+18    private int idx; // preorder
+19    public TreeNode buildTree(int[] preorder, int[] inorder) {
+20        map = new HashMap<>();
+21        idx = 0;
+22
+23        for (int i = 0; i < inorder.length; i++) {
+24            map.put(inorder[i], i);
 25        }
-26        for (int i = 0; i < inorder.length; i++) {
-27            map.put(inorder[i],i);
-28        }
-29        return dfs(preorder,0,preorder.length-1);
-30        
-31    }
-32
-33    private TreeNode dfs(int[] preorder, int l, int r) {
-34        // base case
-35        if (l > r) {
-36            return null;
+26
+27        return dfs(preorder,0, preorder.length);
+28
+29        
+30    }
+31
+32    private TreeNode dfs(int[] preorder, int l, int r) {
+33        //base case
+34        if (l > r || idx >= preorder.length) {
+35            return null;
+36
 37        }
 38
-39        // get the root
-40        int cur = preorder[c];
-41        c++;
-42        TreeNode root = new TreeNode(cur);
-43        int mid = map.get(cur);
-44        root.left = dfs(preorder,l,mid-1);
-45        root.right = dfs(preorder,mid+1,r);
-46        return root;
-47    }
-48}
+39        
+40        TreeNode cur = new TreeNode(preorder[idx]); // root
+41        // get root idx
+42
+43        int mid = map.get(cur.val);
+44        idx++;
+45        cur.left = dfs(preorder,l, mid-1);
+46        cur.right = dfs(preorder,mid+1, r);
+47
+48        return cur;
 49
-50/**
-51preorder:
-52mid, left,right
-53
-54inorder:
-55left, mid, right
+50
+51
+52    }
+53}
+54
+55/**
 56
-57get the node, check the indx in inorder, 
-58index.right: right side,
-59index.left : left side
+57map: inorder  value : index
+58idx: follow root value  -> preorder
+59[9,3,15,20,7]
 60
 61 */
-62
