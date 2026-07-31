@@ -15,24 +15,36 @@
 15 */
 16class Solution {
 17    public boolean isSameTree(TreeNode p, TreeNode q) {
-18        // base case
+18        //base case
 19        if (p == null && q == null) {
 20            return true;
 21        }
-22
-23        if (p == null || q == null) {
-24            return false;
-25        }
-26        if (p. val != q.val) {
+22        if (p == null || q == null) {
+23            return false;
+24        }
+25        
+26        if (p.val != q.val) {
 27            return false;
-28
-29        }
-30
-31        // divided
-32        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
-33
-34
-35
-36        
-37    }
-38}
+28        }
+29       
+30        return isSameTree(p.left, q.left) && isSameTree(p.right,q.right); 
+31
+32        
+33    }
+34}
+35/**
+36
+37
+38input: two treeNode p,q
+39output: boolean 
+40
+41same:
+421. nodes same
+432. node.val same
+44
+45dfs
+46
+47
+48
+49
+50 */
