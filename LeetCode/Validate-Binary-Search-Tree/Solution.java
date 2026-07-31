@@ -14,26 +14,48 @@
 14 * }
 15 */
 16class Solution {
-17
-18    // inorder reversal
-19    public boolean isValidBST(TreeNode root) {
-20        List<Integer> res = new ArrayList<>();
-21        inorder(root,res);
-22        for (int i = 1; i < res.size(); i++) {
-23            if (res.get(i) <= res.get(i-1)) {
-24                return false;
-25            }
-26
-27        }
-28        return true;    
-29    }
+17    private long maxValue = Long.MAX_VALUE;
+18    private long minValue = Long.MIN_VALUE;
+19    
+20    public boolean isValidBST(TreeNode root) {
+21        return dfs(root, maxValue, minValue);
+22        
+23    }
+24
+25    private boolean dfs(TreeNode node, long maxCurValue, long minCurValue) {
+26        //base case 
+27        if (node == null) {
+28            return true;
+29        }
 30
-31   private void inorder(TreeNode root, List<Integer> res) {
-32        if (root == null) return;
+31        if (node.val >= maxCurValue ) {
+32            return false;
 33
-34        inorder(root.left, res);
-35        res.add(root.val);
-36        inorder(root.right,res);
-37
-38   }
-39}
+34        }
+35
+36        if (node.val <= minCurValue) {
+37            return false;
+38        }
+39
+40        return dfs(node.left, node.val, minCurValue) && dfs(node.right, maxCurValue, node.val);
+41 
+42        
+43    }
+44}
+45
+46/**
+47
+48input: treenode root
+49output: boolean 
+50
+51bst:
+52left node value < root.value < right node.value
+53
+54dfs
+55global []
+56
+57max value
+58min value
+59
+60
+61 */
