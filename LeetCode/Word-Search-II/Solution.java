@@ -26,77 +26,71 @@
 26    }
 27
 28    private void dfs(char[][] board, int i, int j, List<String> res, TrieNode trie) {
-29        // base case '#'
-30        char c = board[i][j];
-31        int index = c - 'a';
-32        if (c == '#' || trie.children[c - 'a'] == null) {
-33            return;
-34        }
-35
-36        // 1. 核心修改：移动到子节点
-37        TrieNode nextNode = trie.children[c - 'a'];
-38
-39        // 2. 核心修改：从子节点中提取单词
+29        int[][] dirs = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+30        // base case '#'
+31        char c = board[i][j];
+32        int index = c - 'a';
+33        if (c == '#' || trie.children[c - 'a'] == null) {
+34            return;
+35        }
+36
+37        // 移动到子节点!
+38        TrieNode nextNode = trie.children[c - 'a'];
+39
 40        if (nextNode.word != null) {
 41            res.add(nextNode.word);
-42            nextNode.word = null; // 找到后置空，防止重复添加
+42            nextNode.word = null; 
 43        }
 44
 45
 46        char temp = board[i][j];
 47        board[i][j] = '#';
 48
-49        if (i > 0) {
-50            dfs(board, i-1,j,res,nextNode);
-51        }
-52        if (i < board.length-1) {
-53            dfs(board, i+1, j,res,nextNode);
-54        }
-55
-56        if (j > 0) {
-57            dfs(board,i,j-1,res,nextNode);
-58        }
+49       for (int[] dir : dirs) {
+50            int newI = i + dir[0];
+51            int newJ = j + dir[1];
+52            
+53            // 统一判断边界
+54            if (newI >= 0 && newI < board.length && newJ >= 0 && newJ < board[0].length) {
+55                dfs(board, newI, newJ, res, nextNode);
+56            }
+57        }
+58        board[i][j] = temp;
 59
-60        if (j < board[0].length-1) {
-61            dfs(board,i,j+1,res,nextNode);
-62
-63        }
-64        board[i][j] = temp;
-65
-66    }
-67
-68    private void trieBuilder(String word, TrieNode trie) { // 遍历char in words , put chars in the trieNode
-69        TrieNode cur = trie;
-70        for (char c : word.toCharArray()) {
-71            int index = c - 'a';
-72            if (index >= 26 || index < 0) {
-73                return;
-74            }
-75
-76            if (cur.children[index] == null) {
-77                cur.children[index] = new TrieNode();
-78            }
-79            cur = cur.children[index];
-80        }
-81        cur.word = word;
-82
-83    }
+60    }
+61
+62    private void trieBuilder(String word, TrieNode trie) { // 遍历char in words , put chars in the trieNode
+63        TrieNode cur = trie;
+64        for (char c : word.toCharArray()) {
+65            int index = c - 'a';
+66            if (index >= 26 || index < 0) {
+67                return;
+68            }
+69
+70            if (cur.children[index] == null) {
+71                cur.children[index] = new TrieNode();
+72            }
+73            cur = cur.children[index];
+74        }
+75        cur.word = word;
+76
+77    }
+78}
+79/**
+80trienode class
+81{
+82children: TrieNode[26]
+83String word
 84}
-85/**
-86trienode class
-87{
-88children: TrieNode[26]
-89String word
-90}
+85
+86triebuilder: init trie based on the words
+87
+88dfs: iterate board 去判断board【i】【j】 char 有没有符合trie
+894 directions
+90
 91
-92triebuilder: init trie based on the words
-93
-94dfs: iterate board 去判断board【i】【j】 char 有没有符合trie
-954 directions
-96
-97
-98root
-990 1 2 ...18. 25
-100           0 ....25 
-101           0 .. 25
-102 */
+92root
+930 1 2 ...18. 25
+94           0 ....25 
+95           0 .. 25
+96 */
