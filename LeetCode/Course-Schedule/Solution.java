@@ -1,58 +1,71 @@
 1class Solution {
 2    public boolean canFinish(int numCourses, int[][] prerequisites) {
-3        if (prerequisites.length == 0) {
-4            return true;       
-5        }
-6        int finished = 0;
-7        Map<Integer, List<Integer>> map = new HashMap<>();
-8        
-9        int[] indegree = new int[numCourses];
-10        for (int[] pres : prerequisites) {
-11            int pre = pres[1];
-12            int course = pres[0];   
-13            indegree[course]++;
-14            map.putIfAbsent(pre, new ArrayList<>());
-15            map.get(pre).add(course);
-16        }
-17        
-18        Deque<Integer> dq = new ArrayDeque<>();
-19        for (int i = 0; i < numCourses; i++) {
-20            if (indegree[i] == 0) {
-21                dq.offerLast(i);  
-22                finished++;
-23            }  
-24        }
-25        while (!dq.isEmpty()) {
-26            int poll = dq.pollFirst();
-27            List<Integer> unlockedCourses = map.get(poll);
-28            if (unlockedCourses == null) {
-29                continue;
-30                
-31            }
-32            for (int i = 0; i < unlockedCourses.size(); i++) {
-33                int c = unlockedCourses.get(i);
-34                indegree[c]--;
-35                if (indegree[c]== 0) {
-36                    dq.offerLast(c);   
-37                    finished++;
-38                }   
-39            }   
-40        }
-41        return finished == numCourses;
-42        
-43    }
-44}
-45/**
-46dependency 
-47bfs
-481. map: pre -> unlocked courses
-492. int[] : each course has how many precourses
-50
-51bfs
-52put unlocked courses(arr[course] == 0) to the deque
+3        if (numCourses == 1 || prerequisites.length == 0) {
+4            return true;
+5
+6        }
+7
+8        int finished = 0;
+9        HashMap<Integer, List<Integer>> map = new HashMap<>();
+10        int[] indegree = new int[numCourses];
+11        for (int[] pres : prerequisites) {
+12            int pre = pres[1];
+13            int course = pres[0];
+14            indegree[course]++;
+15            map.putIfAbsent(pre,new ArrayList<>());
+16            map.get(pre).add(course);
+17
+18        }
+19
+20        Deque<Integer> dq = new ArrayDeque<>();
+21        for (int i = 0; i < numCourses; i++) {
+22            if (indegree[i] == 0) {
+23                dq.offerLast(i);
+24                finished++;
+25            }
+26        }
+27
+28        while (!dq.isEmpty()) {
+29            int cur = dq.pollFirst();
+30            List<Integer> courses = map.get(cur);
+31            if (courses == null) {
+32                continue;
+33
+34            }
+35            for (int i = 0; i < courses.size(); i++) {
+36                int c = courses.get(i);
+37                indegree[c]--;
+38                if (indegree[c] == 0) {
+39                    finished++;
+40                    dq.offerLast(c);
+41                }
+42            }
+43        }
+44
+45        return finished == numCourses;
+46  
+47
+48        
+49    }
+50}
+51
+52/**
 53
-54check numCourses and unlocked courses
+54dependency problem
 55
-56
+56bfs
 57
-58 */
+58indegree map: int[] to store each course has how many pres
+59
+60int finished course
+61hashmap pre: course
+62
+63bfs:
+64use deque to store finished courses and update courses num
+65
+66
+67
+68compare finished course num with numCourses
+69
+70
+71 */
