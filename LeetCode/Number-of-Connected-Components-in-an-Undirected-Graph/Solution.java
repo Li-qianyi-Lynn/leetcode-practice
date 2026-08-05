@@ -1,33 +1,31 @@
-class DSU:
-    def __init__(self, n):
-        self.parent = [i for i in range(n)]
-        self.rank = [0 for _ in range(n)]
-
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])
-        return self.parent[x]
-
-    def union(self, x, y):
-        xset = self.find(x)
-        yset = self.find(y)
-        if xset == yset:
-            return
-        if self.rank[xset] > self.rank[yset]:
-            self.parent[yset] = self.parent[xset]
-        elif self.rank[xset] < self.rank[yset]:
-            self.parent[xset] = self.parent[yset]
-        else:
-            self.parent[xset] = self.parent[yset]
-            self.rank[yset] += 1
-            
-class Solution:
-    def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        ds = DSU(n)
-        for edge in edges:
-            ds.union(edge[0], edge[1])
-        
-        parent = set()
-        for i in range(n):
-            parent.add(ds.find(i))
-        return len(parent)
+1public class Solution {
+2    public int countComponents(int n, int[][] edges) {
+3        List<List<Integer>> adj = new ArrayList<>();
+4        boolean[] visit = new boolean[n];
+5        for (int i = 0; i < n; i++) {
+6            adj.add(new ArrayList<>());
+7        }
+8        for (int[] edge : edges) {
+9            adj.get(edge[0]).add(edge[1]);
+10            adj.get(edge[1]).add(edge[0]);
+11        }
+12
+13        int res = 0;
+14        for (int node = 0; node < n; node++) {
+15            if (!visit[node]) {
+16                dfs(adj, visit, node);
+17                res++;
+18            }
+19        }
+20        return res;
+21    }
+22
+23    private void dfs(List<List<Integer>> adj, boolean[] visit, int node) {
+24        visit[node] = true;
+25        for (int nei : adj.get(node)) {
+26            if (!visit[nei]) {
+27                dfs(adj, visit, nei);
+28            }
+29        }
+30    }
+31}
