@@ -16,9 +16,9 @@
 16            map.get(String.valueOf(curChar)).add(cur);
 17        }
 18
-19        // res.add(map.values()); //todo
-20        // return res;
-21        return new ArrayList<>(map.values());
+19        res.addAll(map.values()); 
+20        return res;
+21        // return new ArrayList<>(map.values());
 22        
 23        
 24    }
