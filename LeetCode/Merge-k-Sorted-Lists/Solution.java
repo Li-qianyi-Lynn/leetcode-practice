@@ -14,33 +14,26 @@
 14            return null;
 15
 16        }
-17
-18        PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
-19        for (ListNode list : lists) {
-20            ListNode cur = list;
-21            while (cur != null) {
-22                pq.offer(cur);
-23                cur = cur.next;
-24            }
+17        PriorityQueue<ListNode> pq = new PriorityQueue<>((a,b) -> a.val - b.val);
+18        for (ListNode n : lists) {
+19            ListNode cur = n;
+20            while (cur != null) {
+21                pq.offer(cur);
+22                cur = cur.next;
+23            }
+24        }
 25
-26        }
-27
-28        ListNode dummy = new ListNode(-1);
-29        ListNode tail = dummy;
-30        while (!pq.isEmpty()) {
-31            ListNode poll = pq.poll();
-32            tail.next = poll;
-33            tail = tail.next;
-34
-35        }
-36        tail.next = null;
-37        return dummy.next;
+26        ListNode dummy = new ListNode(-1);
+27        ListNode tail = dummy;
+28
+29        while (!pq.isEmpty()) {
+30            ListNode poll = pq.poll();
+31            tail.next = poll;
+32            tail = tail.next;
+33        }
+34        tail.next = null;
+35        return dummy.next;
+36
+37        
 38    }
 39}
-40
-41/**
-42iterate list，put all node into pq;
-43build result
-44
-45
-46 */
