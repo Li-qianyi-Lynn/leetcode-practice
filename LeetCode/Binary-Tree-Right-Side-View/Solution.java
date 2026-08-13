@@ -15,27 +15,39 @@
 15 */
 16class Solution {
 17    public List<Integer> rightSideView(TreeNode root) {
-18        // edge case
-19        if (root == null) return new ArrayList<>();
-20
-21        List<Integer> result = new ArrayList<>();
-22        Queue<TreeNode> queue = new ArrayDeque<>();
-23        queue.offer(root);// first level
-24
-25        while (!queue.isEmpty()) {
-26            int levelSize = queue.size(); // Number of nodes at the current level
-27            for (int i = 0; i < levelSize; i++) {
-28                TreeNode currentNode = queue.poll();
-29                
-30                // If it's the last element of the current level, add to result
-31                if (i == levelSize - 1) {
-32                    result.add(currentNode.val);
-33                }
-34                
-35                if (currentNode.left != null) queue.offer(currentNode.left);
-36                if (currentNode.right != null) queue.offer(currentNode.right);
-37            }
-38        }
-39        return result;
-40    }
-41}
+18        List<Integer> res = new ArrayList<>();
+19        if (root == null) {
+20            return res;
+21        }
+22
+23        Deque<TreeNode> dq = new ArrayDeque<>(); //queue
+24        dq.offerLast(root);
+25
+26        while (!dq.isEmpty()) {
+27            int size = dq.size();
+28            for (int i = 0; i < size; i++) {
+29                TreeNode poll = dq.pollFirst();
+30                if (i == size-1) {
+31                    res.add(poll.val);
+32                }
+33                if (poll.left != null) {
+34                    dq.offerLast(poll.left);
+35                }
+36                if (poll.right != null) {
+37                    dq.offerLast(poll.right);
+38                }
+39            }
+40           
+41        }
+42        return res;
+43        
+44    }
+45}
+46/**
+47
+48bfs : 
+49[1]
+50[2,3] if i == size -1,add it to the res
+51[5,4]
+52
+53 */
