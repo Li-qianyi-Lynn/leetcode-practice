@@ -14,52 +14,18 @@
 14 * }
 15 */
 16class Solution {
-17    private int count;
-18    private int res;
-19    public int kthSmallest(TreeNode root, int k) {
-20        // edge case
-21        if (root == null) {
-22            return 0;
-23        }
-24
-25        count = 0;
-26        res = -1; // node.val
-27        inorder(root,k);
-28        return res;
+17    public int kthSmallest(TreeNode root, int k) {
+18        List<Integer> res = new ArrayList<>();
+19        inorder(root, res);
+20        return res.get(k-1);
+21        
+22    }
+23    private void inorder(TreeNode root, List<Integer>res) {
+24        if (root == null) return;
+25
+26        inorder(root.left, res);
+27        res.add(root.val);
+28        inorder(root.right, res);
 29
-30
-31       
-32        
-33    }
-34
-35    private void inorder(TreeNode node, int k) {
-36        if (node == null || res != -1 ) {
-37            return;
-38        }
-39
-40        inorder(node.left,k);
-41        count++;
-42        if (count == k) {
-43            res = node.val;
-44            return;
-45
-46        }
-47
-48        inorder(node.right, k);
-49
-50    }
-51
-52
-53
-54    
-55}
-56
-57/**
-58bst
-59left < root < right
-60
-61dfs -> smallest -> biggest 
-62
-63
-64
-65 */
+30    }
+31}
