@@ -14,41 +14,52 @@
 14 * }
 15 */
 16class Solution {
-17    private int idx;
-18    private int res = -1;
+17    private int count;
+18    private int res;
 19    public int kthSmallest(TreeNode root, int k) {
-20        idx = 0;
-21        dfs(root, k);
-22        return res;
-23        
-24        
-25    }
-26
-27    private void dfs(TreeNode node, int k) {
-28        //base case
-29        if (node == null) {
-30            return;
-31        }
+20        // edge case
+21        if (root == null) {
+22            return 0;
+23        }
+24
+25        count = 0;
+26        res = -1; // node.val
+27        inorder(root,k);
+28        return res;
+29
+30
+31       
 32        
-33        dfs(node.left, k);
-34        idx++;
-35        if (idx == k) {
-36            res = node.val;
+33    }
+34
+35    private void inorder(TreeNode node, int k) {
+36        if (node == null || res != -1 ) {
 37            return;
-38
-39        }
-40        dfs(node.right, k);
-41
-42    }
-43}
-44/**
-45priortyQueue: minHeap dfs -> O(n)
-46
-47bst + dfs (left + root + right) inorder
-48
+38        }
+39
+40        inorder(node.left,k);
+41        count++;
+42        if (count == k) {
+43            res = node.val;
+44            return;
+45
+46        }
+47
+48        inorder(node.right, k);
 49
-50
+50    }
 51
 52
 53
-54 */
+54    
+55}
+56
+57/**
+58bst
+59left < root < right
+60
+61dfs -> smallest -> biggest 
+62
+63
+64
+65 */
