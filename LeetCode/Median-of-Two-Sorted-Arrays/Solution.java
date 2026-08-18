@@ -1,58 +1,77 @@
 1class Solution {
 2    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-3        // 确保 nums1 是短数组，这样二分查找更快，且能保证 j 的计算结果不为负数
+3        // 保证 nums1 为较短数组，保证二分的时间复杂度为 O(log(min(m, n)))
 4        if (nums1.length > nums2.length) {
 5            return findMedianSortedArrays(nums2, nums1);
 6        }
 7
 8        int m = nums1.length;
 9        int n = nums2.length;
-10        
-11        // left 和 right 是在 nums1 里的分割位置（0 到 m）
-12        int left = 0, right = m;
-13        // leftTotal 是合并后左半部分的元素个数,左边比右边多一个或者相等
-14        int leftTotal = (m + n + 1) / 2; //3
-15
-16        while (left <= right) {
-17            // 计数器：i 是 nums1 的分割点，j 是 nums2 的分割点，从中间割起
-18            int i = left + (right - left) / 2;
-19            int j = leftTotal - i;
-20
-21            // 检查分割是否完美，比较小的数
-22            // nums1[i-1] 必须 <= nums2[j]
-23            // nums2[j-1] 必须 <= nums1[i]
-24            // 2 ｜ 3    1 2 ｜ 5
-25            
-26            // 如果 nums1[i-1] 太大了，说明 i 需要左移
-27            if (i > 0 && nums1[i - 1] > nums2[j]) {
-28                right = i - 1;
-29            } 
-30            // 如果 nums2[j-1] 太大了，说明 i 需要右移
-31            else if (i < m && nums2[j - 1] > nums1[i]) {
-32                left = i + 1;
-33            } 
-34            // 找到了完美的分割点！
-35            else {
-36                // 计算左侧最大值
-37                int maxLeft = 0;
-38                if (i == 0) maxLeft = nums2[j - 1]; // nums1 左边没数，nums1  |[3,4] [1,2]|
-39                else if (j == 0) maxLeft = nums1[i - 1]; // nums2 左边没数
-40                else maxLeft = Math.max(nums1[i - 1], nums2[j - 1]);
-41
-42                // 如果总长度是奇数，中位数就是左侧最大值
-43                if ((m + n) % 2 == 1) {
-44                    return maxLeft;
-45                }
-46
-47                // 如果是偶数，还需要计算右侧最小值
-48                int minRight = 0;
-49                if (i == m) minRight = nums2[j]; // nums1 右边没数
-50                else if (j == n) minRight = nums1[i]; // nums2 右边没数
-51                else minRight = Math.min(nums1[i], nums2[j]);
-52
-53                return (maxLeft + minRight) / 2.0;
-54            }
-55        }
-56        return 0.0;
-57    }
-58}
+10        int totalLeft = (m + n + 1) / 2;
+11
+12        int left = 0;
+13        int right = m;
+14
+15        while (left <= right) {
+16            int i = left + (right - left) / 2; // nums1 的分割点
+17            int j = totalLeft - i;             // nums2 的分割点
+18
+19            int left1 = (i == 0) ? Integer.MIN_VALUE : nums1[i - 1];
+20            int right1 = (i == m) ? Integer.MAX_VALUE : nums1[i];
+21            int left2 = (j == 0) ? Integer.MIN_VALUE : nums2[j - 1];
+22            int right2 = (j == n) ? Integer.MAX_VALUE : nums2[j];
+23
+24            if (left1 <= right2 && left2 <= right1) {
+25                if ((m + n) % 2 == 1) {
+26                    return Math.max(left1, left2);
+27                } else {
+28                    return (Math.max(left1, left2) + Math.min(right1, right2)) / 2.0;
+29                }
+30            } else if (left1 > right2) {
+31                right = i - 1;
+32            } else {
+33                left = i + 1;
+34            }
+35        }
+36
+37        return 0.0;
+38    }
+39}
+40
+41/**
+42
+43input：nums1[] nums2[] sorted ascend
+44output: double
+45
+46binary search
+47|1  3  4.     2. | 5
+48  i-1. i      j-1.  j
+49left: 123
+50right: 56
+51
+521. break point 
+53left = 0;
+54right = m;
+55
+56nums1: i 取了 i 个数字
+57nums2: j 
+58nums1[i-1] <= nums2[j]
+59nums2[j-1] <= nums1[i]
+60
+61以nums1 为定位
+62
+63left = 0;
+64right = m;
+65
+66i = left + (right - left)/2
+67j = totalLeft - i；
+68
+69while (left <= right) 
+70condition1 nums1[i-1] > nums2[j] i-1>= 0 ;right = i-1;
+71condition2 nums2[j-1] > nums1[i] j-1 >= 0; left = i+1;
+72
+73
+742. maxLeft. minRight -> median
+75edge cases
+76
+77 */
