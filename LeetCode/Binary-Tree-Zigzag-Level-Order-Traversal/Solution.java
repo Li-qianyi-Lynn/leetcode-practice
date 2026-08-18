@@ -15,44 +15,49 @@
 15 */
 16class Solution {
 17    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
-18        if (root == null) {
-19            return new ArrayList<>();
-20        }
-21
-22        Deque<TreeNode> dq = new ArrayDeque<>();
-23        List<List<Integer>> res = new ArrayList<>();
-24        boolean leftToRight = true;
-25
-26        dq.offerLast(root);
-27        while (!dq.isEmpty()) { // tree
+18        List<List<Integer>> res = new ArrayList<>();
+19        if (root == null) {
+20            return res;
+21        }
+22
+23        Deque<TreeNode> dq = new ArrayDeque<>();
+24        dq.offerLast(root);
+25       // 0 +. 1 -
+26
+27        while (!dq.isEmpty()) {
 28            int size = dq.size();
-29            List<Integer> cur = new ArrayList<>();
-30            for (int i = 0; i < size; i++) { // level
-31                TreeNode poll = dq.pollFirst();
-32                if (poll.left != null) {
-33                    dq.offerLast(poll.left);
-34                }
-35                if (poll.right != null) {
-36                    dq.offerLast(poll.right);
-37                }
-38
-39                if (leftToRight) {
-40                    cur.add(poll.val);
-41                } else {
-42                    cur.addFirst(poll.val);
-43                }
-44            }
-45            res.add(cur);
-46            leftToRight = !leftToRight;
-47
+29            List<Integer> curLevel = new ArrayList<>();
+30            for (int i = 0; i < size; i++) {
+31
+32                TreeNode poll = dq.pollFirst();
+33                if (poll.left != null) {
+34                    dq.offerLast(poll.left);
+35                }
+36
+37                if (poll.right != null) {
+38                    dq.offerLast(poll.right);
+39                }
+40                curLevel.add(poll.val);
+41
+42
+43            }
+44            if (res.size() % 2 != 0) {
+45                Collections.reverse(curLevel);
+46            }
+47            res.add(curLevel);
 48        }
-49        return res;    
-50    }
-51}
-52
-53/**
-54use bfs, traversal level by level
-55boolean leftToRight = true offerLast, pollFirst; if no ,  offerFirst, pollLast
-56
+49        return res;
+50
+51        
+52    }
+53}
+54/**
+55bfs
+56!flag -> last/first
 57
-58 */
+58[9,20]
+59
+60polllast
+61[20,]
+62
+63 */
