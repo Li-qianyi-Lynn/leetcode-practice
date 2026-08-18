@@ -16,39 +16,48 @@
 16class Solution {
 17    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
 18        List<List<Integer>> res = new ArrayList<>();
-19        if (root == null) return res;
-20        bfs(root, res);
-21        return res;   
-22    }
-23
-24    private void bfs(TreeNode root, List<List<Integer>>res) {
-25        if (root == null) return;
-26        Deque<TreeNode> deque = new LinkedList<>();
-27        boolean leftToRight = true;
-28
-29        deque.offerLast(root);
-30        while(!deque.isEmpty()) {
-31            int size = deque.size();
-32            List<Integer> levelNode= new LinkedList<>();
-33
-34            for (int i = 1; i <= size; i++) {
-35                TreeNode poll = deque.pollFirst();
-36                levelNode.add(poll.val);
-37                if (poll.left != null) {
-38                        deque.offerLast(poll.left);
-39                    } 
-40                    if (poll.right != null) {
-41                        deque.offerLast(poll.right);
-42                    }
-43                
-44            }
-45            if (!leftToRight) {
-46                Collections.reverse(levelNode);
-47            }
-48            res.add(levelNode);
-49            leftToRight = !leftToRight;
-50        }
+19        if (root == null) {
+20            return res;
+21        }
+22
+23        Deque<TreeNode> dq = new ArrayDeque<>();
+24        dq.offerLast(root);
+25       // 0 +. 1 -
+26
+27        while (!dq.isEmpty()) {
+28            int size = dq.size();
+29            List<Integer> curLevel = new ArrayList<>();
+30            for (int i = 0; i < size; i++) {
+31
+32                TreeNode poll = dq.pollFirst();
+33                if (poll.left != null) {
+34                    dq.offerLast(poll.left);
+35                }
+36
+37                if (poll.right != null) {
+38                    dq.offerLast(poll.right);
+39                }
+40                curLevel.add(poll.val);
+41
+42
+43            }
+44            if (res.size() % 2 != 0) {
+45                Collections.reverse(curLevel);
+46            }
+47            res.add(curLevel);
+48        }
+49        return res;
+50
 51        
-52    
-53    }
-54}
+52    }
+53}
+54/**
+55bfs
+56!flag -> last/first
+57
+58[9,20]
+59
+60polllast
+61[20,]
+62
+63 */
