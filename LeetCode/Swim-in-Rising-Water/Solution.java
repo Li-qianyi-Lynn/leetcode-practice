@@ -1,63 +1,49 @@
 1class Solution {
 2    public int swimInWater(int[][] grid) {
 3        int n = grid.length;
-4
-5        // {time, row, col}
-6        PriorityQueue<int[]> pq = new PriorityQueue<>(
-7            (a, b) -> a[0] - b[0]
-8        );
+4        PriorityQueue<int[]> minHeap = new PriorityQueue<>((a,b) -> a[0] - b[0]);
+5        boolean[][] visited = new boolean[n][n];
+6
+7        int[][] dirs = new int[][]{{0,1},{1,0},{0,-1},{-1,0}};
+8        minHeap.offer(new int[]{grid[0][0],0,0});
 9
-10        boolean[][] visited = new boolean[n][n];
-11        pq.offer(new int[]{grid[0][0], 0, 0});
-12        /**
-13        pq:[[0,0,0]]
-14        
-15         */
-16        int[][] dirs = {
-17            {1, 0},
-18            {-1, 0},
-19            {0, 1},
-20            {0, -1}
-21        };
+10        while (!minHeap.isEmpty()) {
+11            int[] poll = minHeap.poll();
+12            int time = poll[0];
+13            int row = poll[1];
+14            int col = poll[2];
+15            if (row == n -1 && col == n-1) {
+16                return time;
+17
+18            }
+19            if (visited[row][col] == true) {
+20                continue;
+21            }
 22
-23        while (!pq.isEmpty()) {
-24            int[] cur = pq.poll(); // [0,0,0]
-25
-26            int time = cur[0]; // 0
-27            int row = cur[1]; //0
-28            int col = cur[2]; //0
-29
-30            if (visited[row][col]) {
-31                continue;
-32            }
+23            visited[row][col] = true;
+24
+25            for (int[] dir : dirs) {
+26                int x = dir[0] + row;
+27                int y = dir[1] + col;
+28
+29                if (x >= 0 && x < n && y >= 0 && y < n && visited[x][y] == false) {
+30                    int newTime = Math.max(time, grid[x][y]);
+31                    int[] next = new int[]{newTime, x, y};
+32                    minHeap.offer(next);
 33
-34            visited[row][col] = true;
+34                }
 35
-36            // 第一次到达终点，一定是最小时间
-37            if (row == n - 1 && col == n - 1) { //
-38                return time;
-39            }
-40
-41            for (int[] dir : dirs) {
-42                int newRow = row + dir[0];
-43                int newCol = col + dir[1];
-44
-45                if (newRow < 0 || newRow >= n ||
-46                    newCol < 0 || newCol >= n ||
-47                    visited[newRow][newCol]) {
-48                    continue;
-49                }
-50
-51                int newTime = Math.max(time, grid[newRow][newCol]);
-52
-53                pq.offer(new int[]{
-54                    newTime,
-55                    newRow,
-56                    newCol
-57                });
-58            }
-59        }
-60
-61        return -1;
-62    }
-63}
+36            }
+37
+38        }
+39        return -1;
+40    }
+41}
+42/**
+43
+44minheap
+45
+46time needed : Math.max(grid[i][j],time) 
+47
+48
+49 */
