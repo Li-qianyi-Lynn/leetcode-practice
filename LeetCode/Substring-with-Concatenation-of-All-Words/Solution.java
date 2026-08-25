@@ -9,55 +9,56 @@
 9            map.put(word, map.getOrDefault(word,0)+1);
 10        }
 11        
-12        // ... 前面初始化 map 的逻辑保持不变 ...
-13
-14        for (int i = 0; i < wordLen; i++) {
-15            int l = i;
-16            int r = i;
-17            Map<String, Integer> windowMap = new HashMap<>();
-18
-19            while (r + wordLen <= s.length()) {
-20                String cur = s.substring(r, r + wordLen);
-21                r += wordLen;
-22
-23                if (map.containsKey(cur)) {
-24                    windowMap.put(cur, windowMap.getOrDefault(cur, 0) + 1);
-25
-26                    // 如果当前单词多了，收缩左边界直到频率合法
-27                    while (windowMap.get(cur) > map.get(cur)) {
-28                        String leftWord = s.substring(l, l + wordLen);
-29                        windowMap.put(leftWord, windowMap.get(leftWord) - 1);
-30                        l += wordLen;
+12        for (int i = 0; i < wordLen; i++) {
+13            int l = i;
+14            int r = i;
+15            int count = 0;
+16            Map<String, Integer> windowMap = new HashMap<>();
+17
+18            while (r + wordLen <= s.length()) {
+19                String cur = s.substring(r,r+wordLen);
+20                r += wordLen; //move right pointer
+21
+22                if (map.containsKey(cur)) {
+23                    windowMap.put(cur, windowMap.getOrDefault(cur,0)+1);
+24                    count++;
+25                    while (windowMap.get(cur)> map.get(cur)) {
+26                        
+27                        String leftWord = s.substring(l, l + wordLen);
+28                        windowMap.put(leftWord, windowMap.get(leftWord)-1);
+29                        l = l+ wordLen;
+30                        count --;
 31                    }
 32
-33                    // --- 关键修改处 ---
-34                    // 因为上面的 while 保证了窗口内全是合法单词且频率不超标
-35                    // 所以只要长度达标，就意味着找到了一个排列
-36                    if (r - l == n * wordLen) {
-37                        res.add(l);
-38                    }
-39                } else {
-40                    // 遇到不在词典里的词，重置窗口
-41                    l = r;
-42                    windowMap.clear();
-43                }
-44            }
-45        }
-46        return res;
-47
-48    }
-49}
-50
-51/**
-52slide window:
-53words same
-54count same
-55Hashmap<Char -> Integer>
-56
-570,1,2 iterate word.len
-58l: r
-59
+33                    if (count == n) {
+34                        res.add(l);
+35                    }   
+36
+37
+38                } else {
+39                    count = 0;
+40                    l = r;
+41                    windowMap.clear();
+42                }
+43            }
+44
+45    
+46
+47        }
+48        return res;
+49    }
+50}
+51
+52/**
+53slide window:
+54words same
+55count same
+56Hashmap<Char -> Integer>
+57
+580,1,2 iterate word.len
+59l: r
 60
 61
 62
-63 */
+63
+64 */
