@@ -29,24 +29,30 @@
 29        int leftRootVal = pre[preStart + 1];
 30
 31        // 在 post 数组里找 leftRootVal 的位置(注意要在 postStart..postEnd 范围内找)
-32        int idx = postStart;
-33        while (post[idx] != leftRootVal) idx++;
-34
-35        int leftSize = idx - postStart + 1; // 左子树节点数
+32        int idx = 0;
+33        for (idx = postStart; idx <= postEnd; idx++) {
+34            if (post[idx] == leftRootVal) {
+35                break;
 36
-37        root.left = build(pre, preStart + 1, preStart + leftSize,
-38                           post, postStart, idx);
-39        root.right = build(pre, preStart + leftSize + 1, preEnd,
-40                            post, idx + 1, postEnd - 1);
-41
-42        return root;
-43    }
-44}
-45/**
-46
-47root left right
-48
-49
-50left right root
-51
-52 */
+37            }
+38
+39        }
+40
+41        int leftSize = idx - postStart + 1; // 左子树节点数
+42
+43        root.left = build(pre, preStart + 1, preStart + leftSize,
+44                           post, postStart, idx);
+45        root.right = build(pre, preStart + leftSize + 1, preEnd,
+46                            post, idx + 1, postEnd - 1);
+47
+48        return root;
+49    }
+50}
+51/**
+52
+53root left right
+54
+55
+56left right root
+57
+58 */
