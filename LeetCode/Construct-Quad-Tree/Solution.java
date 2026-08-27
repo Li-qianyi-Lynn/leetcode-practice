@@ -40,47 +40,61 @@
 40
 41class Solution {
 42    public Node construct(int[][] grid) {
-43        int n = grid.length;
-44        // edge case todo
-45        return build(grid, n, 0, 0);   
+43        //puring?
+44        return rec(grid,grid.length,0,0);
+45        
 46    }
-47
-48    private Node build(int[][] grid, int size, int i, int j) {
-49        //base case
-50        if (size == 1) {
-51            boolean val = false;
-52            if (grid[i][j] == 1) {
-53                val = true;
-54
-55            }
-56            Node newNode = new Node(val,true,null, null,null,null);
-57            return newNode;
-58        }
-59        //break down
-60        size = size / 2;
-61        Node tL = build(grid,size, i,j );
-62        Node tR = build(grid,size, i,j+size );
-63        Node bL = build(grid,size, i+size,j);
-64        Node bR = build(grid,size, i+size,j+size );
-65        
-66        
-67        if (canMerge(tL, tR, bL, bR)) {
-68            return new Node(tL.val,true,null, null,null,null);
-69        } else {
-70            return new Node(true,false,tL,tR,bL,bR);
-71        }
-72
-73    }
-74
-75    // isLeaf
-76    private boolean canMerge(Node tL, Node tR,Node bL,Node bR) {
-77        if (tL.isLeaf == true && tR.isLeaf == true && bL.isLeaf == true && bR.isLeaf == true) {
-78            boolean val = tL.val;
-79            if (val == tR.val && bL.val == val && bR.val == val) {
-80                return true;
-81            }
-82        }
-83        return false;
-84
-85    }
-86}
+47    private Node rec(int[][] grid, int size, int r, int c) {
+48        if (isSame(grid,r,c,size)) {
+49            if (grid[r][c] == 0) {
+50                return new Node (false, true);
+51
+52            } else {
+53                return new Node (true, true);
+54            }
+55
+56        }
+57        Node leaf = new Node (false, false);
+58        size = size / 2;
+59        leaf.topLeft = rec(grid, size, r, c);
+60        leaf.topRight = rec(grid, size, r, c+size);
+61        leaf.bottomLeft = rec(grid, size, r+size, c);
+62        leaf.bottomRight = rec(grid, size, r+size, c+size);
+63
+64        return leaf;
+65
+66    }
+67
+68    private boolean isSame(int[][] grid, int r, int c, int size) {
+69        int check = grid[r][c];
+70        for (int i = r; i < r+size; i++) {
+71            for (int j = c; j < c+size; j++ ) {
+72                if (grid[i][j] != check) {
+73                    return false;
+74                }
+75            }
+76        }
+77        return true;
+78
+79    }
+80}
+81
+82/**
+83helper function: 
+841. same or not? 2 for loops check grid[i][j] is equal to grid[base][base] or not?
+852. recursion: 划分4个区域进行递归
+86
+87- all same return new node ( grid[0][0] == 1 true; grid[0][0] == 0 false, true) c
+88- not same 
+89    - new node (true, false)
+90
+91    拆分！
+92
+93    node topLeft
+94    Node topRight
+95    Node bottomLeft
+96    Node bottomRight
+97
+98    return node
+99
+100 */
