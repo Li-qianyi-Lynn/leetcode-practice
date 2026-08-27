@@ -29,8 +29,8 @@
 29        int leftRootVal = pre[preStart + 1];
 30
 31        // 在 post 数组里找 leftRootVal 的位置(注意要在 postStart..postEnd 范围内找)
-32        int idx = 0;
-33        for (idx = postStart; idx <= postEnd; idx++) {
+32        int idx = postStart;
+33        for (; idx <= postEnd; idx++) {
 34            if (post[idx] == leftRootVal) {
 35                break;
 36
