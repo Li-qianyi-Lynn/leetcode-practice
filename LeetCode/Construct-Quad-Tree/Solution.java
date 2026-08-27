@@ -40,70 +40,47 @@
 40
 41class Solution {
 42    public Node construct(int[][] grid) {
-43        return rec(grid,0,0,grid.length);
-44        
-45    }
-46
-47    private Node rec(int[][] grid, int row, int col, int size) {
-48        if (areSame(grid,row,col,size)) {
-49            // all 1
-50            if (grid[row][col] == 1) {
-51                return new Node(true, true);
-52
-53            } else { // all 0
-54                return new Node(false, true);
-55
-56            }
-57        }
-58        Node leaf = new Node(false, false);
-59        
-60        int half = size / 2;
-61        
-62        leaf.topLeft = rec(grid, row, col, half);
-63        leaf.topRight = rec(grid, row, col+ half, half);
-64        leaf.bottomLeft = rec(grid, row+ half, col, half);
-65        leaf.bottomRight = rec(grid, row+half, col+half, half);
-66        System.out.println(leaf);
-67        
-68        return leaf;
-69
-70    }
-71
-72    private boolean areSame(int[][]grid, int row, int col, int size) {
-73        int base = grid[row][col];
-74        for (int i = row; i < row+ size; i++) {
-75            for (int j = col; j < col + size; j++) {
-76                if (grid[i][j] != base) {
-77                    return false;
-78
-79                }
-80
+43        int n = grid.length;
+44        // edge case todo
+45        return build(grid, n, 0, 0);   
+46    }
+47
+48    private Node build(int[][] grid, int size, int i, int j) {
+49        //base case
+50        if (size == 1) {
+51            boolean val = false;
+52            if (grid[i][j] == 1) {
+53                val = true;
+54
+55            }
+56            Node newNode = new Node(val,true,null, null,null,null);
+57            return newNode;
+58        }
+59        //break down
+60        size = size / 2;
+61        Node tL = build(grid,size, i,j );
+62        Node tR = build(grid,size, i,j+size );
+63        Node bL = build(grid,size, i+size,j);
+64        Node bR = build(grid,size, i+size,j+size );
+65        
+66        
+67        if (canMerge(tL, tR, bL, bR)) {
+68            return new Node(tL.val,true,null, null,null,null);
+69        } else {
+70            return new Node(true,false,tL,tR,bL,bR);
+71        }
+72
+73    }
+74
+75    // isLeaf
+76    private boolean canMerge(Node tL, Node tR,Node bL,Node bR) {
+77        if (tL.isLeaf == true && tR.isLeaf == true && bL.isLeaf == true && bR.isLeaf == true) {
+78            boolean val = tL.val;
+79            if (val == tR.val && bL.val == val && bR.val == val) {
+80                return true;
 81            }
-82
-83        }
-84        return true;
-85
-86    }
-87}
-88
-89
-90/**
-91val: boolean: 1  means true; 0 means false; if isLeaf is false, val can be true/false;
-92isLeaf: true - leaf node ?  all values are same, val is relate to matrix value: if all 0, that means false; if all 1, that means true
-93        false -  the node has four children,   set val to any value 
-94
-95
-96check if all the matrix[i][j] are same?  return Node(true, value of matrix[i][j]) - helper function
-97main logic : 
-981. check if areSame(helper) // base case  
-992. set isLeaf as (false, anything);
-100- check 4 different parts to build the tree; // main
-101
-102recursion: i need know the start, end (range)
-1031. base case leaf or not
-1042. check each part (divided into 4 parts) (怎么拆)
-1053. size = size /2, we divide the large square's hight by 2, grid[][], i need know the start, end (range): same width, height; （每个问题如何解决）
-106 
-107
-108
-109 */
+82        }
+83        return false;
+84
+85    }
+86}
