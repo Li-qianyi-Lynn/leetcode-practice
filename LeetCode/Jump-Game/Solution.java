@@ -1,36 +1,25 @@
 1class Solution {
 2    public boolean canJump(int[] nums) {
-3        // edge case
-4        if (nums.length == 1) {
-5            return true;
-6
-7        }
-8        // [3,0,8,2,0,0,1]
-9        //iterate nums
-10        int n = nums.length;
-11        int maxDistance = 0;
-12        for (int i = 0; i < n; i++) {
-13            if (maxDistance < i) {
-14                return false;
-15            }
-16
-17            maxDistance = Math.max(nums[i] + i,maxDistance);
-18            if (maxDistance >= n-1) {
-19                return true;
-20
-21            }
-22         
-23        }
-24        return false;
-25        
-26    }
-27}
-28/**
-29input: int[] nums nums[i]:  maximum jump length
-30output: boolean
-31
-32
-33iterate nums
-34max: nums[i]+ i 
-350? todo
-36 */
+3        int n = nums.length;
+4        int maxDis = 0;
+5        for (int i = 0; i < n; i++ ) {
+6            
+7            if (i > maxDis) {
+8                break;
+9            }
+10            int curStep = nums[i] + i;
+11            maxDis = Math.max(maxDis, curStep);
+12            if (maxDis >= n-1) {
+13                return true;
+14            }
+15        }
+16        return false;
+17        
+18    }
+19}
+20/**
+21curStep = nums[i] + i >= n-1 true
+22
+23
+24
+25 */
