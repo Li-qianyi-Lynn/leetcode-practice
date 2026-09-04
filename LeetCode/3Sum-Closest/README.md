@@ -1,6 +1,8 @@
 # 3Sum Closest
 
-Can you solve this real interview question? 3Sum Closest - Given an integer array nums of length n and an integer target, find three integers at distinct indices in nums such that the sum is closest to target.
+Can you solve this real interview question? 3Sum Closest - You are given an integer array nums of length n and an integer target.
+
+Find three integers at distinct indices in nums such that the sum is closest to target.
 
 Return the sum of the three integers.
 
