@@ -1,33 +1,30 @@
 1class Solution {
 2    public int[] topKFrequent(int[] nums, int k) {
-3        int[] res = new int[k];
-4        // map: store num(key) and its frequency(value)
-5        Map<Integer, Integer> map = new HashMap<>();
-6        for (int i = 0; i < nums.length; i++) {
-7            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
-8        }
-9        //put K-V pait to the pq, and do the comperation
-10        // min heap: heap topwill store the least frequent element, if the size is larger than k, we can just pop out he top
-11        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b) -> a[1] - b[1]);
-12        for(Map.Entry<Integer, Integer> pair: map.entrySet()) {
-13            int freq = pair.getValue();
-14            int num = pair.getKey();
-15            int[] element = new int[]{num, freq};
-16            pq.offer(element);
+3        // use map to restore the count of each integer
+4        Map<Integer, Integer> count = new HashMap<>();
+5        for (int num : nums) {
+6            count.put(num,count.getOrDefault(num,0) +1);
+7        }
+8        PriorityQueue<int[]> heap = new PriorityQueue<>((a,b) -> a[0] - b[0]);
+9        for (Map.Entry<Integer, Integer> entry: count.entrySet()) {
+10            int fre = entry.getValue();
+11            int num = entry.getKey();
+12            int[] element = new int[]{fre,num};
+13
+14            heap.offer(element);
+15            if (heap.size() > k) {
+16                heap.poll();
 17
-18            if (pq.size() > k) {
-19                pq.poll();
-20
-21            }
-22
-23        }
+18            }
+19
+20        }
+21        int[] res = new int[k];
+22        for (int i = 0; i < k; i++) {
+23            res[i] = heap.poll()[1];
 24
-25        // add num to the res list;
-26        for (int i = 0; i < k; i++) {
-27            res[i] = pq.poll()[0];
-28
-29        }
-30        return res;
-31        
-32    }
-33}
+25        }
+26        return res;
+27        
+28        
+29    }
+30}
