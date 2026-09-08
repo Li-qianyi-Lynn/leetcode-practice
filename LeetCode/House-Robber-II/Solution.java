@@ -13,25 +13,26 @@
 13
 14    }
 15    private int robHelper(int[] nums, int start, int end) {
-16        int[] dp = new int[nums.length];
-17        if (start == end) {
-18            return nums[start];
+16        if (start == end) {
+17            return nums[start];
+18
 19        }
-20        
-21        dp[start] = nums[start];
-22        dp[start+1] = Math.max(nums[start], nums[start+1]);
-23        for (int i = start+2; i <= end; i++) {
-24            dp[i] = Math.max(dp[i-1], dp[i-2]+ nums[i]);
-25
-26        }
-27        return dp[end];
-28        
-29    }
-30}
-31/**
-32
-331- n
-340- n-1
-35
+20        int first = nums[start];
+21        int second = Math.max(nums[start+1], nums[start]);
+22        for (int i = start+2; i <= end; i++) {
+23            int temp = Math.max(second, first + nums[i]);
+24            first = second;
+25            second = temp;
+26
+27        }
+28        return second;
+29        
+30    }
+31}
+32/**
+33
+341- n
+350- n-1
 36
-37 */
+37
+38 */
