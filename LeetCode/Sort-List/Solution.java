@@ -10,61 +10,86 @@
 10 */
 11class Solution {
 12    public ListNode sortList(ListNode head) {
-13    // 1. 递归基准条件：空链表或只有一个节点，天然有序
-14        if (head == null || head.next == null) {
-15            return head;
-16
-17        }
-18
-19        ListNode prev = null;
-20        ListNode slow = head;
-21        ListNode fast = head;   
-22
-23        while (fast != null && fast.next != null) {
-24            prev = slow;
-25            slow = slow.next;
-26            fast = fast.next.next;
-27
-28        }
+13        if (head == null || head.next == null) {
+14            return head;
+15
+16        }
+17
+18        // calculate the len of list
+19        int len = 0;
+20        ListNode cur = head;
+21        while (cur != null) {
+22            len++;
+23            cur = cur.next;
+24
+25        }
+26
+27        ListNode dummy = new ListNode(0);
+28        dummy.next = head;
 29
-30        prev.next = null;
-31
-32        ListNode left = sortList(head);
-33        ListNode right = sortList(slow);
-34
-35        return merge(left, right);
-36    }
-37
-38    private ListNode merge(ListNode l1, ListNode l2) {
-39        ListNode dummy = new ListNode (0);
-40        ListNode cur = dummy;
-41
-42        while (l1 != null && l2 != null) {
-43            if (l1.val < l2.val) {
-44                cur.next = l1;
-45                l1 = l1.next;
-46
-47            } else {
-48                cur.next = l2;
-49                l2 = l2.next;
-50
-51            }
-52            cur = cur.next;
-53        }
-54
-55        if (l1 != null ) {
-56            cur.next = l1;
-57        } 
-58
-59        if (l2 != null ) {
-60            cur.next = l2;
-61        }
-62
-63        return dummy.next;
-64    }
-65}
-66
-67/**
-68space O(1)
-69
-70 */
+30        for (int step = 1; step < len; step = step * 2) {
+31            ListNode prev = dummy;
+32            cur = dummy.next;
+33
+34            while (cur != null) {
+35          
+36                ListNode l1 = cur;
+37                ListNode l2 = split(l1, step);
+38                cur = split(l2, step);
+39                
+40                prev.next = merge(l1, l2);
+41                while (prev.next != null) {
+42                    prev = prev.next;
+43                }
+44            }
+45
+46        }
+47        return dummy.next;
+48
+49        
+50    }
+51
+52    private ListNode split(ListNode head, int n) {
+53        for (int i = 1; head != null && i < n; i++) {
+54            head = head.next;
+55        }
+56        if (head == null) return null;
+57        ListNode next = head.next;
+58        head.next = null; // 切断连接
+59        return next;
+60    }
+61
+62    private ListNode merge(ListNode l1, ListNode l2) {
+63        ListNode dummy = new ListNode(0);
+64        ListNode cur = dummy;
+65
+66        while (l1 != null && l2 != null) {
+67            if (l1.val > l2.val) {
+68                cur.next = l2;
+69                l2 = l2.next;
+70
+71            } else {
+72                cur.next = l1;
+73                l1 = l1.next;
+74            }
+75            cur = cur.next;
+76
+77        }
+78
+79        if (l1 != null) {
+80            cur.next = l1;
+81
+82        }
+83        if (l2 != null) {
+84            cur.next = l2;
+85
+86        }
+87
+88        return dummy.next;
+89    }
+90}
+91
+92/**
+93space O(1)
+94
+95 */
