@@ -10,57 +10,61 @@
 10 */
 11class Solution {
 12    public ListNode sortList(ListNode head) {
-13        //1. split from the mid :divide and conquer
+13    // 1. 递归基准条件：空链表或只有一个节点，天然有序
 14        if (head == null || head.next == null) {
 15            return head;
-16        }
-17        ListNode dummy = new ListNode(0);
-18        ListNode pre = null;
-19        ListNode slow = head;
-20        ListNode fast = head;
-21        while (fast != null && fast.next != null) {
-22            pre = slow;
-23            slow = slow.next;
-24            fast = fast.next.next;
-25        }
-26
-27        pre.next = null;
-28        ListNode left = sortList(head);
-29        ListNode right = sortList(slow);
-30        return merge(left,right);
-31   
-32    }
-33
-34    private ListNode merge(ListNode node1, ListNode node2) {
-35        ListNode dummy = new ListNode(0);
-36        ListNode cur = dummy;
-37        while (node1 != null && node2 != null) {
-38            if (node1.val < node2.val) {
-39                cur.next = node1;
-40                node1 = node1.next;
+16
+17        }
+18
+19        ListNode prev = null;
+20        ListNode slow = head;
+21        ListNode fast = head;   
+22
+23        while (fast != null && fast.next != null) {
+24            prev = slow;
+25            slow = slow.next;
+26            fast = fast.next.next;
+27
+28        }
+29
+30        prev.next = null;
+31
+32        ListNode left = sortList(head);
+33        ListNode right = sortList(slow);
+34
+35        return merge(left, right);
+36    }
+37
+38    private ListNode merge(ListNode l1, ListNode l2) {
+39        ListNode dummy = new ListNode (0);
+40        ListNode cur = dummy;
 41
-42            } else {
-43                cur.next = node2;
-44                node2 = node2.next;
-45
-46            }
-47            cur = cur.next;
-48        }
-49
-50        if (node1 != null) {
-51            cur.next = node1;
-52        } else {
-53            cur.next = node2;
+42        while (l1 != null && l2 != null) {
+43            if (l1.val < l2.val) {
+44                cur.next = l1;
+45                l1 = l1.next;
+46
+47            } else {
+48                cur.next = l2;
+49                l2 = l2.next;
+50
+51            }
+52            cur = cur.next;
+53        }
 54
-55        }
-56        return dummy.next;
-57    }
-58}
-59/**
-60
-61
-622. merge two lists
-63
-64
-65
-66 */
+55        if (l1 != null ) {
+56            cur.next = l1;
+57        } 
+58
+59        if (l2 != null ) {
+60            cur.next = l2;
+61        }
+62
+63        return dummy.next;
+64    }
+65}
+66
+67/**
+68space O(1)
+69
+70 */
