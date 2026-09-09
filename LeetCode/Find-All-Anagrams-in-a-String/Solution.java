@@ -1,33 +1,43 @@
 1class Solution {
 2    public List<Integer> findAnagrams(String s, String p) {
-3        List<Integer> result = new ArrayList<>();
-4        if (s.length() < p.length()) return result;
-5
-6        int[] pCount = new int[26];
-7        int[] sCount = new int[26];
-8
-9        // 初始化：统计 p 的频率和 s 前 p.length() 个字符的频率
-10        for (int i = 0; i < p.length(); i++) {
-11            pCount[p.charAt(i) - 'a']++;
-12            sCount[s.charAt(i) - 'a']++;
-13        }
-14
-15        // 如果初始窗口就匹配
-16        if (Arrays.equals(pCount, sCount)) result.add(0);
-17
-18        // 开始滑动窗口
-19        for (int i = p.length(); i < s.length(); i++) {
-20            // 右边进一个
-21            sCount[s.charAt(i) - 'a']++;
-22            // 左边出一个
-23            sCount[s.charAt(i - p.length()) - 'a']--;
-24
-25            // 比较两个数组是否相等
-26            if (Arrays.equals(pCount, sCount)) {
-27                result.add(i - p.length() + 1);
-28            }
-29        }
-30
-31        return result;
-32    }
-33}
+3       int[] mapS = new int[26];  //window
+4        int[] mapP = new int[26];
+5        int k = p.length();
+6
+7        
+8        for (char c : p.toCharArray()) {
+9            mapP[c-'a']++;
+10        }
+11        /**
+12        
+13        Input: s = "cbaebabacd", p = "abc"
+14                     ｜
+15                       |
+16                     l:i-k
+17        
+18         */
+19        
+20        int n = s.length();
+21        List<Integer> list = new ArrayList<>();
+22        for (int i = 0; i < n; i++) {
+23            // i add right.- window uodate
+24            mapS[s.charAt(i) - 'a']++;
+25            
+26            // if i>=k  remove left -window update
+27            if (i>=k) {
+28                int idx = s.charAt(i-k) - 'a';
+29                mapS[idx]--;
+30            }
+31            //  check boundary and compare if meet target
+32
+33            if (i >= k-1 && Arrays.equals(mapS,mapP)) {
+34                list.add(i-k+1);
+35                    
+36            }
+37        }
+38        return list;
+39
+40
+41
+42    }
+43}
