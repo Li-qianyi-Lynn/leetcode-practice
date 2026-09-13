@@ -23,10 +23,10 @@
 23            int node = poll[1];
 24
 25
-26            if (dis > memo[node]) {
-27                continue;
+26            // if (dis > memo[node]) {
+27            //     continue;
 28
-29            }
+29            // }
 30
 31            if (adj.containsKey(node)) {
 32                for (int[] nei : adj.get(node)) {
