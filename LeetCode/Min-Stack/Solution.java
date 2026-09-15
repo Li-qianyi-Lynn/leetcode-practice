@@ -1,45 +1,56 @@
 1class MinStack {
-2    Deque<Integer> dq;
-3    Deque<Integer> mindq;
-4
-5    public MinStack() {
-6        dq = new ArrayDeque<>();
-7        mindq = new ArrayDeque<>();
-8        
+2
+3    Deque<Integer> minStack;
+4    Deque<Integer> stack;
+5
+6    public MinStack() {
+7        minStack = new ArrayDeque<>();
+8        stack = new ArrayDeque<>();     
 9    }
 10    
-11    public void push(int val) {
-12        dq.offerLast(val);
-13        if (mindq.isEmpty() || val <= mindq.peekLast()) {
-14            mindq.offerLast(val);
-15
-16        }  
-17    }
-18    
-19    public void pop() {
-20        int poll = dq.pollLast();
-21        if (mindq.peekLast() == poll) {
-22            mindq.pollLast();
-23        }
-24        
-25    }
-26    
-27    public int top() {
-28        return dq.peekLast();
-29        
-30    }
-31    
-32    public int getMin() {
-33        return mindq.peekLast();
-34        
-35    }
-36}
-37
-38/**
-39 * Your MinStack object will be instantiated and called as such:
-40 * MinStack obj = new MinStack();
-41 * obj.push(val);
-42 * obj.pop();
-43 * int param_3 = obj.top();
-44 * int param_4 = obj.getMin();
-45 */
+11    public void push(int value) {
+12        if (minStack.isEmpty()) {
+13            minStack.offerLast(value);
+14        } else {
+15            if (value <= minStack.peekLast()) {
+16                minStack.offerLast(value);
+17            }   
+18        }
+19
+20        stack.offerLast(value);   
+21    }
+22    
+23    public void pop() {
+24        int temp = stack.pollLast();
+25        if (minStack.peekLast() == temp) {
+26            minStack.pollLast();
+27        }    
+28    }
+29    
+30    public int top() {   
+31        return stack.peekLast();      
+32    }
+33    
+34    public int getMin() {
+35        return minStack.peekLast();    
+36    }
+37}
+38
+39/**
+40 * Your MinStack object will be instantiated and called as such:
+41 * MinStack obj = new MinStack();
+42 * obj.push(value);
+43 * obj.pop();
+44 * int param_3 = obj.top();
+45 * int param_4 = obj.getMin();
+46 *//** 3 1
+47 
+48 minstack
+49 2 1 
+50 
+51 stack
+52 2 3 1
+53 
+54
+55 
+56  */
