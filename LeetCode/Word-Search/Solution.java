@@ -27,9 +27,9 @@
 27        if (row < 0 || row >= m || col < 0 || col >= n || board[row][col] != word.charAt(idx)) {
 28            return false;
 29        }
-30        if (board[row][col] == '#') {
-31            return false;
-32        }
+30        // if (board[row][col] == '#') {
+31        //     return false;
+32        // }
 33        if (idx == word.length() -1) {
 34            return true;
 35        }
