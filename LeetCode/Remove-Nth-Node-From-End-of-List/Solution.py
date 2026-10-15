@@ -1,4 +1,2 @@
- while (first != null) {
-        first = first.next;
-        second = second.next;
-    }
+head = [1,2]
+n = 2
