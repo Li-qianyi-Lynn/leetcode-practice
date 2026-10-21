@@ -2,19 +2,22 @@ class Solution:
     def validTree(self, n: int, edges: list[list[int]]) -> bool:
         if len(edges) != n-1:
             return False
-        adj = defaultdict(list)
-        for u,v in edges:
-            adj[u].append(v)
-            adj[v].append(u)
-        
-        q = deque([0])
-        visited = {0}
+        parents = list(range(n))
 
-        while q:
-            cur = q.popleft()
-            for nei in adj[cur]:
-                if nei not in visited:
-                    visited.add(nei)
-                    q.append(nei)
+        def find(x:int): # int -> int
+            if parents[x] != x:
+                parents[x] = find(parents[x])
+
+            return parents[x]
+        def union(x:int, y:int) ->bool:
+            root_x,root_y = find(x),find(y)
+            if root_x == root_y:
+                return False
+            parents[root_x] = root_y
+            return True
         
-        return len(visited) == n
+        for u,v in edges:
+            if not union(u,v):
+                return False
+        
+        return True
