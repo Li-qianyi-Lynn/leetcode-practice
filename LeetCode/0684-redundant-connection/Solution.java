@@ -1,54 +1,47 @@
 class Solution {
+    // 定义并查集类
     class UnionFind {
+        private int[] parent;
 
-        int[] parents;
-
-        UnionFind(int n) {
-            parents = new int[n+1];
-            for (int i = 1; i < n+1; i++) {
-                parents[i] = i;
+        public UnionFind(int n) {
+            parent = new int[n + 1];
+            for (int i = 1; i <= n; i++) {
+                parent[i] = i;
             }
         }
-        
-        //
-        boolean union(int i, int j) {
-            int rootI=find(i);
-            int rootJ=find(j);
 
-            if (rootI == rootJ) {
-                return false;
+        // 查找根节点（路径压缩）
+        public int find(int i) {
+            if (parent[i] == i) {
+                return i;
+            }
+            return parent[i] = find(parent[i]);
+        }
 
-            } else {
-                parents[rootI]= rootJ;
+        // 合并两个节点，如果已经连通则返回 false
+        public boolean union(int i, int j) {
+            int rootI = find(i);
+            int rootJ = find(j);
+            if (rootI != rootJ) {
+                parent[rootI] = rootJ;
                 return true;
             }
-        }
-
-        int find(int i) { 
-            if (parents[i] != i) {
-                parents[i] = find(parents[i]); 
-
-            }
-            return parents[i];
-
-
+            return false;
         }
     }
 
     public int[] findRedundantConnection(int[][] edges) {
         int n = edges.length;
         UnionFind uf = new UnionFind(n);
-       
 
         for (int[] edge : edges) {
-            
-            boolean cur = uf.union(edge[0],edge[1]);
-            if (!cur) {
+            // 如果 union 返回 false，说明 edge[0] 和 edge[1] 已经连通了
+            // 此时再连这条边，就形成了环
+            if (!uf.union(edge[0], edge[1])) {
                 return edge;
             }
-
         }
+        
         return new int[0];
-
     }
 }
