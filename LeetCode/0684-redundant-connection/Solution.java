@@ -1,47 +1,51 @@
-class Solution {
-    // 定义并查集类
-    class UnionFind {
-        private int[] parent;
-
-        public UnionFind(int n) {
-            parent = new int[n + 1];
-            for (int i = 1; i <= n; i++) {
-                parent[i] = i;
-            }
-        }
-
-        // 查找根节点（路径压缩）
-        public int find(int i) {
-            if (parent[i] == i) {
-                return i;
-            }
-            return parent[i] = find(parent[i]);
-        }
-
-        // 合并两个节点，如果已经连通则返回 false
-        public boolean union(int i, int j) {
-            int rootI = find(i);
-            int rootJ = find(j);
-            if (rootI != rootJ) {
-                parent[rootI] = rootJ;
-                return true;
-            }
-            return false;
-        }
-    }
+public class Solution {
+    private boolean[] visit;
+    private List<List<Integer>> adj;
+    private Set<Integer> cycle;
+    private int cycleStart;
 
     public int[] findRedundantConnection(int[][] edges) {
         int n = edges.length;
-        UnionFind uf = new UnionFind(n);
+        adj = new ArrayList<>();
+        for (int i = 0; i <= n; i++)
+            adj.add(new ArrayList<>());
 
         for (int[] edge : edges) {
-            // 如果 union 返回 false，说明 edge[0] 和 edge[1] 已经连通了
-            // 此时再连这条边，就形成了环
-            if (!uf.union(edge[0], edge[1])) {
-                return edge;
+            int u = edge[0], v = edge[1];
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+
+        visit = new boolean[n + 1];
+        cycle = new HashSet<>();
+        cycleStart = -1;
+        dfs(1, -1);
+
+        for (int i = edges.length - 1; i >= 0; i--) {
+            int u = edges[i][0], v = edges[i][1];
+            if (cycle.contains(u) && cycle.contains(v)) {
+                return new int[]{u, v};
             }
         }
-        
         return new int[0];
+    }
+
+    private boolean dfs(int node, int par) {
+        if (visit[node]) {
+            cycleStart = node;
+            return true;
+        }
+        visit[node] = true;
+        for (int nei : adj.get(node)) {
+            if (nei == par) continue;
+            if (dfs(nei, node)) {
+                if (cycleStart != -1) cycle.add(node);
+                if (node == cycleStart) {
+                    cycleStart = -1;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
