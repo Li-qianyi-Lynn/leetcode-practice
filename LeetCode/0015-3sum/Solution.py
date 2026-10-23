@@ -4,10 +4,10 @@ class Solution:
         # dedup
 
         # step1 sort
-        nums.sort()
+        nums.sort() # nlogn
         n = len(nums)
         #step2 for loop nums nums[i] [-4,-1,-1,0,1,2,]
-        for i in range(n):
+        for i in range(n-2):
             if nums[i] > 0:
                 break
             if i > 0 and nums[i] == nums[i-1]:
