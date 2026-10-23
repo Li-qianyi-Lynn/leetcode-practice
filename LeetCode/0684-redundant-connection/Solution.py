@@ -1,35 +1,50 @@
 class Solution:
-    def findRedundantConnection(self, edges: list[list[int]]) -> list[int]:
-        #1.init graph 
+    def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
         graph = defaultdict(list)
-
-        
-        def dfs(start,target,visited): #visited: 每条路径存的点
-            if start == target:
-                return True
-
-            visited.add(start)
-            tar_list = graph[start]
-            for t in tar_list:
-                if t not in visited:
-                    if dfs(t,target,visited):
-                        return True
-            
-            return False
-   
-       #2. for loop edges
-            # 2.1 check u,v in graph []
-                # if yes dfs -> true -> return u,v
-            # 2.2 graph[1],append(2) adj 1:2,3, 2:3
         for u,v in edges:
-            if u in graph and v in graph:
-                if dfs(u,v,set()):
-                    return [u,v]
             graph[u].append(v)
             graph[v].append(u)
+        
+        visited = set()
+        found = False
+        n = len(edges)
+        parents = [0] * (n+1)
+        cycle_nodes = set()
 
-        return []
 
 
+        def dfs(node,par):
+            nonlocal found
+            visited.add(node)
+            parents[node] = par
+
+            for nei in graph[node]:
+                if found:
+                    return
+                if nei == par:
+                    continue
+                if nei in visited: #node -> parent 回溯到nei
+                    cur = node
+                    while cur != nei:
+                        cycle_nodes.add(cur)
+                        cur = parents[cur]
+                    cycle_nodes.add(nei)
+                    found = True
+                    return
+                dfs(nei,node)
 
         
+        dfs(1,-1)
+
+        for u,v in reversed(edges):
+            if u in cycle_nodes and v in cycle_nodes:
+                return [u,v]
+
+        
+
+"""
+
+1. 先把图全部建好
+2. 找到环上所有节点
+3. 倒序找答案
+"""
