@@ -1,28 +1,24 @@
 class Solution:
     def longestPalindrome(self, s: str) -> str:
-        # odd even -> get len 
+        res = ""
+        max_len = 1
         n = len(s)
-        def expand (i,j):
-            l = i
-            r = j
-            while r < n and l >= 0 and s[l] ==s[r]:
-                l -= 1
-                r += 1
-            return l+1, r-1
-        start, end = 0,0
+        def helper(i,j):
+            while i >= 0 and j < n and s[i] == s[j]:
+                i-=1
+                j+=1
+            return s[i+1:j]
 
         for i in range(n):
-            l1,r1 = expand(i,i)
-            l2,r2 = expand(i,i+1)
+        #helper: start from center odd/even. check len []
+            odd_res = helper(i,i)
+            even_res = helper(i,i+1)
 
-            if r1-l1 > end-start:
-                start,end = l1,r1
-            if r2-l2 > end -start:
-                start,end = l2,r2
+            if len(odd_res) > len(res):
+                res = odd_res
+            if len(even_res) > len(res):
+                res = even_res
 
-        return s[start:end+1]
-
-
-
+        return res
 
         
