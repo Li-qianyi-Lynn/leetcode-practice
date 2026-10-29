@@ -9,27 +9,19 @@ class Solution:
         if n == 1 and int(s) != 0:
             return 1
 
-        # 1: check 0 -> 1
-        # 2: check <= 26 +1
-        # dfs: top -> button (output: count) input:i
-        
-        @lru_cache(None)
-        def dfs(i):
-           
-            # base case
-            if i < 0: 
-                return 1
+        dp = [0 for i in range(n+1)]
+        dp[0] = 1
+        dp[1] = 1
 
-            res = 0  
-            if s[i] != "0":
-                res += dfs(i-1) 
-
-            if i >= 1 and 10 <= int(s[i-1:i+1]) <= 26:
-                res += dfs(i-2)
+        for i in range(2, n+1):
+            if s[i-1] != "0":
+                dp[i] += dp[i-1]
             
-            return res 
-
-        return dfs(n-1)
+            two_digit = int(s[i-2:i])
+            if 10 <= two_digit <= 26:
+                dp[i] += dp[i-2]
+ 
+        return dp[n]
 
 
     
