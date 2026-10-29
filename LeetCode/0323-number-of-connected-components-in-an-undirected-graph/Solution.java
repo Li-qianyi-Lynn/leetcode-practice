@@ -1,66 +1,31 @@
-class UnionFind {
-    int[] parents;
-    int counts;
-    UnionFind (int n) {
-        parents = new int[n];
-        counts = n;
-        for (int i = 0; i < n; i++) {
-            parents[i] = i;
-        }
-    }
-
-    public int find(int i) {
-        if (parents[i] == i) {
-            parents[i] = i;
-        } else {
-            parents[i] = find(parents[i]);
-        }
- 
-        return parents[i];
-
-    }
-
-    public boolean union(int i, int j) {
-        int rootI = find(i);
-        int rootJ = find(j);
-   
-
-        if (rootI == rootJ) {
-            return false;
-
-        } 
-            
-        parents[rootI] = rootJ;
-        counts--;
-        return true;
-        
-
-    }
-}
-
-class Solution {
+public class Solution {
     public int countComponents(int n, int[][] edges) {
-        if (n == 1) {
-            return 1;
-
+        List<List<Integer>> adj = new ArrayList<>();
+        boolean[] visit = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            adj.add(new ArrayList<>());
         }
-        UnionFind uf = new UnionFind(n);
         for (int[] edge : edges) {
-            uf.union(edge[0],edge[1]);
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
         }
 
-        
-        return uf.counts;
-        
+        int res = 0;
+        for (int node = 0; node < n; node++) {
+            if (!visit[node]) {
+                dfs(adj, visit, node);
+                res++;
+            }
+        }
+        return res;
+    }
+
+    private void dfs(List<List<Integer>> adj, boolean[] visit, int node) {
+        visit[node] = true;
+        for (int nei : adj.get(node)) {
+            if (!visit[nei]) {
+                dfs(adj, visit, nei);
+            }
+        }
     }
 }
-/**
-union find
-
-find node roots 
-
-union them 
-count how many roots?
-
-
- */
