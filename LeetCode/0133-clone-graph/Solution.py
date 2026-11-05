@@ -3,39 +3,36 @@
 class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
-        self.neighbors = neighbors if neighbors is not None else []  
-        Each list describes the set of neighbors of a node in the graph.
+        self.neighbors = neighbors if neighbors is not None else []
 """
 
-from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        # visited : old node -> new node n
-        # update neibor: iterate oldnode's neibor nodes dfs
-
-        #tc: v+e sc:v
-        # edge case: if 0: return new node
         if not node:
             return None
-        visited = {}
-        def dfs(node):
-            #base case
-            if not node:
-                return None
             
-            if node in visited:
-                return visited[node]
+        memo = {} 
+        
+        def dfs(curr):
+           
+            if curr in memo:
+                return memo[curr]
             
-            new_node = Node(node.val)
-            visited[node] = new_node
-            #update neibor: iterate oldnode's neibor nodes dfs
-            for nei in node.neighbors:
-                new_node.neighbors.append(dfs(nei))
-
-            return new_node
+            clone = Node(curr.val)
+            memo[curr] = clone
+            
+            for nei in curr.neighbors:
+                clone.neighbors.append(dfs(nei))
+                
+            return clone
             
         return dfs(node)
- 
+            
 
+'''
+map = oldnode -> newnode
+@lru_cache
+memo
+dfs to check map
 
-        
+'''
