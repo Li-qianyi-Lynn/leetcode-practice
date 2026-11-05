@@ -1,62 +1,69 @@
-class DLinkedNode:
-    def __init__(self, key = 0, val = 0):
+class Node:
+    def __init__(self,key,val):
         self.key = key
         self.val = val
         self.prev = None
         self.next = None
+
 class LRUCache:
 
-
     def __init__(self, capacity: int):
-        self.capacity = capacity # key -> DLinkedNode
-        self.cache = {}
-        self.head = DLinkedNode()
-        self.tail = DLinkedNode()
+        self.capacity = capacity
+        self.cache = {} # key ->node
+        self.head = Node(0,0)
+        self.tail = Node(0,0)
         self.head.next = self.tail
         self.tail.prev = self.head
+
         
-    def detach(self, node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
-    
-    def move_to_end(self, node):
-        pre_tail = self.tail.prev
-        self.tail.prev = node
-        node.next = self.tail
-        pre_tail.next = node
-        node.prev = pre_tail
-
-
-
     def get(self, key: int) -> int:
         if key in self.cache:
-            node = self.cache[key]
-            self.detach(node)
-            self.move_to_end(node)
-            return node.val
+            cur_node = self.cache[key]
+            self.detach(cur_node)
+            self.add_to_end(cur_node)
+            return cur_node.val
         else:
             return -1
         
 
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            node = self.cache[key]
-            node.val = value
-            self.detach(node)
-            self.move_to_end(node)
+            cur_node = self.cache[key]
+            self.detach(cur_node)
+            self.add_to_end(cur_node)
+            cur_node.val = value
         else:
-            node = DLinkedNode(key,value)
             if len(self.cache) >= self.capacity:
-                node_to_remove = self.head.next
-                self.detach(node_to_remove)
-                self.cache.pop(node_to_remove.key)
+                to_remove_node = self.head.next
+                self.detach(to_remove_node)
+                del self.cache[to_remove_node.key]
             
-            self.move_to_end(node)
-            self.cache[key] = node
+            new_node = Node(key,value)
+            self.add_to_end(new_node)
+            self.cache[key] = new_node
+                
 
 
+    
+    def add_to_end(self, node) -> None: # latest used 
+        bef_tail = self.tail.prev
+        bef_tail.next = node
+        node.next = self.tail
+        node.prev = bef_tail
+        self.tail.prev = node
         
-# head node1 node2 node3 tail
+
+    def detach(self, node) -> None:
+        pre_node = node.prev
+        aft_node = node.next
+        pre_node.next = aft_node
+        aft_node.prev = pre_node
+
+# head -> node1 -> node2 -> tail
+
+# node3
+        
+
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
