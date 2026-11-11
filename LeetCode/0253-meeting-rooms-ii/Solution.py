@@ -1,29 +1,19 @@
 class Solution:
     def minMeetingRooms(self, intervals: list[list[int]]) -> int:
-        '''
-        sort using start time
-        heap: end time 
-
-        itereate interval:
-            next start < end in the heap peak -> push
-            else: pop peak and push
-        
-        len(heap)
-        '''
-
-        #sort using start time
-        intervals.sort()
-
-        heap = []
-
+        events = []
         for start, end in intervals:
+            events.append((start,1))
+            events.append((end,-1))
 
-            if heap and start >= heap[0]:
-                heapq.heappop(heap)
+        events.sort(key = lambda x:(x[0],x[1]))
 
-            heapq.heappush(heap,end)
-        
-        return len(heap)
+        cur_room = 0
+        res = 0
+        for time,val in events:
+            cur_room += val
+            res = max(res,cur_room)
+        return res
+
 
 
         
